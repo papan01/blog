@@ -1,0 +1,20 @@
+$palette : (
+    light:(
+        --bg1: #fff,
+        --bg2: #fafafa,
+        --bg3: #fcfcfc,
+        --bg4: #f8f8f8,
+        --text-color: #555,
+        --subtle-top1:rgba(107, 183, 86, 1),
+        --subtle-top2:rgba(0, 143, 104, 1),
+    ),
+    dark:(
+        --bg1: #282c35,
+        --bg2: #181C22,
+        --bg3: #1A1D24,
+        --bg4: #000,
+        --text-color: #F9FFEE,
+        --subtle-top1:#212121,
+        --subtle-top2:#28313E,
+    )
+)

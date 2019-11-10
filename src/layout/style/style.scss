@@ -1,0 +1,20 @@
+@import './base/setting';
+@import './base/breakpoints';
+@import './base/normalize';
+@import './theme/themes';
+@import './fonts/fonts';
+
+html {
+    font-size: $font-medium;
+}
+
+body {
+    background: var(--bg1);
+    font-family: "Rubik", sans-serif;
+    color: var(--text-color);
+    padding: 0;
+    margin: 0;
+    line-height: $base-line-height;
+    font-weight: $font-weight-normal;
+    transition: background-color $transition-faster-easeout;
+}
