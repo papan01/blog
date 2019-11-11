@@ -4,7 +4,8 @@ import Layout from "../layout/index";
 export default () => {
   return (
     <Layout>
-      <h1>Hello Gatsby, this is index</h1>
+      <h1>Hello Gatsby, this is about</h1>
     </Layout>
   )
 }
+

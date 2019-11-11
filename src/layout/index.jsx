@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import Cookies from "universal-cookie"
 import Helmet from "react-helmet"
 import Config from "../../data/siteConfig";
+import Navigation from "../components/navigation";
 import "./style/style.scss"
 
 const Layout = props => {
@@ -14,13 +15,13 @@ const Layout = props => {
   const [theme] = useState(userTheme)
 
   return (
-    <div>
+    <Navigation>
       <Helmet>
         <meta name="description" content={Config.siteDescription} />
         <body className={theme} />
       </Helmet>
       {props.children}
-    </div>
+    </Navigation>
   )
 }
 

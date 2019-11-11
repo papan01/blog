@@ -3,13 +3,15 @@ const config = require("./data/SiteConfig");
 module.exports = {
   plugins: [
     `gatsby-plugin-sass`,
+    `gatsby-plugin-sharp`,
     `gatsby-transformer-remark`,
+    `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `src`,
-        path: `${__dirname}/src/`,
-      },
+        name: "static",
+        path: `${__dirname}/static`
+      }
     },
     {
       resolve: "gatsby-source-filesystem",

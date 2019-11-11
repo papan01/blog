@@ -1,0 +1,44 @@
+@import "../../layout/style/base/setting";
+@import "../../layout/style/base/breakpoints";
+@import "../../layout/style/base/mixin";
+
+$top-bar-height: 4.75rem;
+$top-bar-responsive: $breakpoint-md;
+$top-bar-nav-svg-size: 40px;
+$top-bar-logo-size: 60px;
+
+@mixin logo {
+  .logo {
+    @include disply-flex();
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0 $spacing-large;
+    height: $top-bar-height;
+
+    img {
+      transition: all $transition-normal-easein;
+      width: $top-bar-logo-size;
+      height: $top-bar-logo-size;
+    }
+  }
+}
+
+@mixin navlist {
+  .nav-list {
+    
+  }
+}
+
+.top-bar {
+  height: $top-bar-height;
+  background: linear-gradient(to right, var(--subtle-top1), var(--subtle-top2));
+  margin-bottom: 0;
+  z-index: 1000;
+
+  > .container {
+    @include disply-flex();
+
+    @include logo();
+  }
+}

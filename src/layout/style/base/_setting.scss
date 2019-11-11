@@ -1,12 +1,5 @@
 $site-max-width: 75rem;
 
-$affixe-xsmall: "xs";
-$affixe-small: "sm";
-$affixe-medium: "md";
-$affixe-large: "lg";
-$affixe-xlarge: "xlg";
-$affixe-xxlarge: "xxlg";
-
 $base-line-height: 1.6;
 $base-border-radius: 4px;
 $base-border: 3px;
@@ -38,15 +31,6 @@ $font-medium: $base-font-size;
 $font-large: $base-font-size * 1.75;
 $font-xlarge: $base-font-size * 2;
 $font-xxlarge: $base-font-size * 3;
-
-$affixes: (
-  $affixe-xsmall: $font-xsmall,
-  $affixe-small: $font-small,
-  $affixe-medium: $font-medium,
-  $affixe-large: $font-large,
-  $affixe-xlarge: $font-xlarge,
-  $affixe-xxlarge: $font-xxlarge
-);
 
 //font weight
 $font-weight-normal: 300;

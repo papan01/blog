@@ -3,7 +3,7 @@ const config = {
     siteTitleShort: "Papan's Blog", // Short site title for homescreen (PWA). Preferably should be under 12 characters to prevent truncation.
     siteTitleAlt: "Papan's Blog", // Alternative site title for SEO.
     siteLogo: "static/logos/logo.png", // Logo used for SEO and manifest.
-    siteUrl: "", // Domain of your website without pathPrefix.
+    siteUrl: "https://papan01.github.io", // Domain of your website without pathPrefix.
     pathPrefix: "/", // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
     fixedFooter: false, // Whether the footer component is fixed, i.e. always visible
     siteDescription: "Personal blog by Papan. Life and code.", // Website description used for RSS feeds/meta description tag.
@@ -19,8 +19,7 @@ const config = {
     userTwitter: "", // Optionally renders "Follow Me" in the UserInfo segment.
     userLocation: "", // User location to display in the author segment.
     userAvatar: "https://api.adorable.io/avatars/150/test.png", // User avatar to display in the author segment.
-    userDescription:
-      "", // User description to display in the author segment.
+    userDescription: "", // User description to display in the author segment.
     // Links to social profiles/projects you want to display in the author segment/navigation bar.
     userLinks: [
       {
@@ -39,10 +38,21 @@ const config = {
         iconClassName: ""
       }
     ],
+    navbarLinks:[
+      {
+        label: "About",
+        url:"/about",
+        icon: "far fa-address-card"
+      },
+      {
+        label: "Contact",
+        url:"/contact",
+        icon: "fas fa-phone"
+      }
+    ],
     copyright: "" // Copyright string for the footer of the website and RSS feed.
   };
   
-  // Validate
   
   // Make sure pathPrefix is empty if not needed
   if (config.pathPrefix === "/") {
