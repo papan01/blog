@@ -7,6 +7,7 @@ $palette : (
         --text-color: #555,
         --subtle-top1:rgba(107, 183, 86, 1),
         --subtle-top2:rgba(0, 143, 104, 1),
+        --hover-top:#8BC34A,
     ),
     dark:(
         --bg1: #282c35,
@@ -16,5 +17,6 @@ $palette : (
         --text-color: #F9FFEE,
         --subtle-top1:#212121,
         --subtle-top2:#28313E,
+        --hover-top:#424242,
     )
 )

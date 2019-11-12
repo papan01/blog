@@ -1,18 +1,19 @@
-import React, { useState } from "react"
-import Cookies from "universal-cookie"
-import Helmet from "react-helmet"
-import Config from "../../data/siteConfig";
-import Navigation from "../components/navigation";
-import "./style/style.scss"
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import Cookies from 'universal-cookie';
+import Helmet from 'react-helmet';
+import Config from '../../data/siteConfig';
+import Navigation from '../components/navigation';
+import './style/style.scss';
 
-const Layout = props => {
-  const cookies = new Cookies()
-  let userTheme = cookies.get("theme")
+const Layout = ({ children }) => {
+  const cookies = new Cookies();
+  let userTheme = cookies.get('theme');
   if (!userTheme) {
-    cookies.set("theme", "dark", { path: "/" })
-    userTheme = "dark"
+    cookies.set('theme', 'dark', { path: '/' });
+    userTheme = 'dark';
   }
-  const [theme] = useState(userTheme)
+  const [theme] = useState(userTheme);
 
   return (
     <Navigation>
@@ -20,9 +21,13 @@ const Layout = props => {
         <meta name="description" content={Config.siteDescription} />
         <body className={theme} />
       </Helmet>
-      {props.children}
+      {children}
     </Navigation>
-  )
-}
+  );
+};
 
-export default Layout
+Layout.propTypes = {
+  children: PropTypes.element.isRequired,
+};
+
+export default Layout;

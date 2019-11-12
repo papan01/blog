@@ -1,33 +1,65 @@
 @import "../../layout/style/base/setting";
 @import "../../layout/style/base/breakpoints";
-@import "../../layout/style/base/mixin";
 
 $top-bar-height: 4.75rem;
 $top-bar-responsive: $breakpoint-md;
 $top-bar-nav-svg-size: 40px;
 $top-bar-logo-size: 60px;
+$nav-item-width:200px;
 
 @mixin logo {
   .logo {
-    @include disply-flex();
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding: 0 $spacing-large;
-    height: $top-bar-height;
+    display:flex;
+    align-items: stretch;
 
-    img {
-      transition: all $transition-normal-easein;
-      width: $top-bar-logo-size;
-      height: $top-bar-logo-size;
+    >a {
+      display:flex;
+      align-items: center;
+
+      img {
+        transition: all $transition-normal-easein;
+        width: $top-bar-logo-size;
+        height: $top-bar-logo-size;
+      }
     }
   }
 }
 
-@mixin navlist {
-  .nav-list {
-    
+@mixin top-nav-bar {
+  .top-nav-bar {
+    flex:1;
+    margin: 0 $spacing-large;
+    > .nav-list {
+      display:flex;
+      > li {
+        display:flex;
+        align-items: stretch;
+        justify-content: center;
+        height: $top-bar-height;
+        flex-basis: $nav-item-width;
+        &:hover {
+          background: var(--hover-top);
+        }
+
+        > a {
+          display:flex;
+          flex-direction: column;
+          justify-content: center;
+
+          > i {
+            flex: 1;
+            text-align: center;
+            padding-top: $spacing-normal;
+            transition: all $transition-faster-linear;
+          }
+        }
+      }
+    }
   }
+}
+
+@mixin theme-toggle {
+      
 }
 
 .top-bar {
@@ -37,8 +69,8 @@ $top-bar-logo-size: 60px;
   z-index: 1000;
 
   > .container {
-    @include disply-flex();
-
+    display:flex;
     @include logo();
+    @include top-nav-bar();
   }
 }

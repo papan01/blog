@@ -1,16 +1,17 @@
-import React from "react"
-import { graphql } from "gatsby"
-import Layout from "../layout"
+import React from 'react';
+import PropTypes from 'prop-types';
+import { graphql } from 'gatsby';
+import Layout from '../layout';
 
-export default ({ data }) => {
-  const post = data.markdownRemark
+const Post = ({ data }) => {
+  const post = data.markdownRemark;
   return (
     <Layout>
       <h1>{post.frontmatter.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: post.html }} />
+      {post.html}
     </Layout>
-  )
-}
+  );
+};
 
 export const query = graphql`
   query($slug: String!) {
@@ -21,4 +22,17 @@ export const query = graphql`
       }
     }
   }
-`
+`;
+
+Post.propTypes = {
+  data: PropTypes.shape({
+    markdownRemark: PropTypes.shape({
+      html: PropTypes.element.isRequired,
+      frontmatter: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
+  }).isRequired,
+};
+
+export default Post;
