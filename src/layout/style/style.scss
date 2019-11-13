@@ -1,82 +1,90 @@
-@import './base/setting';
-@import './base/normalize';
-@import './theme/themes';
-@import './fonts/fonts';
-@import './layout/layout';
+@import "./base/setting";
+@import "./base/normalize";
+@import "./theme/themes";
+@import "./fonts/fonts";
+@import "./layout/layout";
 
 html {
-    font-size: $font-medium;
+  font-size: $font-medium;
 }
 
 body {
-    background: var(--bg1);
-    font-family: "Rubik", sans-serif;
-    color: var(--text-color);
-    padding: 0;
-    margin: 0;
-    line-height: $base-line-height;
-    font-weight: $font-weight-normal;
-    transition: background-color $transition-faster-easeout;
+  background: var(--bg1);
+  font-family: "Rubik", sans-serif;
+  color: var(--text-color);
+  padding: 0;
+  margin: 0;
+  line-height: $base-line-height;
+  font-weight: $font-weight-normal;
+  transition: background-color $transition-faster-easeout;
 }
 
-div, form, p  {
-    margin: 0;
-    padding: 0;
+div,
+form,
+p {
+  margin: 0;
+  padding: 0;
 }
 
 li {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
-ol, ul {
-    list-style-image: none;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+ol,
+ul {
+  list-style-image: none;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
-img, pre {
-    border-radius: $base-border-radius;
+img,
+pre {
+  border-radius: $base-border-radius;
 }
 
-img, svg {
-    height: auto;
-    display: inline-block;
-    max-width: 100%;
-    vertical-align: middle;
-    border: 0;
+img,
+svg {
+  height: auto;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: middle;
+  border: 0;
 }
 
-a, a:link, a:visited {
-    text-decoration: none;
-    color:var(--text-color)
+a,
+a:link,
+a:visited {
+  text-decoration: none;
+  color: var(--text-color);
 }
-  
-*, *:after, *:before {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    box-sizing: border-box;
+
+*,
+*:after,
+*:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 p {
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
-    hyphens: auto;
-    -ms-word-break: normal;
-    word-break: normal;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+  -ms-word-break: normal;
+  word-break: normal;
 }
-
 
 h1 {
   font-size: $header-size-1;
 }
-  
+
 h2 {
   font-size: $header-size-2;
 }
-  
+
 h3 {
   font-size: $header-size-3;
 }
@@ -91,4 +99,10 @@ h5 {
 
 h6 {
   font-size: $header-size-6;
+}
+
+[type="checkbox"],
+[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
 }
