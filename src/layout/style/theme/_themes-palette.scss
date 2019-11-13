@@ -1,6 +1,9 @@
 :root {
     --white: #fff;
     --black: #0f1114;
+    --pink:#ffa7c4;
+    --yellow:#EFBB35;
+    
 }
 
 $palette : (
@@ -13,6 +16,7 @@ $palette : (
         --subtle-top1:rgba(107, 183, 86, 1),
         --subtle-top2:rgba(0, 143, 104, 1),
         --hover-top:#8BC34A,
+        --hover-top-icon:#df1c31,
     ),
     dark:(
         --bg1: #282c35,
@@ -23,5 +27,6 @@ $palette : (
         --subtle-top1:#212121,
         --subtle-top2:#28313E,
         --hover-top:#424242,
+        --hover-top-icon:rgb(255, 217, 0),
     )
 )

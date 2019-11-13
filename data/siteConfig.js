@@ -31,15 +31,21 @@ const config = {
   navbarLinks: [
     {
       id: 'id0',
-      label: 'About',
-      url: '/about',
-      iconClassName: 'fa fa-address-card',
+      label: 'Archives',
+      url: '/archives',
+      iconClassName: 'fa fa-book-open',
     },
     {
       id: 'id1',
-      label: 'Contact',
-      url: '/contact',
-      iconClassName: 'fa fa-phone',
+      label: 'Category',
+      url: '/category',
+      iconClassName: 'fa fa-list-alt',
+    },
+    {
+      id: 'id2',
+      label: 'About',
+      url: '/about',
+      iconClassName: 'fa fa-address-card',
     },
   ],
   copyright: '', // Copyright string for the footer of the website and RSS feed.

@@ -8,7 +8,7 @@ const Post = ({ data }) => {
   return (
     <Layout>
       <h1>{post.frontmatter.title}</h1>
-      {post.html}
+      <div dangerouslySetInnerHTML={{ __html: post.html }} />
     </Layout>
   );
 };
@@ -27,7 +27,7 @@ export const query = graphql`
 Post.propTypes = {
   data: PropTypes.shape({
     markdownRemark: PropTypes.shape({
-      html: PropTypes.element.isRequired,
+      html: PropTypes.string.isRequired,
       frontmatter: PropTypes.shape({
         title: PropTypes.string.isRequired,
       }).isRequired,
