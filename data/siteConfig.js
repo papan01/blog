@@ -5,7 +5,6 @@ const config = {
   siteLogo: 'static/logos/logo.png', // Logo used for SEO and manifest.
   siteUrl: 'https://papan01.github.io', // Domain of your website without pathPrefix.
   pathPrefix: '/', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
-  fixedFooter: false, // Whether the footer component is fixed, i.e. always visible
   siteDescription: 'Personal blog by Papan. Life and code.', // Website description used for RSS feeds/meta description tag.
   siteRss: '/rss.xml', // Path to the RSS file.
   siteFBAppID: '', // FB Application ID for using app insights

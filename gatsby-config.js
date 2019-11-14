@@ -1,6 +1,18 @@
-const config = require("./data/SiteConfig");
+const config = require('./data/siteConfig');
 
 module.exports = {
+  pathPrefix: config.pathPrefix === '' ? '/' : config.pathPrefix,
+  siteMetadata: {
+    siteUrl: `${config.siteUrl}`,
+    rssMetadata: {
+      site_url: config.siteUrl,
+      feed_url: config.siteUrl + config.pathPrefix + config.siteRss,
+      title: config.siteTitle,
+      description: config.siteDescription,
+      image_url: config.siteUrl + config.pathPrefix + config.siteLogo,
+      copyright: config.copyright,
+    },
+  },
   plugins: [
     `gatsby-plugin-sass`,
     `gatsby-plugin-sharp`,
@@ -9,16 +21,16 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: "static",
-        path: `${__dirname}/static`
-      }
+        name: 'static',
+        path: `${__dirname}/static`,
+      },
     },
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: "posts",
-        path: `${__dirname}/content`
-      }
+        name: 'posts',
+        path: `${__dirname}/content`,
+      },
     },
     {
       resolve: `gatsby-plugin-manifest`,
@@ -33,24 +45,53 @@ module.exports = {
         icon: config.siteLogo,
         icons: [
           {
-            src: "/logos/logo-128x128.png",
-            sizes: "128x128",
-            type: "image/png"
+            src: '/logos/logo-128x128.png',
+            sizes: '128x128',
+            type: 'image/png',
           },
           {
-            src: "/logos/logo-256x256.png",
-            sizes: "256x256",
-            type: "image/png"
+            src: '/logos/logo-256x256.png',
+            sizes: '256x256',
+            type: 'image/png',
           },
           {
-            src: "/logos/logo-512x512.png",
-            sizes: "512x512",
-            type: "image/png"
+            src: '/logos/logo-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
           },
-        ]
+        ],
       },
-      
     },
     `gatsby-plugin-offline`,
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        output: `/sitemap.xml`,
+        query: `
+          {
+            site {
+              siteMetadata {
+                siteUrl
+              }
+            }
+  
+            allSitePage {
+              edges {
+                node {
+                  path
+                }
+              }
+            }
+        }`,
+        serialize: ({ site, allSitePage }) =>
+          allSitePage.edges.map(edge => {
+            return {
+              url: site.siteMetadata.siteUrl + edge.node.path,
+              changefreq: `daily`,
+              priority: 0.7,
+            };
+          }),
+      },
+    },
   ],
-}
+};

@@ -33,9 +33,12 @@ NavList.propTypes = {
 };
 
 const ThemeToggle = () => {
-  let theme = localStorage.getItem('theme');
-  if (!theme) {
-    localStorage.setItem('theme', 'dark');
+  let theme;
+  if (typeof window !== 'undefined') {
+    theme = localStorage.getItem('theme');
+    if (!theme) {
+      localStorage.setItem('theme', 'dark');
+    }
   }
   const [isChecked, toggleChecked] = useState(theme === 'dark');
 
