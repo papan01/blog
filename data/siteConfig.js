@@ -7,7 +7,7 @@ const config = {
   pathPrefix: '/', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
   fixedFooter: false, // Whether the footer component is fixed, i.e. always visible
   siteDescription: 'Personal blog by Papan. Life and code.', // Website description used for RSS feeds/meta description tag.
-  siteRss: '', // Path to the RSS file.
+  siteRss: '/rss.xml', // Path to the RSS file.
   siteFBAppID: '', // FB Application ID for using app insights
   siteGATrackingID: '', // Tracking code ID for google analytics.
   disqusShortname: '', // Disqus shortname.
@@ -21,34 +21,49 @@ const config = {
   userAvatar: 'https://api.adorable.io/avatars/150/test.png', // User avatar to display in the author segment.
   userDescription: '', // User description to display in the author segment.
   // Links to social profiles/projects you want to display in the author segment/navigation bar.
-  userLinks: [
+  rrssb: [
     {
-      label: '',
-      url: '',
-      iconClassName: '',
+      id: 'rsb1',
+      url: 'https://github.com/papan01',
+      iconClassName: 'fab fa-github',
+    },
+    {
+      id: 'rsb2',
+      url: 'mailto: navy90517@gmail.com',
+      iconClassName: 'fa fa-envelope',
+    },
+    {
+      id: 'rsb3',
+      url: 'https://www.facebook.com/louis.peng.58?ref=bookmarks',
+      iconClassName: 'fab fa-facebook',
+    },
+    {
+      id: 'rsb4',
+      url: 'https://www.instagram.com/n_louis_peng/?hl=zh-tw',
+      iconClassName: 'fab fa-instagram',
     },
   ],
   navbarLinks: [
     {
-      id: 'id0',
+      id: 'nbl0',
       label: 'Archives',
       url: '/archives',
       iconClassName: 'fa fa-book-open',
     },
     {
-      id: 'id1',
+      id: 'nbl1',
       label: 'Category',
       url: '/category',
       iconClassName: 'fa fa-list-alt',
     },
     {
-      id: 'id2',
+      id: 'nbl2',
       label: 'About',
       url: '/about',
       iconClassName: 'fa fa-address-card',
     },
   ],
-  copyright: '', // Copyright string for the footer of the website and RSS feed.
+  copyright: 'Copyright © 2019. Papan',
 };
 
 // Make sure pathPrefix is empty if not needed
@@ -60,11 +75,9 @@ if (config.pathPrefix === '/') {
 }
 
 // Make sure siteUrl doesn't have an ending forward slash
-if (config.siteUrl.substr(-1) === '/')
-  config.siteUrl = config.siteUrl.slice(0, -1);
+if (config.siteUrl.substr(-1) === '/') config.siteUrl = config.siteUrl.slice(0, -1);
 
 // Make sure siteRss has a starting forward slash
-if (config.siteRss && config.siteRss[0] !== '/')
-  config.siteRss = `/${config.siteRss}`;
+if (config.siteRss && config.siteRss[0] !== '/') config.siteRss = `/${config.siteRss}`;
 
 module.exports = config;
