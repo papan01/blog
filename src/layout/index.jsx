@@ -4,7 +4,11 @@ import Navigation from '../components/navigation';
 import './style/style.scss';
 
 const Layout = ({ children }) => {
-  return <Navigation>{children}</Navigation>;
+  return (
+    <Navigation>
+      <main className="page-wrap">{children}</main>
+    </Navigation>
+  );
 };
 
 Layout.propTypes = {

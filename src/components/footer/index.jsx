@@ -5,7 +5,7 @@ import './style.scss';
 
 const Footer = () => {
   return (
-    <footer className="foot container">
+    <footer className="footer container">
       <div className="links">
         {config.rrssb.map(item => (
           <a href={item.url} key={item.id}>
@@ -21,4 +21,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default React.memo(Footer);

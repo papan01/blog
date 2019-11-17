@@ -1,4 +1,10 @@
 .container {
     max-width: $site-max-width;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right:auto;
+}
+
+.page-wrap {
+    @extend .container;
+    margin-top: $spacing-xlarge; 
 }

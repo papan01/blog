@@ -16,13 +16,26 @@ module.exports = {
   plugins: [
     `gatsby-plugin-sass`,
     `gatsby-plugin-sharp`,
-    `gatsby-transformer-remark`,
     `gatsby-transformer-sharp`,
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: [
+        `gatsby-remark-relative-images`,
+        {
+          resolve: `gatsby-remark-images`,
+          options: {
+            maxWidth: 680,
+          },
+        },
+        `gatsby-remark-autolink-headers`,
+        `gatsby-remark-prismjs`,
+      ],
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: 'static',
-        path: `${__dirname}/static`,
+        name: 'static/images',
+        path: `${__dirname}/static/images`,
       },
     },
     {

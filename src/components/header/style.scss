@@ -14,6 +14,7 @@ $z-index: 10;
     margin: 0 $spacing-large;
     img {
       transition: all $transition-normal-easein;
+      border-radius: $base-border-radius;
       width: $top-bar-logo-size;
       height: $top-bar-logo-size;
     }

@@ -1,17 +1,14 @@
 const path = require(`path`);
-const { createFilePath } = require(`gatsby-source-filesystem`);
+const _ = require('lodash');
 
-exports.onCreateNode = ({ node, getNode, actions }) => {
+exports.onCreateNode = ({ node, actions }) => {
   const { createNodeField } = actions;
   if (node.internal.type === `MarkdownRemark`) {
-    const slug = createFilePath({ node, getNode });
-    // const fileNode = getNode(node.parent);
-    // const parsedFilePath = path.parse(fileNode.relativePath);
-    // console.log(parsedFilePath);
+    const slug = `/${_.kebabCase(node.frontmatter.title)}`;
     createNodeField({
       node,
       name: `slug`,
-      value: `/posts${slug}`,
+      value: `/posts/${slug}`,
     });
   }
 };
@@ -36,8 +33,6 @@ exports.createPages = async ({ graphql, actions }) => {
       path: node.fields.slug,
       component: path.resolve(`./src/templates/post.jsx`),
       context: {
-        // Data passed to context is available
-        // in page queries as GraphQL variables.
         slug: node.fields.slug,
       },
     });

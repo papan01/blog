@@ -1,0 +1,40 @@
+@import "../../layout/style/base/setting";
+@import "../../layout/style/base/breakpoints";
+
+.post-card {
+    display: grid;
+    margin: $spacing-normal;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: $relative-spacing-xlarge;
+    max-height: 300px;
+    border-radius: $base-border-radius * 4;
+    box-shadow: $spacing-normal 0 $spacing-xxlarge var(--black);
+    transition: all $transition-faster-easein;
+
+    >.post-card-cover {
+        border-top-left-radius: $base-border-radius * 4;
+        border-bottom-left-radius: $base-border-radius * 4;
+    }
+
+    &:hover {
+        box-shadow: $spacing-normal 0 $spacing-xxlarge var(--text-color);
+        transform: translate(0,-$spacing-normal); 
+    }
+
+    >.post-card-detail {
+        display: flex;
+        flex-direction: column;
+        .post-card-title {
+            margin-block-end: 0;
+            margin-block-start: 0;
+        }
+    }
+
+    @include media-breakpoint-down($breakpoint-md)
+    {
+        display: flex;
+        .post-card-cover {
+            visibility: hidden;
+        }
+    }
+}
