@@ -19,17 +19,19 @@ module.exports = {
     `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-transformer-remark`,
-      options: [
-        `gatsby-remark-relative-images`,
-        {
-          resolve: `gatsby-remark-images`,
-          options: {
-            maxWidth: 680,
+      options: {
+        plugins: [
+          `gatsby-remark-relative-images`,
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 680,
+            },
           },
-        },
-        `gatsby-remark-autolink-headers`,
-        `gatsby-remark-prismjs`,
-      ],
+          `gatsby-remark-autolink-headers`,
+          `gatsby-remark-prismjs`,
+        ],
+      },
     },
     {
       resolve: `gatsby-source-filesystem`,
