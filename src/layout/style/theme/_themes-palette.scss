@@ -2,8 +2,7 @@
     --white: #fff;
     --black: #0f1114;
     --pink:#ffa7c4;
-    --yellow:#EFBB35;
-    
+    --yellow:#EFBB35;   
 }
 
 $palette : (
@@ -12,21 +11,37 @@ $palette : (
         --bg2: #fafafa,
         --bg3: #fcfcfc,
         --bg4: #f8f8f8,
+        --invert1:#282c35,
+        --invert2:#F9FFEE,
         --text-color: #555,
         --subtle-top1:rgba(107, 183, 86, 1),
         --subtle-top2:rgba(0, 143, 104, 1),
+        --subtle-header1:#EF9A9A,
+        --subtle-header2:#E53935,
+        --subtle-header3:#B71C1C,
         --hover-top:#8BC34A,
-        --hover-top-icon:#df1c31,
+        --hover-top-icon:#DF1C31,
+        --post-card-hover:var(--yellow),
+        --category-border:#757575,
+        --tag-border:#212121,
     ),
     dark:(
-        --bg1: #282c35,
+        --bg1: #282C35,
         --bg2: #181C22,
         --bg3: #1A1D24,
         --bg4: #000,
+        --invert1:#F9FFEE,
+        --invert2:#282C35,
         --text-color: #F9FFEE,
         --subtle-top1:#212121,
         --subtle-top2:#28313E,
+        --subtle-header1:#FF8F00,
+        --subtle-header2:#FFEB3B,
+        --subtle-header3:#F57F17,
         --hover-top:#424242,
-        --hover-top-icon:rgb(255, 217, 0),
+        --hover-top-icon:#FFCF44,
+        --post-card-hover:var(--text-color),
+        --category-border:var(--yellow),
+        --tag-border:#03DAC6,
     )
 )

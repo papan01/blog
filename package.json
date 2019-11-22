@@ -12,6 +12,7 @@
     "serve": "gatsby serve",
     "lint": "eslint --ext .jsx,.js src/",
     "lint:fix": "npm run lint -- --fix",
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
   },
   "dependencies": {
@@ -50,6 +51,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "gh-pages": "^2.1.1",
     "prettier": "^1.18.2",
     "typescript": "^3.7.2"
   },

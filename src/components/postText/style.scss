@@ -1,0 +1,37 @@
+@import "../../layout/style/base/setting";
+
+.post-card-text {
+    display: flex;
+    flex-direction: column;
+    padding: $spacing-xsmall;
+
+    .post-title {
+        margin-block-end: 0;
+        margin-block-start: 0;
+        transition: all $transition-slower-ease;
+
+        &:hover{
+            background: linear-gradient(0.25turn, var(--subtle-header1),var(--subtle-header2), var(--subtle-header3));
+            -webkit-background-clip: text;
+            background-clip : text;
+            -webkit-text-fill-color: transparent;
+        }
+    }
+    
+    .post-subtitle {
+        margin: $spacing-small 0;
+        .post-category {
+            margin-right: $spacing-small;
+            padding: 5px;
+            display: inline-block;
+            box-shadow: 0 0 $spacing-xsmall var( --category-border);
+            border-radius: $base-border-radius * 5;
+            transition: all $transition-faster-easein;
+            &:hover {
+               color:var(--invert2);
+               background: var(--invert1);
+               box-shadow: 0 0 $spacing-large var( --category-border);
+            }
+        }
+    }
+}

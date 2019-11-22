@@ -3,7 +3,7 @@ import Img from 'gatsby-image';
 import PropTypes from 'prop-types';
 import { useStaticQuery, graphql } from 'gatsby';
 
-const PostCover = ({ imagePath }) => {
+const PostCover = ({ imagePath, wrapClass }) => {
   const data = useStaticQuery(graphql`
     query {
       allFile {
@@ -24,11 +24,12 @@ const PostCover = ({ imagePath }) => {
   const image = data.allFile.edges.find(n => {
     return n.node.relativePath.includes(imagePath);
   });
-  return image ? <Img fluid={image.node.childImageSharp.fluid} className="post-card-cover" /> : null;
+  return image ? <Img fluid={image.node.childImageSharp.fluid} className={wrapClass} /> : null;
 };
 
 PostCover.propTypes = {
   imagePath: PropTypes.string.isRequired,
+  wrapClass: PropTypes.string.isRequired,
 };
 
-export default PostCover;
+export default React.memo(PostCover);

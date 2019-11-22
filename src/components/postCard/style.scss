@@ -17,17 +17,8 @@
     }
 
     &:hover {
-        box-shadow: $spacing-normal 0 $spacing-xxlarge var(--text-color);
+        box-shadow: $spacing-normal 0 $spacing-xxlarge var(--post-card-hover);
         transform: translate(0,-$spacing-normal); 
-    }
-
-    >.post-card-detail {
-        display: flex;
-        flex-direction: column;
-        .post-card-title {
-            margin-block-end: 0;
-            margin-block-start: 0;
-        }
     }
 
     @include media-breakpoint-down($breakpoint-md)

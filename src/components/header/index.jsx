@@ -15,7 +15,7 @@ const NavList = ({ navStyle, closeMenu }) => {
     <nav className={navStyle}>
       <ul className="nav-list">
         {config.navbarLinks.map(item => (
-          <li key={item.id}>
+          <li key={item.label}>
             <Link to={item.url} activeClassName="active" onClick={() => closeMenu(false)}>
               <i className={`${item.iconClassName} fa-2x`} />
               <span>{item.label}</span>

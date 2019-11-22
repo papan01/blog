@@ -4,7 +4,7 @@ const config = {
   siteTitleAlt: "Papan's Blog", // Alternative site title for SEO.
   siteLogo: 'static/logos/logo.png', // Logo used for SEO and manifest.
   siteUrl: 'https://papan01.github.io', // Domain of your website without pathPrefix.
-  pathPrefix: '/', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
+  pathPrefix: '/blog-source', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
   siteDescription: 'Personal blog by Papan. Life and code.', // Website description used for RSS feeds/meta description tag.
   siteRss: '/rss.xml', // Path to the RSS file.
   siteFBAppID: '', // FB Application ID for using app insights
@@ -44,19 +44,16 @@ const config = {
   ],
   navbarLinks: [
     {
-      id: 'nbl0',
       label: 'Archives',
       url: '/archives',
       iconClassName: 'fa fa-book-open',
     },
     {
-      id: 'nbl1',
-      label: 'Category',
-      url: '/category',
+      label: 'Categories',
+      url: '/categories',
       iconClassName: 'fa fa-list-alt',
     },
     {
-      id: 'nbl2',
       label: 'About',
       url: '/about',
       iconClassName: 'fa fa-address-card',

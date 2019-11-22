@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
-import Layout from '../layout/index';
+import Layout from '../layout';
 import PostList from '../components/postList';
+import './tag.scss';
 
-const Index = ({ data }) => {
+const Tag = ({ pageContext, data }) => {
   const postEdges = data.allMarkdownRemark.edges;
+  const { tag } = pageContext;
   const postList = [];
   postEdges.forEach(edge => {
     postList.push({
@@ -21,12 +23,16 @@ const Index = ({ data }) => {
   });
   return (
     <Layout>
+      <h1 className="text-center tag-head">{`Posts About ${tag}`}</h1>
       <PostList posts={postList} />
     </Layout>
   );
 };
 
-Index.propTypes = {
+Tag.propTypes = {
+  pageContext: PropTypes.shape({
+    tag: PropTypes.string.isRequired,
+  }).isRequired,
   data: PropTypes.shape({
     allMarkdownRemark: PropTypes.shape({
       edges: PropTypes.arrayOf(
@@ -51,11 +57,15 @@ Index.propTypes = {
   }).isRequired,
 };
 
-export default Index;
+export default Tag;
 
 export const pageQuery = graphql`
-  query IndexQuery {
-    allMarkdownRemark(limit: 2000, sort: { fields: [frontmatter___date], order: DESC }) {
+  query tagQuery($tag: String) {
+    allMarkdownRemark(
+      limit: 2000
+      sort: { fields: [frontmatter___date], order: DESC }
+      filter: { frontmatter: { tags: { in: [$tag] } } }
+    ) {
       edges {
         node {
           fields {

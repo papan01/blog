@@ -31,7 +31,7 @@ $z-index: 10;
       margin: 0;
       opacity: 0;
       visibility: hidden;
-      transition: $transition-normal-easeout;
+      transition: all $transition-normal-easeout;
       position: absolute;
       top: $top-bar-height;
       left: 0;
@@ -53,6 +53,7 @@ $z-index: 10;
         justify-content: center;
         height: $top-bar-height;
         flex-basis: $nav-item-width;
+        transition: all $transition-normal-easeout;
         &:hover {
           background: var(--hover-top);
           i {

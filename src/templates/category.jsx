@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
-import Layout from '../layout/index';
+import Layout from '../layout';
 import PostList from '../components/postList';
+import './category.scss';
 
-const Index = ({ data }) => {
+const Category = ({ pageContext, data }) => {
   const postEdges = data.allMarkdownRemark.edges;
+  const { category } = pageContext;
   const postList = [];
   postEdges.forEach(edge => {
     postList.push({
@@ -21,12 +23,16 @@ const Index = ({ data }) => {
   });
   return (
     <Layout>
+      <h1 className="text-center category-head">{`${category}`}</h1>
       <PostList posts={postList} />
     </Layout>
   );
 };
 
-Index.propTypes = {
+Category.propTypes = {
+  pageContext: PropTypes.shape({
+    category: PropTypes.string.isRequired,
+  }).isRequired,
   data: PropTypes.shape({
     allMarkdownRemark: PropTypes.shape({
       edges: PropTypes.arrayOf(
@@ -51,11 +57,15 @@ Index.propTypes = {
   }).isRequired,
 };
 
-export default Index;
+export default Category;
 
 export const pageQuery = graphql`
-  query IndexQuery {
-    allMarkdownRemark(limit: 2000, sort: { fields: [frontmatter___date], order: DESC }) {
+  query categoryQuery($category: String) {
+    allMarkdownRemark(
+      limit: 2000
+      sort: { fields: [frontmatter___date], order: DESC }
+      filter: { frontmatter: { category: { eq: $category } } }
+    ) {
       edges {
         node {
           fields {

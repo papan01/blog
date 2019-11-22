@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import 'prismjs/themes/prism-tomorrow.css';
 import { graphql } from 'gatsby';
 import Layout from '../layout';
+import './post.scss';
 
 const Post = ({ data }) => {
   const post = data.markdownRemark;
