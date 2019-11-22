@@ -38,6 +38,7 @@ const ThemeToggle = () => {
     theme = localStorage.getItem('theme');
     if (!theme) {
       localStorage.setItem('theme', 'dark');
+      theme = 'dark';
     }
   }
   const [isChecked, toggleChecked] = useState(theme === 'dark');

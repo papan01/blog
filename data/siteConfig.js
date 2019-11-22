@@ -4,7 +4,7 @@ const config = {
   siteTitleAlt: "Papan's Blog", // Alternative site title for SEO.
   siteLogo: 'static/logos/logo.png', // Logo used for SEO and manifest.
   siteUrl: 'https://papan01.github.io', // Domain of your website without pathPrefix.
-  pathPrefix: '/blog-source', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
+  pathPrefix: '/blog', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
   siteDescription: 'Personal blog by Papan. Life and code.', // Website description used for RSS feeds/meta description tag.
   siteRss: '/rss.xml', // Path to the RSS file.
   siteFBAppID: '', // FB Application ID for using app insights
