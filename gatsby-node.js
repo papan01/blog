@@ -45,10 +45,15 @@ exports.createPages = async ({ graphql, actions }) => {
       },
     });
 
-    node.frontmatter.tags.forEach(tag => {
-      tagSet.add(tag);
-    });
-    categorySet.add(node.frontmatter.category);
+    if (node.frontmatter.tags) {
+      node.frontmatter.tags.forEach(tag => {
+        tagSet.add(tag);
+      });
+    }
+
+    if (node.frontmatter.category) {
+      categorySet.add(node.frontmatter.category);
+    }
   });
 
   tagSet.forEach(tag => {

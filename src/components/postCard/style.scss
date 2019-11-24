@@ -1,17 +1,20 @@
 @import "../../layout/style/base/setting";
 @import "../../layout/style/base/breakpoints";
 
+$card-height:250px;
+
 .post-card {
     display: grid;
     margin: $spacing-normal;
     grid-template-columns: 1fr 2fr;
     grid-gap: $relative-spacing-xlarge;
-    max-height: 300px;
+    height: $card-height;
     border-radius: $base-border-radius * 4;
     box-shadow: $spacing-normal 0 $spacing-large var(--black);
     transition: all $transition-faster-easein;
 
     >.post-card-cover {
+        height: $card-height;
         border-top-left-radius: $base-border-radius * 4;
         border-bottom-left-radius: $base-border-radius * 4;
     }

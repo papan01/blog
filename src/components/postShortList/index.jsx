@@ -40,4 +40,4 @@ postShortList.propTypes = {
   ).isRequired,
 };
 
-export default postShortList;
+export default React.memo(postShortList);

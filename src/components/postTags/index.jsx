@@ -7,11 +7,12 @@ import './style.scss';
 const PostTags = ({ tags }) => {
   return (
     <ul className="post-tags">
-      {tags.map(tag => (
-        <li key={tag}>
-          <Link to={`/tags/${_.kebabCase(tag)}`}>{`🏷${tag}`}</Link>
-        </li>
-      ))}
+      {tags &&
+        tags.map(tag => (
+          <li key={tag}>
+            <Link to={`/tags/${_.kebabCase(tag)}`}>{`🏷${tag}`}</Link>
+          </li>
+        ))}
     </ul>
   );
 };

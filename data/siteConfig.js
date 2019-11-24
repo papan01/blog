@@ -13,12 +13,6 @@ const config = {
   postDefaultCategoryID: '', // Default category for posts.
   dateFromFormat: 'YYYY-MM-DD', // Date format used in the frontmatter.
   dateFormat: 'DD/MM/YYYY', // Date format for display.
-  userName: '', // Username to display in the author segment.
-  userEmail: '', // Email used for RSS feed's author segment
-  userTwitter: '', // Optionally renders "Follow Me" in the UserInfo segment.
-  userLocation: '', // User location to display in the author segment.
-  userAvatar: 'https://api.adorable.io/avatars/150/test.png', // User avatar to display in the author segment.
-  userDescription: '', // User description to display in the author segment.
   // Links to social profiles/projects you want to display in the author segment/navigation bar.
   rrssb: [
     {

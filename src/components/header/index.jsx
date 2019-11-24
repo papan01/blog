@@ -58,7 +58,7 @@ const ThemeToggle = () => {
       tabIndex="-1"
       className={toggleStyle}
       onClick={() => toggleChecked(!isChecked)}
-      onKeyDown={() => {
+      onKeyPress={() => {
         toggleChecked(!isChecked);
       }}
     >

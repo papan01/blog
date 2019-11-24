@@ -1,0 +1,30 @@
+@import "../layout/style/base/setting";
+@import "../layout/style/base/breakpoints";
+
+.about {
+    display: flex;
+    flex-direction: column;
+
+    .about-head {
+        display: flex;
+        align-content: center;   
+        .user-avatar {
+            flex-basis: 200px;
+            height: 150px;
+            background: var(--white);
+            border-radius: 50%;
+            margin: 0 $base-spacing-unit;
+
+            @include media-breakpoint-down($breakpoint-sm)
+            {
+                height: 60px;
+            }
+
+        }
+
+        p {
+            display: flex;
+            align-items: center;
+        }
+    }
+}

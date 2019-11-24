@@ -29,7 +29,11 @@ const PostCover = ({ imagePath, wrapClass }) => {
 
 PostCover.propTypes = {
   imagePath: PropTypes.string.isRequired,
-  wrapClass: PropTypes.string.isRequired,
+  wrapClass: PropTypes.string,
+};
+
+PostCover.defaultProps = {
+  wrapClass: '',
 };
 
 export default React.memo(PostCover);
