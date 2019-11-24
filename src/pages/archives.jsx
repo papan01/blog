@@ -1,32 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { graphql } from 'gatsby';
 import Layout from '../layout/index';
-import PostCardList from '../components/postCardList';
+import PostShortList from '../components/postShortList';
 
-const Index = ({ data }) => {
+const Archives = ({ data }) => {
   const { edges } = data.allMarkdownRemark;
-  const postList = [];
-  edges.forEach(edge => {
+  const groupedByYear = _.groupBy(edges, item => {
+    return item.node.frontmatter.date.substring(0, 4);
+  });
+
+  let postList = [];
+  Object.keys(groupedByYear).forEach((year, index) => {
+    const posts = [];
+    Object.values(groupedByYear)[index].forEach(({ node }) => {
+      posts.push({
+        date: node.frontmatter.date,
+        timeToRead: node.timeToRead,
+        slug: node.fields.slug,
+        title: node.frontmatter.title,
+      });
+    });
     postList.push({
-      path: edge.node.fields.slug,
-      tags: edge.node.frontmatter.tags,
-      category: edge.node.frontmatter.category,
-      cover: edge.node.frontmatter.cover,
-      title: edge.node.frontmatter.title,
-      date: edge.node.frontmatter.date,
-      timeToRead: edge.node.timeToRead,
-      excerpt: edge.node.excerpt,
+      fieldValue: year,
+      posts,
     });
   });
+  postList = postList.reverse();
   return (
     <Layout>
-      <PostCardList posts={postList} />
+      <h1 className="text-center">Archives</h1>
+      <hr />
+      <PostShortList data={postList} />
     </Layout>
   );
 };
 
-Index.propTypes = {
+Archives.propTypes = {
   data: PropTypes.shape({
     allMarkdownRemark: PropTypes.shape({
       edges: PropTypes.arrayOf(
@@ -35,13 +46,9 @@ Index.propTypes = {
             fields: PropTypes.shape({
               slug: PropTypes.string.isRequired,
             }).isRequired,
-            excerpt: PropTypes.string.isRequired,
             timeToRead: PropTypes.number.isRequired,
             frontmatter: PropTypes.shape({
               title: PropTypes.string.isRequired,
-              tags: PropTypes.arrayOf(PropTypes.string),
-              cover: PropTypes.string,
-              category: PropTypes.string,
               date: PropTypes.string,
             }).isRequired,
           }).isRequired,
@@ -51,24 +58,20 @@ Index.propTypes = {
   }).isRequired,
 };
 
-export default Index;
+export default Archives;
 
 export const pageQuery = graphql`
-  query IndexQuery {
+  query ArchivesQuery {
     allMarkdownRemark(limit: 2000, sort: { fields: [frontmatter___date], order: DESC }) {
       edges {
         node {
           fields {
             slug
           }
-          excerpt
           timeToRead
           frontmatter {
             title
-            tags
-            cover
             date
-            category
           }
         }
       }

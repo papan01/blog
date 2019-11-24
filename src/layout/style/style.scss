@@ -3,9 +3,14 @@
 @import "./theme/themes";
 @import "./fonts/fonts";
 @import "./layout/layout";
+@import "./base/breakpoints";
 
 html {
   font-size: $font-medium;
+  @include media-breakpoint-down($breakpoint-sm)
+  {
+    font-size: $font-small;
+  }
 }
 
 body {
@@ -52,7 +57,7 @@ a,
 a:link,
 a:visited {
   text-decoration: none;
-  color: var(--text-color);
+  color: var(--link);
 }
 
 *,
@@ -74,10 +79,28 @@ p {
 
 h1 {
   font-size: $header-size-1;
+  font-weight: $font-weight-medium;
+  margin: $base-relative-spacing-unit / 2 0;
+  background: linear-gradient(0.5turn, var(--subtle-h1-1),var(--subtle-h1-2), var(--subtle-h1-3));
+  -webkit-background-clip: text;
+  background-clip : text;
+  -webkit-text-fill-color: transparent;
 }
 
 h2 {
+  display: flex;
   font-size: $header-size-2;
+  margin: $base-relative-spacing-unit / 2 0;
+  color: var(--pink2);
+  
+  &:after {
+    content: " ";
+    background: linear-gradient(to right, var(--pink2), var(--bg1));
+    height: $base-border;
+    width: auto;
+    flex-grow: 1;
+    margin: $base-relative-spacing-unit 0 0 3px;
+  }
 }
 
 h3 {
@@ -100,4 +123,9 @@ h6 {
 [type="radio"] {
   box-sizing: border-box;
   padding: 0;
+}
+
+hr {
+  margin: $base-relative-spacing-unit * 2 0;
+  border: $base-border solid var(--yellow);
 }

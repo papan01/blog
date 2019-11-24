@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import PostCard from '../postCard';
 import './style.scss';
 
-const PostList = ({ posts }) => {
+const PostCardList = ({ posts }) => {
   return (
     <div className="posts">
       {posts.map(post => (
@@ -13,7 +13,7 @@ const PostList = ({ posts }) => {
   );
 };
 
-PostList.propTypes = {
+PostCardList.propTypes = {
   posts: PropTypes.arrayOf(
     PropTypes.shape({
       path: PropTypes.string,
@@ -28,4 +28,4 @@ PostList.propTypes = {
   ).isRequired,
 };
 
-export default React.memo(PostList);
+export default React.memo(PostCardList);

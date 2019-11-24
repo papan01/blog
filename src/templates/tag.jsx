@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
 import Layout from '../layout';
-import PostList from '../components/postList';
-import './tag.scss';
+import PostCardList from '../components/postCardList';
 
 const Tag = ({ pageContext, data }) => {
   const postEdges = data.allMarkdownRemark.edges;
@@ -24,7 +23,7 @@ const Tag = ({ pageContext, data }) => {
   return (
     <Layout>
       <h1 className="text-center tag-head">{`Posts About ${tag}`}</h1>
-      <PostList posts={postList} />
+      <PostCardList posts={postList} />
     </Layout>
   );
 };

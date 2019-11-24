@@ -8,7 +8,7 @@
     grid-gap: $relative-spacing-xlarge;
     max-height: 300px;
     border-radius: $base-border-radius * 4;
-    box-shadow: $spacing-normal 0 $spacing-xxlarge var(--black);
+    box-shadow: $spacing-normal 0 $spacing-large var(--black);
     transition: all $transition-faster-easein;
 
     >.post-card-cover {

@@ -6,13 +6,13 @@ import './style.scss';
 
 const PostTags = ({ tags }) => {
   return (
-    <div className="post-tags">
+    <ul className="post-tags">
       {tags.map(tag => (
-        <Link key={tag} to={`/tags/${_.kebabCase(tag)}`}>
-          <span className="post-tag">{`🏷${tag}`}</span>
-        </Link>
+        <li key={tag}>
+          <Link to={`/tags/${_.kebabCase(tag)}`}>{`🏷${tag}`}</Link>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 
