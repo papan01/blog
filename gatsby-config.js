@@ -65,13 +65,8 @@ module.exports = {
         icon: config.siteLogo,
         icons: [
           {
-            src: '/logos/logo-128x128.png',
+            src: '/logos/logo-192x192.png',
             sizes: '128x128',
-            type: 'image/png',
-          },
-          {
-            src: '/logos/logo-256x256.png',
-            sizes: '256x256',
             type: 'image/png',
           },
           {
@@ -111,6 +106,12 @@ module.exports = {
               priority: 0.7,
             };
           }),
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-google-analytics',
+      options: {
+        trackingId: config.siteGATrackingID,
       },
     },
   ],

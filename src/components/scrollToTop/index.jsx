@@ -5,12 +5,6 @@ import './style.scss';
 const ScrollToTop = () => {
   const [scroller, setScroller] = useState(0);
 
-  const handleScroll = () => {
-    if (typeof document !== 'undefined') {
-      setScroller(document.documentElement.scrollTop);
-    }
-  };
-
   const clickToTop = () => {
     if (typeof window !== 'undefined') {
       window.scroll({ top: 0, left: 0, behavior: 'smooth' });
@@ -18,9 +12,16 @@ const ScrollToTop = () => {
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+      const handleScroll = () => {
+        setScroller(document.documentElement.scrollTop);
+      };
       window.addEventListener('scroll', handleScroll);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
     }
+    return () => {};
   }, []);
 
   const toTopClass = classNames({

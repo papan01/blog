@@ -7,12 +7,11 @@ const config = {
   pathPrefix: '/blog', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
   siteDescription: 'Personal blog by Papan. Life and code.', // Website description used for RSS feeds/meta description tag.
   siteRss: '/rss.xml', // Path to the RSS file.
-  siteFBAppID: '', // FB Application ID for using app insights
-  siteGATrackingID: '', // Tracking code ID for google analytics.
+  siteFBAppID: '464217807633356', // FB Application ID for using app insights
+  siteGATrackingID: 'UA-153303709-1', // Tracking code ID for google analytics.
   disqusShortname: '', // Disqus shortname.
-  postDefaultCategoryID: '', // Default category for posts.
   dateFromFormat: 'YYYY-MM-DD', // Date format used in the frontmatter.
-  dateFormat: 'DD/MM/YYYY', // Date format for display.
+  twitterUserName: '',
   // Links to social profiles/projects you want to display in the author segment/navigation bar.
   rrssb: [
     {

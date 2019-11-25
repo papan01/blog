@@ -18,7 +18,11 @@ const PostTags = ({ tags }) => {
 };
 
 PostTags.propTypes = {
-  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string),
+};
+
+PostTags.defaultProps = {
+  tags: null,
 };
 
 export default React.memo(PostTags);
