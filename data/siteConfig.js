@@ -2,7 +2,7 @@ const config = {
   siteTitle: "Papan's Blog", // Site title.
   siteTitleShort: "Papan's Blog", // Short site title for homescreen (PWA). Preferably should be under 12 characters to prevent truncation.
   siteTitleAlt: "Papan's Blog", // Alternative site title for SEO.
-  siteLogo: '/logos/logo.png', // Logo used for SEO and manifest.
+  siteLogo: 'static/logos/logo.png', // Logo used for SEO and manifest.
   siteUrl: 'https://papan01.github.io', // Domain of your website without pathPrefix.
   pathPrefix: '/blog', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
   siteDescription: 'Personal blog by Papan. Life and code.', // Website description used for RSS feeds/meta description tag.
