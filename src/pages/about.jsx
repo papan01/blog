@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../layout/index';
+import Layout from '../layout';
 import PostCover from '../components/postCover';
 import './about.scss';
 

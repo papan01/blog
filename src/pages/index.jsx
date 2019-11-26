@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
-import Layout from '../layout/index';
+import Layout from '../layout';
 import PostCardList from '../components/postCardList';
 
 const Index = ({ data }) => {

@@ -11,9 +11,11 @@ const PostText = ({ data, wrapClass, children }) => {
         <h3 className="post-title">{data.title}</h3>
       </Link>
       <div className="post-subtitle">
-        <Link to={`/categories/${_.kebabCase(data.category)}`}>
-          <span className="post-category">{data.category}</span>
-        </Link>
+        {data.category && (
+          <Link to={`/categories/${_.kebabCase(data.category)}`}>
+            <span className="post-category">{data.category}</span>
+          </Link>
+        )}
         <span>
           <i className="fas fa-calendar-alt" style={{ marginRight: '4px' }} />
           {data.date}
