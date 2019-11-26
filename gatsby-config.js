@@ -3,15 +3,19 @@ const config = require('./data/siteConfig');
 module.exports = {
   pathPrefix: config.pathPrefix === '' ? '/' : config.pathPrefix,
   siteMetadata: {
-    siteUrl: `${config.siteUrl}`,
-    rssMetadata: {
-      site_url: config.siteUrl,
-      feed_url: config.siteUrl + config.pathPrefix + config.siteRss,
-      title: config.siteTitle,
-      description: config.siteDescription,
-      image_url: config.siteUrl + config.pathPrefix + config.siteLogo,
-      copyright: config.copyright,
-    },
+    author: config.author,
+    siteUrl: config.siteUrl + config.pathPrefix,
+    siteLanguage: config.siteLanguage,
+    siteTitleAlt: config.siteTitleAlt,
+    title: config.siteTitle,
+    description: config.siteDescription,
+    postImagePath: config.siteUrl + config.pathPrefix + config.imagesPath,
+    image: config.siteUrl + config.pathPrefix + config.siteLogo,
+    datePublished: config.datePublished,
+    copyrightYear: config.copyrightYear,
+    twitterUsername: config.twitterUserName,
+    fbAppId: config.siteFBAppID,
+    feed_url: config.siteUrl + config.pathPrefix + config.siteRss,
   },
   plugins: [
     `gatsby-plugin-sass`,
@@ -66,7 +70,7 @@ module.exports = {
         icons: [
           {
             src: '/logos/logo-192x192.png',
-            sizes: '128x128',
+            sizes: '192x192',
             type: 'image/png',
           },
           {

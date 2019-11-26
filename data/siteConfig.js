@@ -1,17 +1,22 @@
 const config = {
-  siteTitle: "Papan's Blog", // Site title.
-  siteTitleShort: "Papan's Blog", // Short site title for homescreen (PWA). Preferably should be under 12 characters to prevent truncation.
-  siteTitleAlt: "Papan's Blog", // Alternative site title for SEO.
+  author: 'Papan01',
+  siteTitle: "Papan01's Blog", // Site title.
+  siteTitleShort: "Papan01's Blog", // Short site title for homescreen (PWA). Preferably should be under 12 characters to prevent truncation.
+  siteTitleAlt: 'Papan01 OverSoftware', // Alternative site title for SEO.
+  siteLanguage: 'zh-tw',
+  siteDescription: 'Personal blog by Papan. Life and code.', // Website description used for RSS feeds/meta description tag.
   siteLogo: 'static/logos/logo.png', // Logo used for SEO and manifest.
+  imagesPath: '/images', // post image for SEO
   siteUrl: 'https://papan01.github.io', // Domain of your website without pathPrefix.
   pathPrefix: '/blog', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
-  siteDescription: 'Personal blog by Papan. Life and code.', // Website description used for RSS feeds/meta description tag.
   siteRss: '/rss.xml', // Path to the RSS file.
   siteFBAppID: '464217807633356', // FB Application ID for using app insights
   siteGATrackingID: 'UA-153303709-1', // Tracking code ID for google analytics.
   disqusShortname: '', // Disqus shortname.
-  dateFromFormat: 'YYYY-MM-DD', // Date format used in the frontmatter.
-  twitterUserName: '',
+  twitterUserName: '', // twitter creator for SEO
+  datePublished: '2019-11-26',
+  copyrightYear: '2019',
+  copyright: 'Copyright © 2019. Papan',
   // Links to social profiles/projects you want to display in the author segment/navigation bar.
   rrssb: [
     {
@@ -52,7 +57,6 @@ const config = {
       iconClassName: 'fa fa-address-card',
     },
   ],
-  copyright: 'Copyright © 2019. Papan',
 };
 
 // Make sure pathPrefix is empty if not needed
