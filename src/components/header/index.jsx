@@ -55,6 +55,7 @@ const ThemeToggle = () => {
     <div
       role="checkbox"
       aria-checked={isChecked}
+      aria-label="theme-toggle"
       tabIndex="-1"
       className={toggleStyle}
       onClick={() => toggleChecked(!isChecked)}
@@ -107,7 +108,12 @@ const Header = () => {
         <NavList navStyle={navClass} closeMenu={toggleOpenMenu} />
         <ThemeToggle />
         <div className="mobile-actions">
-          <button type="button" className="menu-button" onClick={() => toggleOpenMenu(!isOpenMenu)}>
+          <button
+            type="button"
+            className="menu-button"
+            aria-label="mobile-menu"
+            onClick={() => toggleOpenMenu(!isOpenMenu)}
+          >
             <i className={mobileIcon} />
           </button>
         </div>

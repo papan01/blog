@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { graphql } from 'gatsby';
 import Layout from '../layout';
+import SEO from '../components/SEO';
 import PostShortList from '../components/postShortList';
 
 const Archives = ({ data }) => {
@@ -30,6 +31,7 @@ const Archives = ({ data }) => {
   postList = postList.reverse();
   return (
     <Layout>
+      <SEO title="Archives" path="/archives" date={postList[0].posts[0].date} />
       <h1 className="text-center">Archives</h1>
       <hr />
       <PostShortList data={postList} />

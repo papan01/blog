@@ -30,7 +30,14 @@ const ScrollToTop = () => {
   });
 
   return (
-    <div role="button" tabIndex="-1" className={toTopClass} onClick={clickToTop} onKeyPress={clickToTop}>
+    <div
+      role="button"
+      tabIndex="-1"
+      className={toTopClass}
+      onClick={clickToTop}
+      onKeyPress={clickToTop}
+      aria-label="scroll to top"
+    >
       <i className="fas fa-arrow-up" />
     </div>
   );

@@ -8,11 +8,11 @@ const Footer = () => {
     <footer className="footer container">
       <div className="links">
         {config.rrssb.map(item => (
-          <a href={item.url} key={item.id}>
+          <a href={item.url} key={item.label} aria-label={item.label}>
             <i className={`${item.iconClassName} fa-2x`} />
           </a>
         ))}
-        <Link to={config.siteRss}>
+        <Link to={config.siteRss} aria-label="rss">
           <i className="fa fa-rss fa-2x" />
         </Link>
       </div>

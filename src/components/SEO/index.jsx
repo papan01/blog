@@ -39,7 +39,7 @@ const SEO = ({ title, description, image, path, article, date }) => {
     copyrightYear,
     twitterUsername,
     fbAppId,
-  } = site;
+  } = site.siteMetadata;
 
   const seo = {
     url: path ? `${siteUrl}${path}` : siteUrl,
@@ -153,9 +153,9 @@ const SEO = ({ title, description, image, path, article, date }) => {
   };
 
   return (
-    <Helmet>
-      <title>{seo.title}</title>
-      <link rel="canonical" href={`${seo.path}`} />
+    <Helmet title={seo.title}>
+      <html lang={siteLanguage} />
+      <link rel="canonical" href={`${seo.url}`} />
       <meta name="description" content={seo.description} />
       <meta name="image" content={seo.image} />
       {/* Schema.org */}

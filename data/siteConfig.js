@@ -16,26 +16,25 @@ const config = {
   twitterUserName: '', // twitter creator for SEO
   datePublished: '2019-11-26',
   copyrightYear: '2019',
-  copyright: 'Copyright © 2019. Papan',
   // Links to social profiles/projects you want to display in the author segment/navigation bar.
   rrssb: [
     {
-      id: 'rsb1',
+      label: 'github',
       url: 'https://github.com/papan01',
       iconClassName: 'fab fa-github',
     },
     {
-      id: 'rsb2',
+      label: 'mail',
       url: 'mailto: navy90517@gmail.com',
       iconClassName: 'fa fa-envelope',
     },
     {
-      id: 'rsb3',
+      label: 'facebbok',
       url: 'https://www.facebook.com/louis.peng.58?ref=bookmarks',
       iconClassName: 'fab fa-facebook',
     },
     {
-      id: 'rsb4',
+      label: 'instagram',
       url: 'https://www.instagram.com/n_louis_peng/?hl=zh-tw',
       iconClassName: 'fab fa-instagram',
     },
@@ -58,6 +57,7 @@ const config = {
     },
   ],
 };
+config.copyright = `Copyright © ${config.copyrightYear}. Papan`;
 
 // Make sure pathPrefix is empty if not needed
 if (config.pathPrefix === '/') {

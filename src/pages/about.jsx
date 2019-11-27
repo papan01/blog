@@ -1,11 +1,13 @@
 import React from 'react';
 import Layout from '../layout';
 import PostCover from '../components/postCover';
+import SEO from '../components/SEO';
 import './about.scss';
 
 const About = () => {
   return (
     <Layout>
+      <SEO title="About" path="/about" date="2019-11-27" />
       <article className="about">
         <section className="about-head">
           <PostCover imagePath="louis.png" wrapClass="user-avatar" />

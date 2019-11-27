@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { graphql, Link } from 'gatsby';
 import _ from 'lodash';
 import Layout from '../layout/index';
+import SEO from '../components/SEO';
 import PostShortList from '../components/postShortList';
 import './categories.scss';
 
 const Categories = ({ data }) => {
   const { group } = data.allMarkdownRemark;
   const categoryList = [];
+  let newest = new Date('1900-01-01');
   group.forEach(category => {
     const posts = [];
     category.edges.forEach(({ node }) => {
@@ -18,6 +20,8 @@ const Categories = ({ data }) => {
         slug: node.fields.slug,
         title: node.frontmatter.title,
       });
+      const date = new Date(node.frontmatter.date);
+      if (date > newest) newest = date;
     });
 
     categoryList.push({
@@ -27,6 +31,7 @@ const Categories = ({ data }) => {
   });
   return (
     <Layout>
+      <SEO title="Categories" path="/categories" date={newest.toISOString()} />
       <h1 className="text-center">Categories</h1>
       <ul className="categories-head">
         {group.map(category => (

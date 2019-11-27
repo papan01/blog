@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
 import Layout from '../layout';
 import PostCardList from '../components/postCardList';
+import SEO from '../components/SEO';
 
 const Index = ({ data }) => {
   const { edges } = data.allMarkdownRemark;
@@ -21,6 +22,7 @@ const Index = ({ data }) => {
   });
   return (
     <Layout>
+      <SEO date="2019-11-27" />
       <PostCardList posts={postList} />
     </Layout>
   );
