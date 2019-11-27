@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
+import _ from 'lodash';
 import Layout from '../layout';
+import SEO from '../components/SEO';
 import PostCardList from '../components/postCardList';
 
 const Category = ({ pageContext, data }) => {
@@ -22,6 +24,7 @@ const Category = ({ pageContext, data }) => {
   });
   return (
     <Layout>
+      <SEO title={`Posts about catrgory-${category}`} path={`/categories/${_.kebabCase(category)}`} />
       <h1 className="text-center category-head">{`${category}`}</h1>
       <PostCardList posts={postList} />
     </Layout>

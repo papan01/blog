@@ -10,7 +10,6 @@ import './categories.scss';
 const Categories = ({ data }) => {
   const { group } = data.allMarkdownRemark;
   const categoryList = [];
-  let newest = new Date('1900-01-01');
   group.forEach(category => {
     const posts = [];
     category.edges.forEach(({ node }) => {
@@ -20,8 +19,6 @@ const Categories = ({ data }) => {
         slug: node.fields.slug,
         title: node.frontmatter.title,
       });
-      const date = new Date(node.frontmatter.date);
-      if (date > newest) newest = date;
     });
 
     categoryList.push({
@@ -31,7 +28,7 @@ const Categories = ({ data }) => {
   });
   return (
     <Layout>
-      <SEO title="Categories" path="/categories" date={newest.toISOString()} />
+      <SEO title="Categories" path="/categories" />
       <h1 className="text-center">Categories</h1>
       <ul className="categories-head">
         {group.map(category => (

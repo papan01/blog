@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
+import _ from 'lodash';
 import Layout from '../layout';
+import SEO from '../components/SEO';
 import PostCardList from '../components/postCardList';
 
 const Tag = ({ pageContext, data }) => {
@@ -22,6 +24,7 @@ const Tag = ({ pageContext, data }) => {
   });
   return (
     <Layout>
+      <SEO title={`Posts about tag-${tag}`} path={`/tags/${_.kebabCase(tag)}`} />
       <h1 className="text-center tag-head">{`Posts About ${tag}`}</h1>
       <PostCardList posts={postList} />
     </Layout>

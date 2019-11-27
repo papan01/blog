@@ -31,7 +31,7 @@ const Archives = ({ data }) => {
   postList = postList.reverse();
   return (
     <Layout>
-      <SEO title="Archives" path="/archives" date={postList[0].posts[0].date} />
+      <SEO title="Archives" path="/archives" />
       <h1 className="text-center">Archives</h1>
       <hr />
       <PostShortList data={postList} />

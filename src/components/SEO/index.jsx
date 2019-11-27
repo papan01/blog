@@ -24,7 +24,7 @@ const query = graphql`
   }
 `;
 
-const SEO = ({ title, description, image, path, article, date }) => {
+const SEO = ({ title, description, image, path, articleDate }) => {
   const { site } = useStaticQuery(query);
   const {
     author,
@@ -40,6 +40,8 @@ const SEO = ({ title, description, image, path, article, date }) => {
     twitterUsername,
     fbAppId,
   } = site.siteMetadata;
+
+  const date = new Date(articleDate).toISOString();
 
   const seo = {
     url: path ? `${siteUrl}${path}` : siteUrl,
@@ -74,8 +76,8 @@ const SEO = ({ title, description, image, path, article, date }) => {
       '@type': 'Person',
       name: author,
     },
-    datePublished,
-    dateModified: date,
+    datePublished: new Date(datePublished).toISOString(),
+    dateModified: new Date(datePublished).toISOString(),
     image: {
       '@type': 'ImageObject',
       url: seo.image,
@@ -95,7 +97,7 @@ const SEO = ({ title, description, image, path, article, date }) => {
 
   let schemaArticle = null;
 
-  if (article) {
+  if (articleDate) {
     schemaArticle = {
       '@context': 'http://schema.org',
       '@type': 'Article',
@@ -159,15 +161,17 @@ const SEO = ({ title, description, image, path, article, date }) => {
       <meta name="description" content={seo.description} />
       <meta name="image" content={seo.image} />
       {/* Schema.org */}
-      {!article && <script type="application/ld+json">{JSON.stringify(schemaOrgWebPage)}</script>}
-      {article && <script type="application/ld+json">{JSON.stringify(schemaArticle)}</script>}
+      {!articleDate && <script type="application/ld+json">{JSON.stringify(schemaOrgWebPage)}</script>}
+      {articleDate && <script type="application/ld+json">{JSON.stringify(schemaArticle)}</script>}
       <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
       {/* OpenGraph */}
-      <meta property="og:url" content={seo.path} />
-      {article && <meta property="og:type" content="article" />}
+      <meta property="og:site_name" content={defaultTitle} />
+      <meta property="og:url" content={seo.url} />
+      {articleDate && <meta property="og:type" content="article" />}
       <meta property="og:title" content={seo.title} />
       <meta property="og:description" content={seo.description} />
       <meta property="og:image" content={seo.image} />
+      <meta property="og:image:alt" content={seo.description} />
       {/* fb app id */}
       <meta property="fb:app_id" content={fbAppId || ''} />
       {/* Twitter Card */}
@@ -176,6 +180,7 @@ const SEO = ({ title, description, image, path, article, date }) => {
       <meta name="twitter:title" content={seo.title} />
       <meta name="twitter:description" content={seo.description} />
       <meta name="twitter:image" content={seo.image} />
+      <meta name="twitter:image:alt" content={seo.description} />
     </Helmet>
   );
 };
@@ -185,8 +190,7 @@ SEO.propTypes = {
   description: PropTypes.string,
   image: PropTypes.string,
   path: PropTypes.string,
-  article: PropTypes.bool,
-  date: PropTypes.string.isRequired,
+  articleDate: PropTypes.string,
 };
 
 SEO.defaultProps = {
@@ -194,7 +198,7 @@ SEO.defaultProps = {
   description: null,
   image: null,
   path: null,
-  article: false,
+  articleDate: null,
 };
 
 export default React.memo(SEO);

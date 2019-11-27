@@ -19,8 +19,14 @@ export const query = graphql`
   query($slug: String!) {
     markdownRemark(fields: { slug: { eq: $slug } }) {
       html
+      excerpt
+      timeToRead
       frontmatter {
         title
+        tags
+        cover
+        date
+        category
       }
     }
   }
@@ -32,6 +38,10 @@ Post.propTypes = {
       html: PropTypes.string.isRequired,
       frontmatter: PropTypes.shape({
         title: PropTypes.string.isRequired,
+        tags: PropTypes.arrayOf(PropTypes.string),
+        cover: PropTypes.string,
+        date: PropTypes.string,
+        category: PropTypes.string,
       }).isRequired,
     }).isRequired,
   }).isRequired,

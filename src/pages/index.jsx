@@ -22,7 +22,7 @@ const Index = ({ data }) => {
   });
   return (
     <Layout>
-      <SEO date="2019-11-27" />
+      <SEO />
       <PostCardList posts={postList} />
     </Layout>
   );

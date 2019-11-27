@@ -1,6 +1,6 @@
 ---
 title: "Big Test"
-cover: "5.jpg"
+cover: "5.webp"
 category: "moar"
 date: "2018-03-01"
 tags:
