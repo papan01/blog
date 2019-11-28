@@ -1,6 +1,6 @@
 @import "../../layout/style/base/setting";
 @import "../../layout/style/base/breakpoints";
-
+@import "../../layout/style/base/mixin";
 $card-height:250px;
 
 .post-card {
@@ -19,6 +19,30 @@ $card-height:250px;
         border-bottom-left-radius: $base-border-radius * 4;
     }
 
+    .post-card-text {
+        display: flex;
+        flex-direction: column;
+        padding: $spacing-xsmall;
+    
+        .post-title {
+            margin-block-end: 0;
+            margin-block-start: 0;
+            transition: all $transition-slower-ease;
+    
+            &:hover{
+                background: linear-gradient(0.25turn, var(--subtle-h1-1),var(--subtle-h1-2), var(--subtle-h1-3));
+                -webkit-background-clip: text;
+                background-clip : text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+    
+        .post-subtitle {
+            margin: $spacing-small 0;
+            @include postCategory()
+        }
+    }
+
     &:hover {
         box-shadow: $spacing-normal 0 $spacing-xxlarge var(--post-card-hover);
         transform: translate(0,-$spacing-normal); 
@@ -32,3 +56,4 @@ $card-height:250px;
         }
     }
 }
+

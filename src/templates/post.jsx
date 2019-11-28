@@ -3,14 +3,24 @@ import PropTypes from 'prop-types';
 import 'prismjs/themes/prism-tomorrow.css';
 import { graphql } from 'gatsby';
 import Layout from '../layout';
+import PostText from '../components/postText';
+import PostTags from '../components/postTags';
+import SEO from '../components/SEO';
 import './post.scss';
 
-const Post = ({ data }) => {
+const Post = ({ data, pageContext }) => {
   const post = data.markdownRemark;
+  const { html, excerpt, timeToRead, frontmatter } = post;
+  const { title, tags, cover, date, category } = frontmatter;
+  const { slug } = pageContext;
   return (
     <Layout>
-      <h1>{post.frontmatter.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: post.html }} />
+      <SEO title={title} description={excerpt} image={cover} path={slug} articleDate={date} />
+      <PostText category={category} date={date} timeToRead={timeToRead} wrapClass="post-head" head={title}>
+        <PostTags tags={tags} />
+      </PostText>
+      <hr />
+      <div className="post-content" dangerouslySetInnerHTML={{ __html: html }} />
     </Layout>
   );
 };
@@ -36,6 +46,8 @@ Post.propTypes = {
   data: PropTypes.shape({
     markdownRemark: PropTypes.shape({
       html: PropTypes.string.isRequired,
+      excerpt: PropTypes.string.isRequired,
+      timeToRead: PropTypes.number.isRequired,
       frontmatter: PropTypes.shape({
         title: PropTypes.string.isRequired,
         tags: PropTypes.arrayOf(PropTypes.string),
@@ -44,6 +56,9 @@ Post.propTypes = {
         category: PropTypes.string,
       }).isRequired,
     }).isRequired,
+  }).isRequired,
+  pageContext: PropTypes.shape({
+    slug: PropTypes.string.isRequired,
   }).isRequired,
 };
 

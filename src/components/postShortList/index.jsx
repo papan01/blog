@@ -6,11 +6,11 @@ import './style.scss';
 const postShortList = ({ data }) => {
   return (
     <article>
-      {data.map(category => (
-        <section key={category.fieldValue}>
-          <h2>{category.fieldValue}</h2>
+      {data.map(field => (
+        <section key={field.fieldValue}>
+          <h2>{field.fieldValue}</h2>
           <ul className="post-short-list">
-            {category.posts.map(post => (
+            {field.posts.map(post => (
               <li key={post.title}>
                 <p>{post.date}</p>
                 <p>{` ☕️ ${post.timeToRead} min read`}</p>

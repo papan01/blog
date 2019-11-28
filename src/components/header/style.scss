@@ -150,7 +150,7 @@ $z-index: 10;
       .theme-toggle-thumb {
         -webkit-transform: translateX(26px);
         transform: translateX(26px);
-        box-shadow: 0 0 1px 2px var(--yellow);
+        box-shadow: 0 0 1px 2px var(--yellow1);
       }
 
       .theme-toggle-track-dark {
@@ -185,7 +185,7 @@ $z-index: 10;
     &:focus {
       outline: 0;
       .theme-toggle-thumb {
-        box-shadow: 0 0 2px 3px var(--pink);
+        box-shadow: 0 0 2px 3px var(--pink1);
       }
     }
   }

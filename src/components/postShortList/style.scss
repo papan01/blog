@@ -4,17 +4,17 @@
     li{
         display: flex;
         font-size: $base-relative-font-size * 1.4;
-        border-left: $base-border / 3 solid var(--yellow);
+        border-left: $base-border / 3 solid var(--yellow1);
         transition: background-color $transition-faster-easeinout;
 
         &:hover {
             background-color: var(--bg2);
             p:nth-child(1) {
-                border-left: $base-border solid var(--yellow);
+                border-left: $base-border solid var(--yellow1);
             }
 
             >a {
-                color: var(--pink);
+                color: var(--pink1);
             }
         }
 

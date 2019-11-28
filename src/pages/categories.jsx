@@ -33,7 +33,7 @@ const Categories = ({ data }) => {
       <ul className="categories-head">
         {group.map(category => (
           <li key={category.fieldValue}>
-            <Link to={`/categories/${_.kebabCase(category.fieldValue)}`}>
+            <Link to={`/categories/${_.kebabCase(category.fieldValue)}`} className="post-category">
               {`${category.fieldValue} (${category.totalCount})`}
             </Link>
           </li>

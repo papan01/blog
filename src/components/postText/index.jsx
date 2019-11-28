@@ -2,25 +2,22 @@ import React from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Link } from 'gatsby';
-import './style.scss';
 
-const PostText = ({ data, wrapClass, children }) => {
+const PostText = ({ head, category, date, timeToRead, wrapClass, children }) => {
   return (
     <div className={wrapClass}>
-      <Link to={data.path}>
-        <h3 className="post-title">{data.title}</h3>
-      </Link>
+      <h3 className="post-title">{head}</h3>
       <div className="post-subtitle">
-        {data.category && (
-          <Link to={`/categories/${_.kebabCase(data.category)}`}>
-            <span className="post-category">{data.category}</span>
+        {category && (
+          <Link to={`/categories/${_.kebabCase(category)}`}>
+            <span className="post-category">{category}</span>
           </Link>
         )}
         <span>
           <i className="fas fa-calendar-alt" style={{ marginRight: '4px' }} />
-          {data.date}
+          {date}
         </span>
-        <span>{` • ${data.timeToRead} min read`}</span>
+        <span>{` • ${timeToRead} min read`}</span>
       </div>
       {children}
     </div>
@@ -28,13 +25,10 @@ const PostText = ({ data, wrapClass, children }) => {
 };
 
 PostText.propTypes = {
-  data: PropTypes.shape({
-    path: PropTypes.string,
-    title: PropTypes.string,
-    category: PropTypes.string,
-    date: PropTypes.string,
-    timeToRead: PropTypes.number,
-  }).isRequired,
+  head: PropTypes.node.isRequired,
+  category: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  timeToRead: PropTypes.number.isRequired,
   wrapClass: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 };

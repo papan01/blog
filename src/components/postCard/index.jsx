@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'gatsby';
 import PostCover from '../postCover';
 import PostText from '../postText';
 import PostTags from '../postTags';
@@ -9,7 +10,13 @@ const PostCard = ({ data }) => {
   return (
     <article className="post-card">
       <PostCover imagePath={data.cover} wrapClass="post-card-cover" />
-      <PostText data={data} wrapClass="post-card-text">
+      <PostText
+        category={data.category}
+        date={data.date}
+        timeToRead={data.timeToRead}
+        wrapClass="post-card-text"
+        head={<Link to={data.path}>{data.title}</Link>}
+      >
         <p>{data.excerpt}</p>
         <PostTags tags={data.tags} />
       </PostText>
