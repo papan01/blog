@@ -24,7 +24,7 @@ const PostCover = ({ imagePath, wrapClass }) => {
   const image = data.allFile.edges.find(n => {
     return n.node.relativePath.includes(imagePath);
   });
-  return image ? <Img fluid={image.node.childImageSharp.fluid} className={wrapClass} /> : null;
+  return image ? <Img fluid={image.node.childImageSharp.fluid} className={wrapClass} loading="lazy" /> : null;
 };
 
 PostCover.propTypes = {

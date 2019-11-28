@@ -4,18 +4,18 @@ module.exports = {
   pathPrefix: config.pathPrefix === '' ? '/' : config.pathPrefix,
   siteMetadata: {
     author: config.author,
-    siteUrl: config.siteUrl + config.pathPrefix,
+    siteUrl: `${config.siteUrl}${config.pathPrefix}`,
     siteLanguage: config.siteLanguage,
     siteTitleAlt: config.siteTitleAlt,
     title: config.siteTitle,
     description: config.siteDescription,
-    postImagePath: config.siteUrl + config.pathPrefix + config.imagesPath,
-    image: config.siteUrl + config.pathPrefix + config.siteLogo,
+    postImagePath: `${config.siteUrl}${config.pathPrefix}${config.imagesPath}`,
+    image: `${config.siteUrl}${config.pathPrefix}/${config.siteLogo}`,
     datePublished: config.datePublished,
     copyrightYear: config.copyrightYear,
     twitterUsername: config.twitterUserName,
     fbAppId: config.siteFBAppID,
-    feed_url: config.siteUrl + config.pathPrefix + config.siteRss,
+    copyright: config.copyright,
   },
   plugins: [
     `gatsby-plugin-sass`,
@@ -69,12 +69,12 @@ module.exports = {
         icon: config.siteLogo,
         icons: [
           {
-            src: '/logos/logo-192x192.png',
+            src: 'static/logos/logo-192x192.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: '/logos/logo-512x512.png',
+            src: 'static/logos/logo-512x512.png',
             sizes: '512x512',
             type: 'image/png',
           },
@@ -116,6 +116,70 @@ module.exports = {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
         trackingId: config.siteGATrackingID,
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-feed',
+      options: {
+        query: `
+        {
+          site {
+            siteMetadata {
+              siteUrl
+              title
+              description
+              site_url: siteUrl
+              copyright
+              siteLanguage
+              language: siteLanguage
+              datePublished
+              pubDate: datePublished
+            }
+          }
+        }
+      `,
+        feeds: [
+          {
+            serialize: ({ query: { site, allMarkdownRemark } }) => {
+              return allMarkdownRemark.edges.map(edge => {
+                return {
+                  ...edge.node.frontmatter,
+                  date: edge.node.frontmatter.date,
+                  categories: edge.node.frontmatter.tags,
+                  description: edge.node.excerpt,
+                  url: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                  guid: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                  custom_elements: [{ 'content:encoded': edge.node.html }, { author: config.author }],
+                };
+              });
+            },
+            query: `
+            {
+              allMarkdownRemark(
+                limit: 1000,
+                sort: { order: DESC, fields: [frontmatter___date] },
+              ) {
+                edges {
+                  node {
+                    excerpt
+                    html
+                    fields { slug }
+                    frontmatter {
+                      title
+                      date
+                      cover
+                      category
+                      tags
+                    }
+                  }
+                }
+              }
+            }
+          `,
+            output: config.siteRss,
+            title: config.siteTitle,
+          },
+        ],
       },
     },
   ],

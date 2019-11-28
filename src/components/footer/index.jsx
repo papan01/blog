@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'gatsby';
 import config from '../../../data/siteConfig';
 import './style.scss';
 
@@ -8,13 +7,13 @@ const Footer = () => {
     <footer className="footer container">
       <div className="links">
         {config.rrssb.map(item => (
-          <a href={item.url} key={item.label} aria-label={item.label}>
+          <a href={item.url} key={item.label} target="_blank" rel="noopener noreferrer" aria-label={item.label}>
             <i className={`${item.iconClassName} fa-2x`} />
           </a>
         ))}
-        <Link to={config.siteRss} aria-label="rss">
+        <a href={`${config.pathPrefix}${config.siteRss}`} target="_blank" rel="noopener noreferrer" aria-label="rss">
           <i className="fa fa-rss fa-2x" />
-        </Link>
+        </a>
       </div>
       <p>{config.copyright}</p>
     </footer>

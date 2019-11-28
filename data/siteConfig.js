@@ -1,11 +1,11 @@
 const config = {
-  author: 'Papan01',
+  author: 'Papan01', // Site owner
   siteTitle: "Papan01's Blog", // Site title.
   siteTitleShort: "Papan01's Blog", // Short site title for homescreen (PWA). Preferably should be under 12 characters to prevent truncation.
   siteTitleAlt: 'Papan01 OverSoftware', // Alternative site title for SEO.
-  siteLanguage: 'zh-tw',
-  siteDescription: 'Personal blog by Papan. Life and code.', // Website description used for RSS feeds/meta description tag.
-  siteLogo: 'static/logos/logo.png', // Logo used for SEO and manifest.
+  siteLanguage: 'zh-tw', // Site language.
+  siteDescription: 'Personal blog by Papan01. Life and code.', // Website description used for RSS feeds/meta description tag.
+  siteLogo: 'static/favicon.png', // Logo used for SEO and manifest.
   imagesPath: '/images', // post image for SEO
   siteUrl: 'https://papan01.github.io', // Domain of your website without pathPrefix.
   pathPrefix: '/blog', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
