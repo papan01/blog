@@ -12,7 +12,7 @@ const config = {
   siteRss: '/rss.xml', // Path to the RSS file.
   siteFBAppID: '464217807633356', // FB Application ID for using app insights
   siteGATrackingID: 'UA-153303709-1', // Tracking code ID for google analytics.
-  disqusShortname: '', // Disqus shortname.
+  disqusShortname: 'papan01-github-io-blog', // Disqus shortname.
   twitterUserName: '', // twitter creator for SEO
   datePublished: '2019-11-10',
   copyrightYear: '2019',

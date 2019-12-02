@@ -69,12 +69,12 @@ module.exports = {
         icon: config.siteLogo,
         icons: [
           {
-            src: 'static/logos/logo-192x192.png',
+            src: '/logos/logo-192x192.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: 'static/logos/logo-512x512.png',
+            src: '/logos/logo-512x512.png',
             sizes: '512x512',
             type: 'image/png',
           },
@@ -180,6 +180,12 @@ module.exports = {
             title: config.siteTitle,
           },
         ],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-disqus`,
+      options: {
+        shortname: config.disqusShortname,
       },
     },
   ],

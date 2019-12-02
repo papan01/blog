@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Disqus } from 'gatsby-plugin-disqus';
 import 'prismjs/themes/prism-tomorrow.css';
 import { graphql } from 'gatsby';
 import Layout from '../layout';
@@ -7,12 +8,18 @@ import PostText from '../components/postText';
 import PostTags from '../components/postTags';
 import SEO from '../components/SEO';
 import './post.scss';
+import config from '../../data/siteConfig';
 
 const Post = ({ data, pageContext }) => {
   const post = data.markdownRemark;
   const { html, excerpt, timeToRead, frontmatter } = post;
   const { title, tags, cover, date, category } = frontmatter;
   const { slug } = pageContext;
+  const disqusConfig = {
+    url: `${config.siteUrl + config.pathPrefix + slug}`,
+    identifier: title,
+    title,
+  };
   return (
     <Layout>
       <SEO title={title} description={excerpt} image={cover} path={slug} articleDate={date} />
@@ -21,6 +28,7 @@ const Post = ({ data, pageContext }) => {
       </PostText>
       <hr />
       <div className="post-content" dangerouslySetInnerHTML={{ __html: html }} />
+      <Disqus config={disqusConfig} />
     </Layout>
   );
 };
