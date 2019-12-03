@@ -1,7 +1,7 @@
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
   <a href="https://papan01.github.io/blog/">
-    <img alt="Papan" src="./static/logos/logo.png" width="60" />
+    <img alt="Papan" src="./static/favicons/logo.png" width="60" />
   </a>
 </p>
 <h1 align="center">
