@@ -5,11 +5,11 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "build": "gatsby build",
+    "build": "gatsby build --prefix-paths",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "start": "npm run develop",
-    "serve": "gatsby serve",
+    "serve": "gatsby serve --prefix-paths",
     "lint": "eslint --ext .jsx,.js src/",
     "lint:fix": "npm run lint -- --fix",
     "deploy": "gatsby build --prefix-paths && gh-pages -d public",

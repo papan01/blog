@@ -2,8 +2,9 @@
 @import "./base/normalize";
 @import "./theme/themes";
 @import "./fonts/fonts";
-@import "./layout/layout";
 @import "./base/breakpoints";
+@import "./layout/layout";
+
 
 html {
   font-size: $font-medium;

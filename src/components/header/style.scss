@@ -17,6 +17,11 @@ $z-index: 10;
       border-radius: $base-border-radius;
       width: $top-bar-logo-size;
       height: $top-bar-logo-size;
+
+      @include media-breakpoint-down($top-bar-responsive) {
+        width: $top-bar-logo-size * 0.8;
+        height: $top-bar-logo-size * 0.8;
+      }
     }
   }
 }
@@ -224,7 +229,7 @@ $z-index: 10;
         margin: 0;
         padding: 0;
         margin-right: $spacing-large;
-        transition: transform $transition-fast-easein;
+        transition: transform $transition-faster-easein;
         @include hoverScale(1.3);
 
         > i {

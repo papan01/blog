@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import classNames from 'classnames';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import Logo from '../../../static/logos/logo.png';
+import Logo from '../../../static/favicons/logo.png';
 import Dark from '../../../static/material/dark.png';
 import Light from '../../../static/material/light.png';
 import config from '../../../data/siteConfig';
@@ -102,7 +102,7 @@ const Header = () => {
       <div className="container">
         <div className="logo">
           <Link to="/">
-            <img src={Logo} alt={config.siteTitle} />
+            <img src={Logo} alt={config.siteTitle} loading="lazy" />
           </Link>
         </div>
         <NavList navStyle={navClass} closeMenu={toggleOpenMenu} />

@@ -5,7 +5,7 @@ const config = {
   siteTitleAlt: 'Papan01 OverSoftware', // Alternative site title for SEO.
   siteLanguage: 'zh-tw', // Site language.
   siteDescription: 'Personal blog by Papan01. Life and code.', // Website description used for RSS feeds/meta description tag.
-  siteLogo: 'static/favicon.png', // Logo used for SEO and manifest.
+  siteLogo: 'static/favicons/favicon.png', // Logo used for SEO and manifest.
   imagesPath: '/images', // post image for SEO
   siteUrl: 'https://papan01.github.io', // Domain of your website without pathPrefix.
   pathPrefix: '/blog', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
