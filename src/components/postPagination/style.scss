@@ -1,0 +1,20 @@
+@import "../../layout/style/base/setting";
+
+.post-pagination {
+  display: flex;
+  font-size: $font-large;
+  justify-content: space-between;
+  align-items: center;
+  margin: $relative-spacing-xlarge 0;
+
+  > .pagination-number {
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-around;
+    align-items: center;
+
+    .active {
+      color: red;
+    }
+  }
+}

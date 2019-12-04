@@ -9,7 +9,7 @@
 html {
   font-size: $font-medium;
   @include media-breakpoint-down($breakpoint-sm) {
-    font-size: $font-small;
+    font-size: $font-xsmall;
   }
 }
 
@@ -29,6 +29,7 @@ form,
 p {
   margin: 0;
   padding: 0;
+  word-break: break-all;
 }
 
 strong {
@@ -82,14 +83,10 @@ ol,
 ul {
   list-style-image: none;
   list-style-type: none;
-  margin: 0;
-  padding: 0;
 }
 
 img,
 svg {
-  width: 100%;
-  height: auto;
   display: inline-block;
   vertical-align: middle;
   border: 0;

@@ -35,8 +35,24 @@ exports.createPages = async ({ graphql, actions }) => {
 
   const tagSet = new Set();
   const categorySet = new Set();
+  const posts = result.data.allMarkdownRemark.edges;
+  const postsPerPage = 5;
+  const numPages = Math.ceil(posts.length / postsPerPage);
 
-  result.data.allMarkdownRemark.edges.forEach(({ node }) => {
+  for (let i = 0; i < numPages; i += 1) {
+    createPage({
+      path: i === 0 ? `/` : `/${i + 1}`,
+      component: path.resolve('./src/templates/postList.jsx'),
+      context: {
+        limit: postsPerPage,
+        skip: i * postsPerPage,
+        numPages,
+        currentPage: i + 1,
+      },
+    });
+  }
+
+  posts.forEach(({ node }) => {
     createPage({
       path: node.fields.slug,
       component: path.resolve(`./src/templates/post.jsx`),

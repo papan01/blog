@@ -6,9 +6,10 @@ import { graphql } from 'gatsby';
 import Layout from '../layout';
 import PostText from '../components/postText';
 import PostTags from '../components/postTags';
+import PostCover from '../components/postCover';
 import SEO from '../components/SEO';
 import './post.scss';
-import config from '../../data/siteConfig';
+import config from '../../config/siteConfig';
 
 const Post = ({ data, pageContext }) => {
   const post = data.markdownRemark;
@@ -27,6 +28,7 @@ const Post = ({ data, pageContext }) => {
         <PostTags tags={tags} />
       </PostText>
       <hr />
+      <PostCover imagePath={cover} />
       <div className="post-content" dangerouslySetInnerHTML={{ __html: html }} />
       <Disqus config={disqusConfig} />
     </Layout>

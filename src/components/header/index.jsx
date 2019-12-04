@@ -7,7 +7,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import Logo from '../../../static/favicons/logo.png';
 import Dark from '../../../static/material/dark.png';
 import Light from '../../../static/material/light.png';
-import config from '../../../data/siteConfig';
+import config from '../../../config/siteConfig';
 import './style.scss';
 
 const NavList = ({ navStyle, closeMenu }) => {

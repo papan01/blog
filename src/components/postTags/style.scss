@@ -3,6 +3,7 @@
 .post-tags {
   display: flex;
   align-items: center;
+  padding: 0;
   margin: $spacing-small 0;
   >li>a {
     margin-right: $spacing-small;

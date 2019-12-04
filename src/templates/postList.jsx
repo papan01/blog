@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { graphql } from 'gatsby';
 import Layout from '../layout';
 import PostCardList from '../components/postCardList';
+import PostPagination from '../components/postPagination';
 import SEO from '../components/SEO';
 
-const Index = ({ data }) => {
+const PostList = ({ data, pageContext }) => {
   const { edges } = data.allMarkdownRemark;
+  const { currentPage, numPages } = pageContext;
   const postList = [];
   edges.forEach(edge => {
     postList.push({
@@ -24,11 +26,12 @@ const Index = ({ data }) => {
     <Layout>
       <SEO />
       <PostCardList posts={postList} />
+      <PostPagination currentPage={currentPage} numPages={numPages} />
     </Layout>
   );
 };
 
-Index.propTypes = {
+PostList.propTypes = {
   data: PropTypes.shape({
     allMarkdownRemark: PropTypes.shape({
       edges: PropTypes.arrayOf(
@@ -51,13 +54,17 @@ Index.propTypes = {
       ).isRequired,
     }).isRequired,
   }).isRequired,
+  pageContext: PropTypes.shape({
+    currentPage: PropTypes.number,
+    numPages: PropTypes.number,
+  }).isRequired,
 };
 
-export default Index;
+export default PostList;
 
 export const pageQuery = graphql`
-  query IndexQuery {
-    allMarkdownRemark(limit: 2000, sort: { fields: [frontmatter___date], order: DESC }) {
+  query PostListQuery($skip: Int!, $limit: Int!) {
+    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }, limit: $limit, skip: $skip) {
       edges {
         node {
           fields {

@@ -1,4 +1,4 @@
-const config = require('./data/siteConfig');
+const config = require('./config/siteConfig');
 
 module.exports = {
   pathPrefix: config.pathPrefix === '' ? '/' : config.pathPrefix,

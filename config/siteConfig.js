@@ -57,7 +57,7 @@ const config = {
     },
   ],
 };
-config.copyright = `Copyright © ${config.copyrightYear}. Papan`;
+config.copyright = `Copyright © ${config.copyrightYear}. ${config.author}`;
 
 // Make sure pathPrefix is empty if not needed
 if (config.pathPrefix === '/') {

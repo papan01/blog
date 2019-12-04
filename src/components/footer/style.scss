@@ -6,7 +6,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  margin-top: $spacing-large * 2;
+  margin-top: $spacing-large * 5;
+  margin-bottom: $spacing-large;
 
   > .links {
     flex: 1;

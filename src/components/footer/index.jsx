@@ -1,5 +1,5 @@
 import React from 'react';
-import config from '../../../data/siteConfig';
+import config from '../../../config/siteConfig';
 import './style.scss';
 
 const Footer = () => {

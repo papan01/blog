@@ -12,8 +12,10 @@ const postShortList = ({ data }) => {
           <ul className="post-short-list">
             {field.posts.map(post => (
               <li key={post.title}>
-                <p>{post.date}</p>
-                <p>{` ☕️ ${post.timeToRead} min read`}</p>
+                <div className="post-date-timetoread">
+                  <p>{post.date}</p>
+                  <p>{`☕️ ${post.timeToRead} min read`}</p>
+                </div>
                 <Link to={post.slug}>{post.title}</Link>
               </li>
             ))}
