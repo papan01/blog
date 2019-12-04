@@ -33,12 +33,41 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   `);
 
-  const tagSet = new Set();
-  const categorySet = new Set();
+  const tagMap = new Map();
+  const categoryMap = new Map();
   const posts = result.data.allMarkdownRemark.edges;
-  const postsPerPage = 5;
-  const numPages = Math.ceil(posts.length / postsPerPage);
 
+  posts.forEach(({ node }) => {
+    createPage({
+      path: node.fields.slug,
+      component: path.resolve(`./src/templates/post.jsx`),
+      context: {
+        slug: node.fields.slug,
+      },
+    });
+
+    if (node.frontmatter.tags) {
+      node.frontmatter.tags.forEach(tag => {
+        if (tagMap.get(tag)) {
+          tagMap.set(tag, tagMap.get(tag) + 1);
+        } else {
+          tagMap.set(tag, 1);
+        }
+      });
+    }
+
+    if (node.frontmatter.category) {
+      const c = node.frontmatter.category;
+      if (categoryMap.get(c)) {
+        categoryMap.set(c, categoryMap.get(c) + 1);
+      } else {
+        categoryMap.set(c, 1);
+      }
+    }
+  });
+
+  const postsPerPage = 4;
+  let numPages = Math.ceil(posts.length / postsPerPage);
   for (let i = 0; i < numPages; i += 1) {
     createPage({
       path: i === 0 ? `/` : `/${i + 1}`,
@@ -52,43 +81,37 @@ exports.createPages = async ({ graphql, actions }) => {
     });
   }
 
-  posts.forEach(({ node }) => {
-    createPage({
-      path: node.fields.slug,
-      component: path.resolve(`./src/templates/post.jsx`),
-      context: {
-        slug: node.fields.slug,
-      },
-    });
-
-    if (node.frontmatter.tags) {
-      node.frontmatter.tags.forEach(tag => {
-        tagSet.add(tag);
+  tagMap.forEach((count, tag) => {
+    numPages = Math.ceil(count / postsPerPage);
+    for (let i = 0; i < numPages; i += 1) {
+      createPage({
+        path: i === 0 ? `/tags/${_.kebabCase(tag)}` : `/tags/${_.kebabCase(tag)}/${i + 1}`,
+        component: path.resolve(`./src/templates/tag.jsx`),
+        context: {
+          tag,
+          limit: postsPerPage,
+          skip: i * postsPerPage,
+          numPages,
+          currentPage: i + 1,
+        },
       });
     }
+  });
 
-    if (node.frontmatter.category) {
-      categorySet.add(node.frontmatter.category);
+  categoryMap.forEach((count, category) => {
+    numPages = Math.ceil(count / postsPerPage);
+    for (let i = 0; i < numPages; i += 1) {
+      createPage({
+        path: i === 0 ? `/categories/${_.kebabCase(category)}` : `/categories/${_.kebabCase(category)}/${i + 1}`,
+        component: path.resolve(`./src/templates/category.jsx`),
+        context: {
+          category,
+          limit: postsPerPage,
+          skip: i * postsPerPage,
+          numPages,
+          currentPage: i + 1,
+        },
+      });
     }
-  });
-
-  tagSet.forEach(tag => {
-    createPage({
-      path: `/tags/${_.kebabCase(tag)}/`,
-      component: path.resolve(`./src/templates/tag.jsx`),
-      context: {
-        tag,
-      },
-    });
-  });
-
-  categorySet.forEach(category => {
-    createPage({
-      path: `/categories/${_.kebabCase(category)}/`,
-      component: path.resolve(`./src/templates/category.jsx`),
-      context: {
-        category,
-      },
-    });
   });
 };

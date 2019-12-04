@@ -5,10 +5,11 @@ import _ from 'lodash';
 import Layout from '../layout';
 import SEO from '../components/SEO';
 import PostCardList from '../components/postCardList';
+import PostPagination from '../components/postPagination';
 
 const Tag = ({ pageContext, data }) => {
   const postEdges = data.allMarkdownRemark.edges;
-  const { tag } = pageContext;
+  const { tag, currentPage, numPages } = pageContext;
   const postList = [];
   postEdges.forEach(edge => {
     postList.push({
@@ -22,18 +23,22 @@ const Tag = ({ pageContext, data }) => {
       excerpt: edge.node.excerpt,
     });
   });
+  const path = `/tags/${_.kebabCase(tag)}`;
   return (
     <Layout>
-      <SEO title={`Posts about tag-${tag}`} path={`/tags/${_.kebabCase(tag)}`} />
+      <SEO title={`Posts about tag-${tag}`} path={path} />
       <h1 className="text-center tag-head">{`Posts About ${tag}`}</h1>
       <PostCardList posts={postList} />
+      <PostPagination currentPage={currentPage} numPages={numPages} subpath={path} />
     </Layout>
   );
 };
 
 Tag.propTypes = {
   pageContext: PropTypes.shape({
-    tag: PropTypes.string.isRequired,
+    tag: PropTypes.string,
+    currentPage: PropTypes.number,
+    numPages: PropTypes.number,
   }).isRequired,
   data: PropTypes.shape({
     allMarkdownRemark: PropTypes.shape({
@@ -62,9 +67,10 @@ Tag.propTypes = {
 export default Tag;
 
 export const pageQuery = graphql`
-  query tagQuery($tag: String) {
+  query tagQuery($tag: String, $skip: Int!, $limit: Int!) {
     allMarkdownRemark(
-      limit: 2000
+      limit: $limit
+      skip: $skip
       sort: { fields: [frontmatter___date], order: DESC }
       filter: { frontmatter: { tags: { in: [$tag] } } }
     ) {

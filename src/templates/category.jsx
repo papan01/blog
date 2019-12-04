@@ -5,10 +5,11 @@ import _ from 'lodash';
 import Layout from '../layout';
 import SEO from '../components/SEO';
 import PostCardList from '../components/postCardList';
+import PostPagination from '../components/postPagination';
 
 const Category = ({ pageContext, data }) => {
   const postEdges = data.allMarkdownRemark.edges;
-  const { category } = pageContext;
+  const { category, currentPage, numPages } = pageContext;
   const postList = [];
   postEdges.forEach(edge => {
     postList.push({
@@ -22,18 +23,22 @@ const Category = ({ pageContext, data }) => {
       excerpt: edge.node.excerpt,
     });
   });
+  const path = `/categories/${_.kebabCase(category)}`;
   return (
     <Layout>
-      <SEO title={`Posts about catrgory-${category}`} path={`/categories/${_.kebabCase(category)}`} />
+      <SEO title={`Posts about catrgory-${category}`} path={path} />
       <h1 className="text-center category-head">{`${category}`}</h1>
       <PostCardList posts={postList} />
+      <PostPagination currentPage={currentPage} numPages={numPages} subpath={path} />
     </Layout>
   );
 };
 
 Category.propTypes = {
   pageContext: PropTypes.shape({
-    category: PropTypes.string.isRequired,
+    category: PropTypes.string,
+    currentPage: PropTypes.number,
+    numPages: PropTypes.number,
   }).isRequired,
   data: PropTypes.shape({
     allMarkdownRemark: PropTypes.shape({
@@ -62,9 +67,10 @@ Category.propTypes = {
 export default Category;
 
 export const pageQuery = graphql`
-  query categoryQuery($category: String) {
+  query categoryQuery($category: String, $skip: Int!, $limit: Int!) {
     allMarkdownRemark(
-      limit: 2000
+      limit: $limit
+      skip: $skip
       sort: { fields: [frontmatter___date], order: DESC }
       filter: { frontmatter: { category: { eq: $category } } }
     ) {
