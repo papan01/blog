@@ -7,12 +7,12 @@ const config = {
   siteDescription: 'Personal blog by Papan01. Life and code.', // Website description used for RSS feeds/meta description tag.
   siteLogo: 'static/favicons/favicon.png', // Logo used for SEO and manifest.
   imagesPath: '/images', // post image for SEO
-  siteUrl: 'https://papan01.github.io', // Domain of your website without pathPrefix.
-  pathPrefix: '/blog', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
+  siteUrl: 'https://papan01.netlify.com', // Domain of your website without pathPrefix.
+  pathPrefix: '/', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
   siteRss: '/rss.xml', // Path to the RSS file.
   siteFBAppID: '464217807633356', // FB Application ID for using app insights
-  siteGATrackingID: 'UA-153303709-1', // Tracking code ID for google analytics.
-  disqusShortname: 'papan01-github-io-blog', // Disqus shortname.
+  siteGATrackingID: 'UA-153303709-2', // Tracking code ID for google analytics.
+  disqusShortname: 'papan01-blog-netlify', // Disqus shortname.
   twitterUserName: '', // twitter creator for SEO
   datePublished: '2019-11-10', // for SEO
   copyrightYear: '2019', // for SEO
