@@ -1,5 +1,6 @@
 const path = require(`path`);
 const _ = require('lodash');
+const config = require('./config/siteConfig');
 
 exports.onCreateNode = ({ node, actions }) => {
   const { createNodeField } = actions;
@@ -17,13 +18,14 @@ exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions;
   const result = await graphql(`
     query {
-      allMarkdownRemark {
+      allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
         edges {
           node {
             fields {
               slug
             }
             frontmatter {
+              title
               tags
               category
             }
@@ -37,12 +39,16 @@ exports.createPages = async ({ graphql, actions }) => {
   const categoryMap = new Map();
   const posts = result.data.allMarkdownRemark.edges;
 
-  posts.forEach(({ node }) => {
+  posts.forEach(({ node }, index) => {
+    const prev = index === 0 ? null : posts[index - 1].node;
+    const next = index === posts.length - 1 ? null : posts[index + 1].node;
     createPage({
       path: node.fields.slug,
       component: path.resolve(`./src/templates/post.jsx`),
       context: {
         slug: node.fields.slug,
+        prev,
+        next,
       },
     });
 
@@ -66,8 +72,9 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   });
 
-  const postsPerPage = 4;
+  const { postsPerPage } = config;
   let numPages = Math.ceil(posts.length / postsPerPage);
+
   for (let i = 0; i < numPages; i += 1) {
     createPage({
       path: i === 0 ? `/` : `/${i + 1}`,

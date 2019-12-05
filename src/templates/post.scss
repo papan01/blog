@@ -1,5 +1,6 @@
 @import "../layout/style/base/setting";
 @import "../layout/style/base/mixin";
+@import "../layout/style/base/breakpoints";
 
 //gatsby-remark-autolink-headers
 .auto-link {
@@ -38,7 +39,7 @@
       &::before {
         content: counter(ol-counter) ". ";
         color: red;
-        font-weight: $font-weight-bold;      
+        font-weight: $font-weight-bold;
       }
     }
   }
@@ -49,7 +50,7 @@
 
     li::before {
       content: "";
-      transform: translate(-$base-relative-spacing-unit,0);
+      transform: translate(-$base-relative-spacing-unit, 0);
       margin-top: $base-relative-spacing-unit / 2;
       position: absolute;
       border: $base-border * 2 solid var(--yellow1);
@@ -102,5 +103,42 @@
 
   table > tbody > tr > td {
     border-bottom: $base-border / 3 solid var(--yellow2);
+  }
+}
+
+.post-prev-next {
+  display: flex;
+  align-items: center;
+  font-size: $font-large;
+  margin: $spacing-large 0;
+
+  .post-prev {
+    margin-right: auto;
+  }
+
+  .mobile-post-prev {
+    margin-right: auto;
+    display: none;
+  }
+
+  .post-next {
+    margin-left: auto;
+  }
+
+  .mobile-post-next {
+    margin-left: auto;
+    display: none;
+  }
+
+  @include media-breakpoint-down($breakpoint-sm) {
+    .post-prev,
+    .post-next {
+      display: none;
+    }
+
+    .mobile-post-prev,
+    .mobile-post-next {
+      display: block;
+    }
   }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Disqus } from 'gatsby-plugin-disqus';
 import 'prismjs/themes/prism-tomorrow.css';
-import { graphql } from 'gatsby';
+import { graphql, Link } from 'gatsby';
 import Layout from '../layout';
 import PostText from '../components/postText';
 import PostTags from '../components/postTags';
@@ -15,7 +15,7 @@ const Post = ({ data, pageContext }) => {
   const post = data.markdownRemark;
   const { html, excerpt, timeToRead, frontmatter } = post;
   const { title, tags, cover, date, category } = frontmatter;
-  const { slug } = pageContext;
+  const { slug, prev, next } = pageContext;
   const disqusConfig = {
     url: `${config.siteUrl + config.pathPrefix + slug}`,
     identifier: title,
@@ -30,6 +30,32 @@ const Post = ({ data, pageContext }) => {
       <hr />
       <PostCover imagePath={cover} />
       <div className="post-content" dangerouslySetInnerHTML={{ __html: html }} />
+      <div className="post-prev-next">
+        {prev && (
+          <Link to={prev.fields.slug} rel="prev" className="post-prev">
+            <i className="fas fa-arrow-left" />
+            {prev.frontmatter.title}
+          </Link>
+        )}
+        {prev && (
+          <Link to={prev.fields.slug} rel="prev" className="mobile-post-prev">
+            <i className="fas fa-arrow-left" />
+            prev
+          </Link>
+        )}
+        {next && (
+          <Link to={next.fields.slug} rel="next" className="post-next">
+            {next.frontmatter.title}
+            <i className="fas fa-arrow-right" />
+          </Link>
+        )}
+        {next && (
+          <Link to={next.fields.slug} rel="next" className="mobile-post-next">
+            next
+            <i className="fas fa-arrow-right" />
+          </Link>
+        )}
+      </div>
       <Disqus config={disqusConfig} />
     </Layout>
   );
@@ -69,6 +95,22 @@ Post.propTypes = {
   }).isRequired,
   pageContext: PropTypes.shape({
     slug: PropTypes.string.isRequired,
+    prev: PropTypes.shape({
+      fields: PropTypes.shape({
+        slug: PropTypes.string.isRequired,
+      }),
+      frontmatter: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+      }),
+    }),
+    next: PropTypes.shape({
+      fields: PropTypes.shape({
+        slug: PropTypes.string.isRequired,
+      }),
+      frontmatter: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+      }),
+    }),
   }).isRequired,
 };
 

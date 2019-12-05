@@ -19,8 +19,8 @@ $z-index: 10;
       height: $top-bar-logo-size;
 
       @include media-breakpoint-down($top-bar-responsive) {
-        width: $top-bar-logo-size * 0.8;
-        height: $top-bar-logo-size * 0.8;
+        width: $top-bar-logo-size * 0.6;
+        height: $top-bar-logo-size * 0.6;
       }
     }
   }

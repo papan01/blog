@@ -35,14 +35,12 @@ const PostPagination = ({ currentPage, numPages, subpath }) => {
   const pages = pagination(currentPage, numPages);
   return (
     <div className="post-pagination">
-      <div className="pagination-prev">
-        {!isFirst && (
-          <Link to={prevPage} rel="prev">
-            <i className="fas fa-arrow-left" />
-            Previous Page
-          </Link>
-        )}
-      </div>
+      {!isFirst && (
+        <Link to={prevPage} rel="prev">
+          <i className="fas fa-arrow-left" />
+          Previous Page
+        </Link>
+      )}
       <div className="pagination-number">
         {pages.map(page =>
           isNumber(page) ? (
@@ -54,18 +52,16 @@ const PostPagination = ({ currentPage, numPages, subpath }) => {
               {page}
             </Link>
           ) : (
-            <span>{page}</span>
+            <span key="ellipsis">{page}</span>
           ),
         )}
       </div>
-      <div className="pagination-next">
-        {!isLast && (
-          <Link to={nextPage} rel="next">
-            Next Page
-            <i className="fas fa-arrow-right" />
-          </Link>
-        )}
-      </div>
+      {!isLast && (
+        <Link to={nextPage} rel="next">
+          Next Page
+          <i className="fas fa-arrow-right" />
+        </Link>
+      )}
     </div>
   );
 };

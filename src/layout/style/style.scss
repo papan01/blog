@@ -5,7 +5,6 @@
 @import "./base/breakpoints";
 @import "./layout/layout";
 
-
 html {
   font-size: $font-medium;
   @include media-breakpoint-down($breakpoint-sm) {

@@ -13,8 +13,18 @@
     justify-content: space-around;
     align-items: center;
 
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .active {
-      color: red;
+      width: $relative-spacing-xlarge;
+      height: $relative-spacing-xlarge;
+      color: var(--invert2);
+      background: var(--invert1);
+      border-radius: 50%;
     }
   }
 }
