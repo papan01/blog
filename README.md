@@ -9,4 +9,4 @@
 </h1>
 
 My personal blog where I write about tech, Based on Gatsby.
-[Papan's blog](https://papan01.github.io/blog/)
+[Papan's blog](https://papan01.netlify.com/)
