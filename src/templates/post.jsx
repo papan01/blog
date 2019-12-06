@@ -8,8 +8,41 @@ import PostText from '../components/postText';
 import PostTags from '../components/postTags';
 import PostCover from '../components/postCover';
 import SEO from '../components/SEO';
+import { useIsMobile } from '../components/hooks';
 import './post.scss';
 import config from '../../config/siteConfig';
+
+const PostPrevNext = ({ prev, next }) => {
+  const isMobile = useIsMobile();
+  return (
+    <div className="post-prev-next">
+      {prev &&
+        (isMobile ? (
+          <Link to={prev.fields.slug} rel="prev" className="mobile-post-prev">
+            <i className="fas fa-arrow-left" />
+            prev
+          </Link>
+        ) : (
+          <Link to={prev.fields.slug} rel="prev" className="post-prev">
+            <i className="fas fa-arrow-left" />
+            {prev.frontmatter.title}
+          </Link>
+        ))}
+      {next &&
+        (isMobile ? (
+          <Link to={next.fields.slug} rel="next" className="mobile-post-next">
+            next
+            <i className="fas fa-arrow-right" />
+          </Link>
+        ) : (
+          <Link to={next.fields.slug} rel="next" className="post-next">
+            {next.frontmatter.title}
+            <i className="fas fa-arrow-right" />
+          </Link>
+        ))}
+    </div>
+  );
+};
 
 const Post = ({ data, pageContext }) => {
   const post = data.markdownRemark;
@@ -30,32 +63,7 @@ const Post = ({ data, pageContext }) => {
       <hr />
       <PostCover imagePath={cover} />
       <div className="post-content" dangerouslySetInnerHTML={{ __html: html }} />
-      <div className="post-prev-next">
-        {prev && (
-          <Link to={prev.fields.slug} rel="prev" className="post-prev">
-            <i className="fas fa-arrow-left" />
-            {prev.frontmatter.title}
-          </Link>
-        )}
-        {prev && (
-          <Link to={prev.fields.slug} rel="prev" className="mobile-post-prev">
-            <i className="fas fa-arrow-left" />
-            prev
-          </Link>
-        )}
-        {next && (
-          <Link to={next.fields.slug} rel="next" className="post-next">
-            {next.frontmatter.title}
-            <i className="fas fa-arrow-right" />
-          </Link>
-        )}
-        {next && (
-          <Link to={next.fields.slug} rel="next" className="mobile-post-next">
-            next
-            <i className="fas fa-arrow-right" />
-          </Link>
-        )}
-      </div>
+      <PostPrevNext prev={prev} next={next} />
       <Disqus config={disqusConfig} />
     </Layout>
   );
@@ -110,6 +118,25 @@ Post.propTypes = {
       frontmatter: PropTypes.shape({
         title: PropTypes.string.isRequired,
       }),
+    }),
+  }).isRequired,
+};
+
+PostPrevNext.propTypes = {
+  prev: PropTypes.shape({
+    fields: PropTypes.shape({
+      slug: PropTypes.string.isRequired,
+    }),
+    frontmatter: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+  next: PropTypes.shape({
+    fields: PropTypes.shape({
+      slug: PropTypes.string.isRequired,
+    }),
+    frontmatter: PropTypes.shape({
+      title: PropTypes.string.isRequired,
     }),
   }).isRequired,
 };

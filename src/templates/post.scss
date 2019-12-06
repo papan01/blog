@@ -112,33 +112,13 @@
   font-size: $font-large;
   margin: $spacing-large 0;
 
-  .post-prev {
-    margin-right: auto;
-  }
-
+  .post-prev,
   .mobile-post-prev {
     margin-right: auto;
-    display: none;
   }
 
-  .post-next {
-    margin-left: auto;
-  }
-
+  .post-next,
   .mobile-post-next {
     margin-left: auto;
-    display: none;
-  }
-
-  @include media-breakpoint-down($breakpoint-sm) {
-    .post-prev,
-    .post-next {
-      display: none;
-    }
-
-    .mobile-post-prev,
-    .mobile-post-next {
-      display: block;
-    }
   }
 }
