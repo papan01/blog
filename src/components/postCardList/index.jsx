@@ -18,7 +18,7 @@ PostCardList.propTypes = {
     PropTypes.shape({
       path: PropTypes.string,
       tags: PropTypes.arrayOf(PropTypes.string),
-      cover: PropTypes.string,
+      cover: PropTypes.any,
       title: PropTypes.string,
       category: PropTypes.string,
       date: PropTypes.string,

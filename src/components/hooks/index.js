@@ -1,25 +1,24 @@
 import { useState, useEffect } from 'react';
 
+const MOBILE_BREAKPOINT = 768;
+
 const getWindowDimensions = () => {
-  const windowDimensions = { width: 0, height: 0 };
-  if (typeof window !== 'undefined') {
-    const { innerWidth: width, innerHeight: height } = window;
-    windowDimensions.width = width;
-    windowDimensions.height = height;
-    return windowDimensions;
-  }
-  return windowDimensions;
+  const { innerWidth: width, innerHeight: height } = window;
+  return { width, height };
 };
 
 const useWindowDimensions = () => {
-  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+  const [windowDimensions, setWindowDimensions] = useState({ width: 0, height: 0 });
   useEffect(() => {
-    const handleResize = () => {
-      setWindowDimensions(getWindowDimensions());
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    if (typeof window !== 'undefined') {
+      const handleResize = () => {
+        setWindowDimensions(getWindowDimensions());
+      };
+      window.addEventListener('resize', handleResize);
+      handleResize();
+      return () => window.removeEventListener('resize', handleResize);
+    }
+    return null;
   }, []);
 
   return windowDimensions;
@@ -27,7 +26,7 @@ const useWindowDimensions = () => {
 
 export const useIsMobile = () => {
   const windowDimensions = useWindowDimensions();
-  const mobile = !(windowDimensions.width > 768);
+  const mobile = !(windowDimensions.width > MOBILE_BREAKPOINT);
   return mobile;
 };
 

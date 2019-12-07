@@ -33,24 +33,25 @@ NavList.propTypes = {
 };
 
 const ThemeToggle = () => {
-  let theme;
-  if (typeof window !== 'undefined') {
-    theme = localStorage.getItem('theme');
-    if (!theme) {
-      localStorage.setItem('theme', 'dark');
-      theme = 'dark';
-    }
-  }
-  const [isChecked, toggleChecked] = useState(theme === 'dark');
+  const [isChecked, toggleChecked] = useState(true);
+  const [isFirstLoad, toggleFirstLoad] = useState(true);
 
   useEffect(() => {
-    localStorage.setItem('theme', isChecked ? 'dark' : 'light');
-  }, [isChecked]);
+    if (typeof window !== 'undefined') {
+      if (isFirstLoad) {
+        const t = localStorage.getItem('theme');
+        if (t) {
+          toggleChecked(t === 'dark');
+        }
+        toggleFirstLoad(false);
+      } else {
+        localStorage.setItem('theme', isChecked ? 'dark' : 'light');
+      }
+    }
+  }, [isChecked, isFirstLoad]);
 
   const toggleStyle = isChecked ? 'theme-toggle theme-toggle--checked' : 'theme-toggle';
-
-  theme = isChecked ? 'dark' : 'light';
-
+  const theme = isChecked ? 'dark' : 'light';
   return (
     <div
       role="checkbox"

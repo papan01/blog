@@ -46,14 +46,14 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: 'images',
-        path: `${__dirname}/static/images`,
+        path: `${__dirname}/content/images`,
       },
     },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'posts',
-        path: `${__dirname}/content`,
+        path: `${__dirname}/content/posts`,
       },
     },
     {
@@ -167,7 +167,9 @@ module.exports = {
                     frontmatter {
                       title
                       date
-                      cover
+                      cover {
+                        relativePath
+                      }
                       category
                       tags
                     }

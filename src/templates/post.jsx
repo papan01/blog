@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Disqus } from 'gatsby-plugin-disqus';
 import 'prismjs/themes/prism-tomorrow.css';
 import { graphql, Link } from 'gatsby';
+import Img from 'gatsby-image';
 import Layout from '../layout';
 import PostText from '../components/postText';
 import PostTags from '../components/postTags';
-import PostCover from '../components/postCover';
 import SEO from '../components/SEO';
 import { useIsMobile } from '../components/hooks';
 import './post.scss';
@@ -61,7 +61,7 @@ const Post = ({ data, pageContext }) => {
         <PostTags tags={tags} />
       </PostText>
       <hr />
-      <PostCover imagePath={cover} />
+      <Img fluid={cover.childImageSharp.fluid} />
       <div className="post-content" dangerouslySetInnerHTML={{ __html: html }} />
       <PostPrevNext prev={prev} next={next} />
       <Disqus config={disqusConfig} />
@@ -78,7 +78,13 @@ export const query = graphql`
       frontmatter {
         title
         tags
-        cover
+        cover {
+          childImageSharp {
+            fluid(maxWidth: 800) {
+              ...GatsbyImageSharpFluid
+            }
+          }
+        }
         date
         category
       }

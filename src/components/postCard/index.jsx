@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'gatsby';
-import PostCover from '../postCover';
+import Img from 'gatsby-image';
 import PostText from '../postText';
 import PostTags from '../postTags';
+import { useIsMobile } from '../hooks';
 import './style.scss';
 
 const PostCard = ({ data }) => {
+  const isMobile = useIsMobile();
   return (
     <article className="post-card">
-      <PostCover imagePath={data.cover} wrapClass="post-card-cover" />
+      {!isMobile && <Img fluid={data.cover.childImageSharp.fluid} className="post-card-cover" loading="lazy" />}
       <PostText
         category={data.category}
         date={data.date}
@@ -28,7 +30,7 @@ PostCard.propTypes = {
   data: PropTypes.shape({
     path: PropTypes.string,
     tags: PropTypes.arrayOf(PropTypes.string),
-    cover: PropTypes.string,
+    cover: PropTypes.any,
     title: PropTypes.string,
     category: PropTypes.string,
     date: PropTypes.string,

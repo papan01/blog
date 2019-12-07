@@ -45,7 +45,7 @@ PostList.propTypes = {
             frontmatter: PropTypes.shape({
               title: PropTypes.string.isRequired,
               tags: PropTypes.arrayOf(PropTypes.string),
-              cover: PropTypes.string,
+              cover: PropTypes.any,
               category: PropTypes.string,
               date: PropTypes.string,
             }).isRequired,
@@ -75,7 +75,13 @@ export const pageQuery = graphql`
           frontmatter {
             title
             tags
-            cover
+            cover {
+              childImageSharp {
+                fluid(maxWidth: 400, maxHeight: 275) {
+                  ...GatsbyImageSharpFluid
+                }
+              }
+            }
             date
             category
           }
