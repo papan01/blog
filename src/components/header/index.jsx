@@ -8,7 +8,6 @@ import Dark from '../../../static/material/dark.png';
 import Light from '../../../static/material/light.png';
 import config from '../../../config/siteConfig';
 import './style.scss';
-import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const NavList = ({ navStyle, closeMenu }) => {
   return (

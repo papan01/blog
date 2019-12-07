@@ -1,7 +1,9 @@
 @import "./base/setting";
 @import "./base/normalize";
 @import "./theme/themes";
-@import "./fonts/fonts";
+@import './fonts/fontawesome/scss/solid.scss';
+@import './fonts/fontawesome/scss/brands.scss';
+@import './fonts/fontawesome/scss/fontawesome.scss';
 @import "./base/breakpoints";
 @import "./layout/layout";
 

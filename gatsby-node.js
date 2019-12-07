@@ -1,6 +1,13 @@
 const path = require(`path`);
 const _ = require('lodash');
+const LoadablePlugin = require('@loadable/webpack-plugin');
 const config = require('./config/siteConfig');
+
+exports.onCreateWebpackConfig = ({ actions }) => {
+  actions.setWebpackConfig({
+    plugins: [new LoadablePlugin()],
+  });
+};
 
 exports.onCreateNode = ({ node, actions }) => {
   const { createNodeField } = actions;

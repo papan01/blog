@@ -190,5 +190,13 @@ module.exports = {
         shortname: config.disqusShortname,
       },
     },
+    {
+      resolve: 'gatsby-plugin-web-font-loader',
+      options: {
+        google: {
+          families: ['Rubik'],
+        },
+      },
+    },
   ],
 };

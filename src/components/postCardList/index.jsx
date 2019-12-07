@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PostCard from '../postCard';
+import loadable from '@loadable/component';
 import './style.scss';
 
 const PostCardList = ({ posts }) => {
+  const PostCard = loadable(() => import('../postCard'));
   return (
     <div className="posts">
       {posts.map(post => (
