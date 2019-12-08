@@ -62,7 +62,7 @@ module.exports = {
         name: config.siteTitle,
         short_name: config.siteTitleShort,
         description: config.siteDescription,
-        start_url: `${config.pathPrefix}`,
+        start_url: config.pathPrefix === '' ? '/' : config.pathPrefix,
         background_color: `#282c35`,
         theme_color: `#282c35`,
         display: `standalone`,
@@ -188,14 +188,6 @@ module.exports = {
       resolve: `gatsby-plugin-disqus`,
       options: {
         shortname: config.disqusShortname,
-      },
-    },
-    {
-      resolve: 'gatsby-plugin-web-font-loader',
-      options: {
-        google: {
-          families: ['Rubik'],
-        },
       },
     },
   ],
