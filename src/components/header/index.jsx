@@ -1,11 +1,12 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react';
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import classNames from 'classnames';
 import Logo from '../../../static/favicons/logo.png';
-import Dark from '../../../static/material/dark.png';
-import Light from '../../../static/material/light.png';
+import Dark from '../../../static/material/moon.png';
+import Light from '../../../static/material/sun.png';
 import config from '../../../config/siteConfig';
 import './style.scss';
 
@@ -32,40 +33,47 @@ NavList.propTypes = {
 };
 
 const ThemeToggle = () => {
-  const [isChecked, toggleChecked] = useState(true);
-  const [isFirstLoad, toggleFirstLoad] = useState(true);
+  let websiteTheme;
+  if (typeof window !== `undefined`) {
+    websiteTheme = window.__theme;
+  }
+  const [theme, setTheme] = useState(websiteTheme);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (isFirstLoad) {
-        const t = localStorage.getItem('theme');
-        if (t) {
-          toggleChecked(t === 'dark');
-        }
-        toggleFirstLoad(false);
-      } else {
-        localStorage.setItem('theme', isChecked ? 'dark' : 'light');
-      }
+    if (typeof window !== `undefined`) {
+      setTheme(window.__theme);
+      window.__onThemeChange = () => {
+        setTheme(window.__theme);
+      };
     }
-  }, [isChecked, isFirstLoad]);
+  }, [theme]);
 
-  const toggleStyle = isChecked ? 'theme-toggle theme-toggle--checked' : 'theme-toggle';
-  const theme = isChecked ? 'dark' : 'light';
+  const themeToggle = () => {
+    window.__setPreferredTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
+  const toggleStyle = classNames({
+    'theme-toggle': true,
+    'theme-toggle--checked': theme === 'dark',
+  });
   return (
     <div
       role="checkbox"
-      aria-checked={isChecked}
+      aria-checked={theme === 'dark'}
       aria-label="theme-toggle"
       tabIndex="-1"
       className={toggleStyle}
-      onClick={() => toggleChecked(!isChecked)}
-      onKeyPress={() => {
-        toggleChecked(!isChecked);
-      }}
+      onClick={themeToggle}
+      onKeyPress={themeToggle}
     >
-      <Helmet>
-        <body className={theme} />
-      </Helmet>
+      <Helmet
+        meta={[
+          {
+            name: 'theme-color',
+            content: theme === 'light' ? '#fff' : '#282c35',
+          },
+        ]}
+      />
       <div className="theme-toggle-track">
         <div className="theme-toggle-track-dark">
           <img src={Dark} alt="theme dark" />

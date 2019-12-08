@@ -45,7 +45,7 @@
       /**
       * @description rules of eslint-plugin-import
       */
-      "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
+      "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
     },
     "env": {
         "browser": true
