@@ -8,7 +8,7 @@ import Layout from '../layout';
 import PostText from '../components/postText';
 import PostTags from '../components/postTags';
 import SEO from '../components/SEO';
-import { useIsMobile } from '../components/hooks';
+import { useIsMobile } from '../components/utils';
 import './post.scss';
 import config from '../../config/siteConfig';
 
@@ -56,7 +56,7 @@ const Post = ({ data, pageContext }) => {
   };
   return (
     <Layout>
-      <SEO title={title} description={excerpt} image={cover} path={slug} articleDate={date} />
+      <SEO title={title} description={excerpt} image={cover.publicURL} path={slug} articleDate={date} />
       <PostText category={category} date={date} timeToRead={timeToRead} wrapClass="post-head" head={title}>
         <PostTags tags={tags} />
       </PostText>
@@ -79,6 +79,7 @@ export const query = graphql`
         title
         tags
         cover {
+          publicURL
           childImageSharp {
             fluid(maxWidth: 800, maxHeight: 400) {
               ...GatsbyImageSharpFluid
@@ -101,7 +102,7 @@ Post.propTypes = {
       frontmatter: PropTypes.shape({
         title: PropTypes.string.isRequired,
         tags: PropTypes.arrayOf(PropTypes.string),
-        cover: PropTypes.string,
+        cover: PropTypes.object,
         date: PropTypes.string,
         category: PropTypes.string,
       }).isRequired,

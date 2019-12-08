@@ -53,7 +53,7 @@ Tag.propTypes = {
             frontmatter: PropTypes.shape({
               title: PropTypes.string.isRequired,
               tags: PropTypes.arrayOf(PropTypes.string),
-              cover: PropTypes.any,
+              cover: PropTypes.object,
               category: PropTypes.string,
               date: PropTypes.string,
             }).isRequired,

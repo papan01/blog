@@ -6,7 +6,6 @@ const config = {
   siteLanguage: 'zh-tw', // Site language.
   siteDescription: 'Personal blog by Papan01. Life and code.', // Website description used for RSS feeds/meta description tag.
   siteLogo: 'static/favicons/favicon.png', // Logo used for SEO and manifest.
-  imagesPath: '/images', // post image for SEO
   siteUrl: 'https://papan01.netlify.com', // Domain of your website without pathPrefix.
   pathPrefix: '/', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
   siteRss: '/rss.xml', // Path to the RSS file.

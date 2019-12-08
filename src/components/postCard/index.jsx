@@ -4,7 +4,7 @@ import { Link } from 'gatsby';
 import Img from 'gatsby-image';
 import PostText from '../postText';
 import PostTags from '../postTags';
-import { useIsMobile } from '../hooks';
+import { useIsMobile } from '../utils';
 import './style.scss';
 
 const PostCard = ({ data }) => {
@@ -30,7 +30,7 @@ PostCard.propTypes = {
   data: PropTypes.shape({
     path: PropTypes.string,
     tags: PropTypes.arrayOf(PropTypes.string),
-    cover: PropTypes.any,
+    cover: PropTypes.object,
     title: PropTypes.string,
     category: PropTypes.string,
     date: PropTypes.string,

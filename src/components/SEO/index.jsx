@@ -14,7 +14,6 @@ const query = graphql`
         defaultTitle: title
         defaultDescription: description
         defaultImage: image
-        postImagePath
         datePublished
         copyrightYear
         twitterUsername
@@ -34,7 +33,6 @@ const SEO = ({ title, description, image, path, articleDate }) => {
     defaultTitle,
     defaultDescription,
     defaultImage,
-    postImagePath,
     datePublished,
     copyrightYear,
     twitterUsername,
@@ -47,7 +45,7 @@ const SEO = ({ title, description, image, path, articleDate }) => {
     url: path ? `${siteUrl}${path}` : siteUrl,
     title: title ? `${title} | ${defaultTitle}` : defaultTitle,
     description: description || defaultDescription,
-    image: image ? `${postImagePath}/${image}` : defaultImage,
+    image: image ? `${siteUrl}${image}` : defaultImage,
   };
 
   const schemaOrgWebPage = {
