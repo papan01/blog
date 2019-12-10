@@ -2,7 +2,7 @@ const config = {
   author: 'Papan01', // Site owner
   siteTitle: "Papan01's Blog", // Site title.
   siteTitleShort: "Papan01's Blog", // Short site title for homescreen (PWA). Preferably should be under 12 characters to prevent truncation.
-  siteTitleAlt: 'Papan01 OverSoftware', // Alternative site title for SEO.
+  siteTitleAlt: 'Papan01 Blog', // Alternative site title for SEO.
   siteLanguage: 'zh-tw', // Site language.
   siteDescription: 'Personal blog by Papan01. Life and code.', // Website description used for RSS feeds/meta description tag.
   siteLogo: 'static/favicons/favicon.png', // Logo used for SEO and manifest.
@@ -25,7 +25,7 @@ const config = {
     },
     {
       label: 'mail',
-      url: 'mailto: navy90517@gmail.com',
+      url: 'mailto:navy90517@gmail.com',
       iconClassName: 'fa fa-envelope',
     },
     {
