@@ -137,7 +137,7 @@ PostPrevNext.propTypes = {
     frontmatter: PropTypes.shape({
       title: PropTypes.string.isRequired,
     }),
-  }).isRequired,
+  }),
   next: PropTypes.shape({
     fields: PropTypes.shape({
       slug: PropTypes.string.isRequired,
@@ -145,7 +145,12 @@ PostPrevNext.propTypes = {
     frontmatter: PropTypes.shape({
       title: PropTypes.string.isRequired,
     }),
-  }).isRequired,
+  }),
+};
+
+PostPrevNext.defaultProps = {
+  prev: null,
+  next: null,
 };
 
 export default Post;
