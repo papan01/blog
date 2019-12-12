@@ -2,24 +2,24 @@
 @import "../layout/style/base/breakpoints";
 
 .about {
-    display: grid;
-    grid-template-columns: auto 2fr;
+  display: grid;
+  grid-template-columns: auto 2fr;
 
-    .user-avatar {
-        width: 144px;
-        height: 144px;
-        margin: 0 $base-spacing-unit;
+  .user-avatar {
+    width: 144px;
+    height: 144px;
+    margin: 0 $base-spacing-unit;
+  }
+
+  .about-context {
+    display: flex;
+    align-content: center;
+    h3 {
+      margin: 0;
     }
 
-    .about-context {
-        display: flex;
-        align-content: center; 
-        h3 {
-            margin: 0;
-        }
-
-        .time {
-            margin: $relative-spacing-xsmall 0;
-        }
+    .time {
+      margin: $relative-spacing-xsmall 0;
     }
+  }
 }

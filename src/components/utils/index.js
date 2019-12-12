@@ -8,7 +8,10 @@ const getWindowDimensions = () => {
 };
 
 const useWindowDimensions = () => {
-  const [windowDimensions, setWindowDimensions] = useState({ width: 0, height: 0 });
+  const [windowDimensions, setWindowDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const handleResize = () => {

@@ -62,7 +62,7 @@ const Post = ({ data, pageContext }) => {
       </PostText>
       <hr />
       <Img fluid={cover.childImageSharp.fluid} />
-      <div className="post-content" dangerouslySetInnerHTML={{ __html: html }} />
+      <div className="markdowm-body" dangerouslySetInnerHTML={{ __html: html }} />
       <PostPrevNext prev={prev} next={next} />
       <Disqus config={disqusConfig} />
     </Layout>
