@@ -30,7 +30,7 @@
   ol {
     margin-left: -$relative-spacing-xlarge;
     counter-reset: ol-counter;
-    li {
+    > li {
       counter-increment: ol-counter;
 
       p {

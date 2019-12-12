@@ -15,7 +15,6 @@ $card-height:275px;
     transition: all $transition-faster-easein;
 
     >.post-card-cover {
-        height: $card-height;
         border-top-left-radius: $base-border-radius * 4;
         border-bottom-left-radius: $base-border-radius * 4;
     }
