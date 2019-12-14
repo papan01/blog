@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Disqus } from 'gatsby-plugin-disqus';
 import 'prismjs/themes/prism-tomorrow.css';
 import { graphql, Link } from 'gatsby';
 import Img from 'gatsby-image';
+import loadable from '@loadable/component';
 import Layout from '../layout';
 import PostText from '../components/postText';
 import PostTags from '../components/postTags';
 import SEO from '../components/SEO';
 import { useIsMobile } from '../components/utils';
 import './post.scss';
-import config from '../../config/siteConfig';
 
 const PostPrevNext = ({ prev, next }) => {
   const isMobile = useIsMobile();
@@ -49,11 +48,7 @@ const Post = ({ data, pageContext }) => {
   const { html, excerpt, timeToRead, frontmatter } = post;
   const { title, tags, cover, date, category } = frontmatter;
   const { slug, prev, next } = pageContext;
-  const disqusConfig = {
-    url: `${config.siteUrl + config.pathPrefix + slug}`,
-    identifier: title,
-    title,
-  };
+  const Disqus = loadable(() => import('../components/disqus'));
   return (
     <Layout>
       <SEO title={title} description={excerpt} image={cover.publicURL} path={slug} articleDate={date} />
@@ -64,7 +59,7 @@ const Post = ({ data, pageContext }) => {
       <Img fluid={cover.childImageSharp.fluid} />
       <div className="markdowm-body" dangerouslySetInnerHTML={{ __html: html }} />
       <PostPrevNext prev={prev} next={next} />
-      <Disqus config={disqusConfig} />
+      <Disqus slug={slug} title={title} />
     </Layout>
   );
 };
