@@ -2,7 +2,7 @@
 title: "從建立Gatsby's Blog我學習到了什麼"
 date: "2019-12-11"
 category: "FrontEnd"
-cover: "../images/gatsby.webp"
+cover: "../images/gatsby.jpg"
 tags:
   - GatsbyJS
 ---
