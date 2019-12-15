@@ -13,7 +13,10 @@ tags:
 ，於是找到像[Wordpress](https://zh-tw.wordpress.com/)或是[Ｍ edium](https://medium.com/)之類可以很輕易建立自己
 Blog 的網站，但身為一個軟體開發者就是想自己寫寫看，於是後來找到了[Hexo](https://hexo.io/zh-tw/index.html)與[GatsbyJS](https://www.gatsbyjs.org/)
 ，有先嘗試使用 Hexo，但後來看 GatsbyJS 是使用 React 後，就轉為使用 GatsbyJS，所以此文章也會以我在 GatsbyJS 中學習到的東西。這個 Blog 就是使用 GatsbyJS 所寫的，
-Source Code 在(<https://github.com/papan01/gatsby-starter-papan01)，有興趣的可以看一下。>
+Source Code 在[gatsby-starter-papan01](https://github.com/papan01/gatsby-starter-papan01)，有興趣的可以看一下。
+
+[[warning]]
+| 測試～～～～～～～～～～～～～～～～～～～～～～～～～
 
 ## 從中學習到的知識
 

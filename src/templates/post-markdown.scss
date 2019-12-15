@@ -100,4 +100,35 @@
   table > tbody > tr > td {
     border-bottom: $base-border / 3 solid var(--yellow2);
   }
+
+  .custom-block {
+    position: relative;
+    padding: 0.8em 1em;
+    text-align: center;
+    line-height: 1.2;
+    &::before {
+      display: inline-flex;
+      justify-content: center;
+      align-items: flex-end;
+      position: absolute;
+      font-weight: 700;
+      font-size: 1.4rem;
+      width: 35px;
+      height: 35px;
+      left: -1.2rem;
+      top: -1rem;
+    }
+
+    &.warning {
+      background: rgba(247,168,139,.15);
+      border-left: 4px solid rgba(247,168,139,.45);
+      &::before {
+        content: '!';
+        color: var(--bg1);
+        background: var(--pink1);
+        -webkit-clip-path: polygon(50% 0,0 100%,100% 100%);
+        clip-path: polygon(50% 0,0 100%,100% 100%);
+      }
+    }  
+  }
 }
