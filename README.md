@@ -1,4 +1,3 @@
-<!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
   <a href="https://papan01.netlify.com">
     <img alt="Papan" src="./static/favicons/logo.png" width="100" />
