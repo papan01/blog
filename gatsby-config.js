@@ -32,6 +32,19 @@ module.exports = {
             },
           },
           {
+            resolve: 'gatsby-remark-custom-blocks',
+            options: {
+              blocks: {
+                info: {
+                  classes: 'info',
+                },
+                warning: {
+                  classes: 'warning',
+                },
+              },
+            },
+          },
+          {
             resolve: `gatsby-remark-autolink-headers`,
             options: {
               className: `auto-link`,
@@ -45,14 +58,14 @@ module.exports = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: 'images',
-        path: `${__dirname}/content/images`,
+        path: `${__dirname}/static/images`,
       },
     },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'posts',
-        path: `${__dirname}/content/posts`,
+        path: `${__dirname}/content`,
       },
     },
     {
@@ -181,6 +194,12 @@ module.exports = {
             title: config.siteTitle,
           },
         ],
+      },
+    },
+    {
+      resolve: `gatsby-plugin-netlify-cms`,
+      options: {
+        modulePath: `${__dirname}/src/cms/cms.js`,
       },
     },
   ],
