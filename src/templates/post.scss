@@ -1,15 +1,14 @@
 @import "../layout/style/base/setting";
-@import "../layout/style/base/mixin";
 @import "../layout/style/base/breakpoints";
 @import "./post-markdown.scss";
 
 .auto-link {
   position: absolute;
-  fill:var(--pink2);
+  fill: var(--pink2);
   margin-left: -2.5 * $base-spacing-unit;
   svg {
-      width: $font-xlarge;
-      height: $font-xlarge;
+    width: $font-xlarge;
+    height: $font-xlarge;
   }
 }
 
