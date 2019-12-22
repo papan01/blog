@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'prismjs/themes/prism-tomorrow.css';
+import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
 import { graphql, Link } from 'gatsby';
 import Img from 'gatsby-image';
 import loadable from '@loadable/component';

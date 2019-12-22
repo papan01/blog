@@ -6,7 +6,7 @@ const config = {
   siteLanguage: 'zh-tw', // Site language.
   siteDescription: 'Personal blog by Papan01. Life and code.', // Website description used for RSS feeds/meta description tag.
   siteLogo: 'static/favicons/favicon.png', // Logo used for SEO and manifest.
-  siteUrl: 'https://papan01.netlify.com', // Domain of your website without pathPrefix.
+  siteUrl: 'https://papan01.com', // Domain of your website without pathPrefix.
   pathPrefix: '/', // Prefixes all links. For cases when deployed to example.github.io/gatsby-material-starter/.
   siteRss: '/rss.xml', // Path to the RSS file.
   siteFBAppID: '464217807633356', // FB Application ID for using app insights
