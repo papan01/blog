@@ -26,6 +26,10 @@ $alertStyles: (
     text-align: justify;
   }
 
+  p {
+    margin-bottom: $relative-spacing-normal;
+  }
+
   a {
     color: var(--post-content-link);
     &:hover {
@@ -48,14 +52,13 @@ $alertStyles: (
 
   > ol,
   > ul {
-    padding-left: 0;
+    padding-left: 1em;
   }
 
   ol {
     counter-reset: ol-counter;
     list-style-position: outside;
     text-indent: -1em;
-    padding-left: 1em;
     > li {
       counter-increment: ol-counter;
 

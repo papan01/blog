@@ -13,8 +13,8 @@ const config = {
   siteGATrackingID: 'UA-153303709-2', // Tracking code ID for google analytics.
   disqusShortname: 'papan01-blog-netlify', // Disqus shortname.
   twitterUserName: '', // twitter creator for SEO
-  datePublished: '2019-11-10', // for SEO
-  copyrightYear: '2019', // for SEO
+  datePublished: '2020-01-01', // for SEO
+  copyrightYear: '2020', // for SEO
   postsPerPage: 4, // posts per page used in gatsby-node.js
   // Links to social profiles/projects you want to display in the author segment/navigation bar.
   rrssb: [
