@@ -166,6 +166,15 @@ $alertStyles: (
         clip-path: $sharp;
       }
     }
+
+    .custom-block-body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      p {
+        margin-bottom: 0;
+      }
+    }
   }
 }
 
