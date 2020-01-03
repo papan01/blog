@@ -45,6 +45,11 @@ $alertStyles: (
     overflow: auto;
   }
 
+  code[class ="language-text"] {
+    color:var(--text-color);
+    background-color: var(--inline-code-bg);
+  }
+
   ol,
   ul {
     padding-left: 2 * $relative-spacing-normal;
@@ -184,7 +189,6 @@ $alertStyles: (
   padding: 1em;
   pre[class*="language-"] {
     padding: 0;
-    overflow: scroll;
     min-width: 100%; /* 2 */
     &.line-numbers {
       padding-left: 2.8em;

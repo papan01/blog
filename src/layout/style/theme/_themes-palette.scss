@@ -32,7 +32,8 @@ $palette: (
     --category-border: #757575,
     --tag-border: #212121,
     --warning: #e75b7e,
-    --info: #6200ee
+    --info: #6200ee,
+    --inline-code-bg:rgba(255,229,100,0.2)
   ),
   dark: (
     --bg1: #282c35,
@@ -56,6 +57,7 @@ $palette: (
     --category-border: var(--yellow1),
     --tag-border: #03dac6,
     --warning: #ffc400,
-    --info: #009688
+    --info: #009688,
+    --inline-code-bg:rgba(115,124,153,0.2)
   )
 );
