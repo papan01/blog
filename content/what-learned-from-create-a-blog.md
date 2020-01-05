@@ -38,7 +38,7 @@ Source Code 在[gatsby-starter-papan01](https://github.com/papan01/gatsby-starte
   我們通常會使用 Webpack 之類的工具來 bundle 我們 import 的檔案，將多個檔案合併成一個檔案，就稱之為 bundle。當我們的應用程式漸漸變大時，我們 bundle 的檔案也會越來越大，
   這會使得使用者在載入你的網頁時會載入一些他可能用不到的部分，甚至導致你的載入時間變長。解決方式就是『split』你的 bundle，我們可以使用 Dynamic import:
 
-  ```js
+  ```javascript
   import React, { Component } from "react";
   class App extends Component {
     handleClick = () => {
@@ -68,7 +68,7 @@ Source Code 在[gatsby-starter-papan01](https://github.com/papan01/gatsby-starte
 
   我想這不論在寫哪種網頁都會遇到類似的問題，而 GatsbyJS 當中可以透過 createPages 來創建多個分頁(參考[Gatsby Pagination](https://www.gatsbyjs.org/docs/adding-pagination/))，接著只要建立對應的 Link 即可，但我在中途還遇到另外一個問題就是 Pagination Algorithm，我們平常看到其他網頁再分頁過多時都是**1、2、3、...、最後一頁**，之類的顯示方式，所以就上網找了一下這該如何實作:
 
-  ```js
+  ```javascript
   function pagination(currentPage, pageCount, delta = 2) {
     const separate = (a, b) => [
       a,
