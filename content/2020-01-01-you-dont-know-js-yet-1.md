@@ -146,11 +146,11 @@ Interpreted語言通常是由上到下、一行一行的逐行執行，通常在
 ![you-dont-know-js-yet-1-2](/static/images/you-dont-know-js-yet-1-2.png)
 
 在此處理模型下，第5行的錯誤將會在解析階段就被捕獲，通常此種錯誤屬於語法上的錯誤，runtime上的錯誤也只能等到執行時才能發現。
-所有的Compiled語言都是已解析的，解析後的最後一步就是生成可執行的形式。一旦程式碼解析完畢，將會把解析過後的程式轉換成另外一種可執行的形式
-(通常稱為Abstract Syntax Tree(AST))。
+所有的Compiled語言都是已解析的，解析後的最後一步就是生成可執行的形式。一旦程式碼解析完畢，將會把解析過後的程式轉換成另外一種
+稱為抽象語法樹(Abstract Syntax Tree，AST)的形式，解析的動作可以看做把`var x = 2`拆解成`var`、`x`、`=`、`2`，接著再組成AST。
 
 而JS程式在執行前就已進行解析，在規範中必須將早期錯誤(early errors)在執行前就先被發現出來，通常是一些靜態錯誤，例如變數名稱重複等等。
-在解析之後會轉換為二進制(binary)的形式，然後交給"JS Virtual Machine"去執行，然後有些人說Virtual Machine是以Interpreted的方式去執行byte code，
+在解析之後會轉換為二進制(binary)的形式，然後交給"JS Virtual Machine"去執行，有些人說Virtual Machine是以Interpreted的方式去執行byte code，
 但用同樣的論點去說明Java或其他JVM驅動語言也是一樣的道理，這樣說明Java不是Compiled語言而是Interpreted語言嗎?這相當矛盾。
 
 而JS引擎解析過後的程式碼可以再利用JIT(Just-In-Time)進行多次的處理與優化，這些動作被說明為Interpretation或者Compilation都是合理的，但實際上這是一個相當複雜的步驟。
