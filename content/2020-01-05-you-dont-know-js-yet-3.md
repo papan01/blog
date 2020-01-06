@@ -312,7 +312,7 @@ var homework = {
 };
 ```
 
-`homework`只有`topic`一個屬性，但所有物件預設的prototype都會與物件`Object.prototype`關聯，其中它有`toString()`與`valueOf()`等方法，
+`homework`只有`topic`一個屬性，但所有物件預設的prototype都會與物件`Object.prototype`鏈結，其中它有`toString()`與`valueOf()`等方法，
 所以看看下面:
 
 ```javascript
@@ -321,5 +321,40 @@ homework.toString();    // [object Object]
 
 當我們執行`toString()`時會先去找`homework`有沒有此方法，但上面我們並沒有定義`toString()`，所以它會繼續往下找進而找到`Object.prototype.toString()`。
 
-### 物件關聯
+### 物件鏈結
 
+要建立物件原形鍊，可以透過`Object.create(..)`來創建:
+
+```javascript
+var homework = {
+    topic: "JS"
+};
+
+var otherHomework = Object.create(homework);
+
+otherHomework.topic;
+// "JS"
+```
+
+`Object.create(..)`的參數允許輸入一個物件，該物件將會與新創建的物件鏈接，然後返回新創建(並鏈結)的物件。看看下面的關係圖就能清楚地看出它們之間的關聯性:
+![YDKJSY-3-1](/static/images/you-dont-know-js-yet-3-1.png)
+
+原型鍊中的屬性只適合用於獲取，若你直接對屬性賦值，則它只會反映在該物件上，不會對其他原型鍊上的其他物件造成影響:
+
+```javascript
+homework.topic;
+// "JS"
+
+otherHomework.topic;
+// "JS"
+
+otherHomework.topic = "Math";
+otherHomework.topic;
+// "Math"
+
+homework.topic;
+// "JS" -- not "Math"
+```
+
+但此時otherHomework就會"shadowing"topic屬性:
+![YDKJSY-3-1](/static/images/you-dont-know-js-yet-3-2.png)
