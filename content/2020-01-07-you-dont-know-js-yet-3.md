@@ -1,6 +1,6 @@
 ---
 title: "You don't know JavaScript Yet:#3 深入JS的核心"
-date: "2020-01-05"
+date: "2020-01-07"
 category: "FullStack"
 cover: "/images/you-dont-know-js.png"
 tags:
@@ -131,7 +131,7 @@ for (let [btn,btnName] of buttonNames) {
 }
 ```
 
-這裡我們透過`[btn,btnName]`(這也稱為"array destructuring")來獲取一對key/值(`btn1`/`Button 2`, `btn2`/`Button 2`)接著就能簡單地進行操作了;若只需要值，我們可以透過`values()`
+這裡我們透過`[btn,btnName]`(這也稱為"array destructuring")來獲取一對key(鍵)/value(值)(`btn1`/`Button 2`, `btn2`/`Button 2`)接著就能簡單地進行操作了;若只需要值，我們可以透過`values()`
 來獲取值的部分就好:
 
 ```javascript
@@ -142,7 +142,7 @@ for (let btnName of buttonNames.values()) {
 // Button 2
 ```
 
-有時候進行陣列迭代我們需要得到index，這時我們可以使用`entries():
+有時候進行陣列迭代我們需要得到index，這時我們可以使用`entries()`:
 
 ```javascript
 var arr = [ 10, 20, 30 ];
@@ -245,7 +245,7 @@ for (let [idx,btn] of buttons.entries()) {
 
 範疇是靜態的，在我們定義函式的時候就決定要存取哪些變數，但Execution Context是動態的，完全取決於函式調用的方式。
 
-你可以把Execution Context作為一個有形的物件，它能夠決定函式在調用時能使用哪些屬性或者變數。
+你可以把Execution Context作為一個有形的物件，它的屬性能提供函式執行時使用。
 
 看看下面的例子:
 
@@ -336,7 +336,7 @@ otherHomework.topic;
 // "JS"
 ```
 
-`Object.create(..)`的參數允許輸入一個物件，該物件將會與新創建的物件鏈接，然後返回新創建(並鏈結)的物件。看看下面的關係圖就能清楚地看出它們之間的關聯性:
+`Object.create(..)`的參數允許輸入一個物件，該物件將會與新創建的物件鏈結，然後返回新創建(並鏈結)的物件。看看下面的關係圖就能清楚地看出它們之間的關聯性:
 ![YDKJSY-3-1](/static/images/you-dont-know-js-yet-3-1.png)
 
 原型鍊中的屬性只適合用於獲取，若你直接對屬性賦值，則它只會反映在該物件上，不會對其他原型鍊上的其他物件造成影響:
@@ -358,3 +358,40 @@ homework.topic;
 
 但此時otherHomework就會"shadowing"topic屬性:
 ![YDKJSY-3-1](/static/images/you-dont-know-js-yet-3-2.png)
+
+### 回頭來看`this`
+
+前面提到`this`是動態的，取決於函式如何執行，而上面物件透過原型鍊委派的方式執行方法，此時`this`也會跟著prototype改變。
+
+```javascript
+var homework = {
+    study() {
+        console.log(`Please study ${ this.topic }`);
+    }
+};
+
+var jsHomework = Object.create(homework);
+jsHomework.topic = "JS";
+jsHomework.study();
+// Please study JS
+
+var mathHomework = Object.create(homework);
+mathHomework.topic = "Math";
+mathHomework.study();
+// Please study Math
+```
+
+`jsHomework`與`mathHomework`都與`homework`鏈結，`jsHomework.study()`委派給`homework.study()`執行，若在其他語言中，此時的`this`可能只會去尋找`homework`中有沒有`topic`這個屬性，
+因為`study()`是定義在`homework`之中，但在JS中它依舊能夠找到`jsHomework`中的`topic`，並且合乎預期的執行，這是JS中`this`的動態能力。
+
+## 總結
+
+[You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)的第一冊大致上就差不多到這邊，原文中還有第四章，但那章是在介紹接下來幾冊的導覽。
+在原文中有兩個附錄:[Appendix A: Exploring Further](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/apA.md)與[Appendix B: Practice, Practice, Practice!](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/apB.md)，附錄A有些額外的知識可以去看一下，而附錄B則是作者出一些題目讓我們練習用的，強烈建議你可以去看看附錄B，
+好讓自己更熟悉一點。這本書看到這邊我依舊還有許多疑問沒有弄清楚，但我想往後看下去會越看越明白，後面幾冊的筆記我會再花時間慢慢補上，希望對你有些幫助。
+
+## Reference
+
+- [You don't know JavaScript](https://github.com/getify/You-Dont-Know-JS)
+- [You don't know JavaScript Yet:#1 什麼是JavaScript](/archives/2020-01-01-you-dont-know-js-yet-1)
+- [You don't know JavaScript Yet:#2 概觀JS](/archives/2020-01-04-you-dont-know-js-yet-2)
