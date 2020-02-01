@@ -70,7 +70,7 @@ export const pageQuery = graphql`
           fields {
             slug
           }
-          excerpt(pruneLength: 120)
+          excerpt(pruneLength: 120, truncate: true)
           timeToRead
           frontmatter {
             title
