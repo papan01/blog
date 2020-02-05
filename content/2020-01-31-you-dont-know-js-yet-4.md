@@ -12,7 +12,7 @@ tags:
 
 ## 編譯程式碼
 
-在[You don't know JavaScript Yet:#1 什麼是JavaScript](/archives/2020-01-01-you-dont-know-js-yet-1)中，我們討論過關於JS是屬於編譯(Compiler)語言，而我們需要討論此行為的原因是因為範疇完全取決於編譯時期。
+在[You don't know JavaScript Yet:#1 什麼是JavaScript](/archives/2020-01-01-you-dont-know-js-yet-1)中，我們討論過關於JS是屬於編譯(Compiler)語言，而我們需要討論此行為的原因是因為範疇完全取決於編譯時期。
 
 我們的程式碼通常經由編譯執行以下三個階段:
 
