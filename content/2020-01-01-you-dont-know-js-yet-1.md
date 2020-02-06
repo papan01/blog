@@ -12,7 +12,7 @@ tags:
 
 ## 關於JavaScript的名稱
 
-我想多數人在第一次看到JavaScript時，一定認為它與Java有某種關係存在，但實際上一點關係都沒有😑。實際上Brendan Eich(JavaScript的主要架構師與創造者)在一開始把它命名為Ｍocha，在Netscape(Brendan Eich當時的公司)內部，則使用了LiveScript作為它的名稱，但是當公開投票命名該語言時，"JavaScript"最終贏得了勝利，只因為當時Java是主流語言，而為了吸引使用Java的程式開發者使用JavaScript所以前面用了Java，而Script一詞在當時很流行，用來代表「輕量(lightweight)」的程式語言，所以就誕生了一個嵌入在Web中的腳本語言。Sum(現在的Oracle)與Netscpae把JavaScript送去ECMA(European Computer Manufacturers Association)進行標準化作業，但因為商標的問題，就出現我們常看見的「ECMAScript」這個奇怪的名字，而我們現在通常把它視為一種標準。
+我想多數人在第一次看到JavaScript時，一定認為它與Java有某種關係存在，但實際上一點關係都沒有😑。實際上Brendan Eich(JavaScript的主要架構師與創造者)在一開始把它命名為Ｍocha，在Netscape(Brendan Eich當時的公司)內部，則使用了LiveScript作為它的名稱，但是當公開投票命名該語言時，"JavaScript"最終贏得了勝利，只因為當時Java是主流語言，而為了吸引使用Java的程式開發者使用JavaScript所以前面用了Java，而Script一詞在當時很流行，用來代表「輕量(lightweight)」的程式語言，所以就誕生了一個嵌入在Web中的腳本語言。Sum(現在的Oracle)與Netscpae把JavaScript送去ECMA(European Computer Manufacturers Association)進行標準化作業，但因為商標的問題，就出現我們常看見的「ECMAScript」這個奇怪的名字，而我們現在通常把它視為一種標準。
 
 ## JavaScript規範
 
