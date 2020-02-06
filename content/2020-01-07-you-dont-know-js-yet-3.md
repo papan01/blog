@@ -8,7 +8,7 @@ tags:
   - YDKJSY
 ---
 
-前兩篇文章講的是在JS中比較Height-Level的部分，在這篇中將會深入討論JS核心的工作原理，當然這只是[You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)入門的前幾篇而已，有更多關於以下議題的討論將放在以後的篇章中。
+前兩篇文章講的是在JS中比較Height-Level的部分，在這篇中將會深入討論JS核心的工作原理，當然這只是[You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)入門的前幾篇而已，有更多關於以下議題的討論將放在以後的篇章中。
 
 ## 迭代(Iteration)
 
@@ -92,9 +92,9 @@ for (const val of simple) {
 
 `SimpleClass`定義了`[Symbol.iterator]`方法，所以我們可以對它的實例進行迭代。
 
-另外一種`...`運算子是迭代器的另一種機制，它有兩種對稱形式展開(spread)與其餘(rest)。
+另外一種`...`運算子是迭代器的另一種機制，它有兩種對稱形式展開(spread)與其餘(rest)。
 
-在JS當中有兩種可能性需要用到展開:陣列或者作為傳遞參數用，看看下面例子:
+在JS當中有兩種可能性需要用到展開:陣列或者作為傳遞參數用，看看下面例子:
 
 ```javascript
 // 將迭代器展開傳遞進陣列中，迭代的value都會儲存於vals當中。
