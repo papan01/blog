@@ -27,7 +27,7 @@ Source Code 在[gatsby-starter-papan01](https://github.com/papan01/gatsby-starte
 
   [Lighthouse](https://developers.google.com/web/tools/lighthouse/):
 
-  Lighthouse 可以幫我們評估網頁的 performance, accessibility, progressive web apps (PWAs)等等，我們可以透過 chrome 的開發人員工具，裡面的 audit 找到它。
+  Lighthouse 可以幫我們評估網頁的 performance, accessibility, progressive web apps (PWAs)等等，我們可以透過chrome的開發人員工具，裡面的 audit 找到它。
 
   [WebPageTest](https://www.webpagetest.org/):
 
