@@ -266,7 +266,7 @@ Object.is(NaN, NaN);        //true
 ( x => x*2 ) === ( x => x*2 ) //fasle
 ```
 
-當我們面對到的是物件時，內容的比較通常我們稱為結構相等(structural equality)。但在JS當中並未定義結構相等進行物件比較，而是使用識別相等(identity equality)或者稱為參考相等(reference equality)，而JS中所有的物件都是使用參考(reference)保存:
+當我們面對到的是物件時，內容的比較通常我們稱為結構相等(structural equality)。但在JS當中並未定義結構相等進行物件比較，而是使用識別相等(identity equality)或者稱為參考相等(reference equality)，而JS中所有的物件都是使用參考(reference)保存:
 
 ```javascript
 var x = [ 1, 2, 3 ];
@@ -321,7 +321,7 @@ JS使用兩種主要的模式來組織程式碼:**類別(classes)**和**模組(m
 
 物件導向(object-oriented)、類別導向(class oriented)與類別(classes)這幾個名詞有些微的一點差異，它們的定義是不通用的。若您有學過C++或者Java等物件導向(object-oriented)語言，那麼這部分對您應該相當熟悉。
 
-類別是對自訂數據結構的"型別(Type)"作定義，其中包含數據與對數據進行操作的行為(方法)，但類別並不是具體的值(Value)，這個值就是本篇一開始所介紹的，我們需要透過實例化(Instantiation)使其成為一個物件，我們通常會透過關鍵字new進行一次或多次的實例化，變成物件後，就能對其進行操作，看看以下的範例:
+類別是對自訂數據結構的"型別(Type)"作定義，其中包含數據與對數據進行操作的行為(方法)，但類別並不是具體的值(Value)，這個值就是本篇一開始所介紹的，我們需要透過實例化(Instantiation)使其成為一個物件，我們通常會透過關鍵字new進行一次或多次的實例化，變成物件後，就能對其進行操作，看看以下的範例:
 
 ```javascript
 class Page {
@@ -364,7 +364,7 @@ Page類別中的數據為文本其儲存於`this.text`屬性中，而`print()`�
 而Notebook的數據為儲存Page實例的陣列，它的行為(方法)有`addPage()`與`print()`。
 
 `var mathNotes = new Notebook()`這一段為Netebook類別實例的地方，`var page = new Page(text)`則為Page類別實例的地方，
-行為(方法)只能在在實例上調用(不能直接透過類別呼叫)，例如上面的`mathNotes.addPage("Arithmetic: + - * / ...")`與`page.print()`。
+行為(方法)只能在在實例上調用(不能直接透過類別呼叫)，例如上面的`mathNotes.addPage("Arithmetic: + - * / ...")`與`page.print()`。
 
 若不使用類別依舊可以達到上面的功能，但在缺乏組織性的情況下，程式碼會難以管理及閱讀並且更容易出錯與維護。
 
@@ -520,8 +520,8 @@ function BlogPost(title,author,pubDate,URL) {
 
 與類別相比，兩者有以下幾個差異:
 
-- 類別中的數據與方法儲存於物件的實例當中，在裡頭存取數據需透過`this`，而模組只要是在它的Scope當中都能進行存取，無需使用`this`。
-- 對於類別的實例化API是隱藏在類別的定義中的，而所有的數據和方法都是公開的。模組可以透過公開的方法來創建，而只有開放的數據與方法可以使用，否則其他都是私有的。
+- 類別中的數據與方法儲存於物件的實例當中，在裡頭存取數據需透過`this`，而模組只要是在它的Scope當中都能進行存取，無需使用`this`。
+- 對於類別的實例化API是隱藏在類別的定義中的，而所有的數據和方法都是公開的。模組可以透過公開的方法來創建，而只有開放的數據與方法可以使用，否則其他都是私有的。
 
 在2019年針對模組化又有區分AMD(Asynchronous Module Definition)、UMD(Universal Module Definition)、CommonJS(classic Node.js style modules)還有ES6的模組化，這些模組化的功能基本上都依賴於相同的基本原理，稍後會提到關於ES6模組化的部分。
 
@@ -565,7 +565,7 @@ forAgainstLet.print();
 - 不需要再多一層API進行交流，改為使用`export`這個關鍵字代替，而未使用`export`的部分都被視為是私有的。
 - 不需要進行實例化，透過`import`導入模組時，會自動產生單一實例，所有對該模組進行`import`的檔案(模組)是對到同一個實例的參考(reference)，若你真的需要產生多個實例化則必須在模組中添加經典模組的工廠函式。
 
-底下混合了經典模組以示範如何在ES模組當中產生多個實例。
+底下混合了經典模組以示範如何在ES模組當中產生多個實例。
 
 首先看看`publication.js`:
 
