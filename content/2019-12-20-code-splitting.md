@@ -7,7 +7,7 @@ tags:
   - Webpack
 ---
 
-在我學習React時，我沒有照著教學書上的建議使用Create React App，因為我想了解如何自己配置Ｗebpack，
+在我學習React時，我沒有照著教學書上的建議使用Create React App，因為我想了解如何自己配置Ｗebpack，
 但那時我也不太會Ｗebpack，所以我就React、Webpack甚至TypeScript一直摻著給它學下去(這裡建議先學習React跟Ｗebpack，
 而TypeScript比較類似選讀，因為網路上查到與React相關的資料百分之90％都不是使用TypeScript)，後來慢慢學習才知道其實
 Create React App有內建的Webpack設定來打包你的程式，GatsbyJS或者NextJS也都有類似的功能。為了讓自己搞懂
@@ -27,7 +27,7 @@ Code Splitting到底如何實作，這裡寫下我的實作心得，以下皆是
 
 ## 移除重複的modules
 
-首先我建立了一個簡單的專案，裡面有三個頁面Index、About以及favorites以及對應的compnent，裡面都包含了react、react-dom以及一個只包含h1的componet，底下是還未進行code split前檔案大小(.map可以暫時忽略不看):
+首先我建立了一個簡單的專案，裡面有三個頁面Index、About以及favorites以及對應的compnent，裡面都包含了react、react-dom以及一個只包含h1的componet，底下是還未進行code split前檔案大小(.map可以暫時忽略不看):
 
 ```shell
                     Asset       Size  Chunks                         Chunk Names
@@ -47,7 +47,7 @@ Entrypoint favorites = favorites.9f05d66b.js favorites.9f05d66b.js.map
 
 以及從Webpack Bundle Analyzer中可以看到三個chunk個有共同的部分(node-modules):
 [[info]]
-| *[Webpack Bundle Analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer)是一個可以觀察你輸出檔案大小的好工具。*
+| *[Webpack Bundle Analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer)是一個可以觀察你輸出檔案大小的好工具。*
 ![code-splitting-1](/static/images/code-splitting-1.png)
 
 接下來我希望能夠把react、react-dom抽離出來以減少index、about和favorites這三個chunk的size，在webpack.config中加入底下的程式碼，
