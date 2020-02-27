@@ -212,28 +212,47 @@ console.log(nextStudent);
 下面我們用對話的方式呈現，第一階段為Compiler與Scope Manager的對話:
 
 > ***Compiler***:Hi *Scope Manager(全域範疇)*，我發現了一個識別字 宣告為`students`，你有聽過它嗎?
+>
 > ***Scope Manager(全域範疇)***:沒有，沒聽說過，所以我剛已為您創建了它。
+>
 > ***Compiler***:Hi *Scope Manager(全域範疇)*，我發現了一個識別字 宣告為`getStudentName`，你有聽過它嗎?
+>
 > ***Scope Manager(全域範疇)***:沒有，沒聽說過，所以我剛已為您創建了它。
+>
 > ***Compiler***:Hi *Scope Manager(全域範疇)*，`getStudentName`指向一個函式，我們需要一個新的範疇。
+>
 > ***Scope Manager(函式範疇)***:了解，這裡就是。
+>
 > ***Compiler***:Hi *Scope Manager(函式範疇)*，我發現了一個參數名為`studentID`，你有聽過它嗎?
+>
 > ***Scope Manager(函式範疇)***:沒有，但我已將其註冊於此範疇中。
+>
 > ***Compiler***:Hi *Scope Manager(函式範疇)*，我找到了一個`for`迴圈，我們需要一個新的範疇。
+>
 > ...
 
 接著我們來看執行時的對話，這次的主角換成Engine與Scope Manager:
 
 > ***Engine***:Hi *Scope Manager(全域範疇)*，在我們開始前，你可以幫我找一下識別字 `getStudentName`嗎，好讓我為它配置功能。
+>
 > ***Scope Manager(全域範疇)***:Yep，給你。
+>
 > ***Engine***:Hi *Scope Manager(全域範疇)*，我找到了target reference名為`students`，你有聽過它嗎?
+>
 > ***Scope Manager(全域範疇)***:有，它已經被宣告於這個範疇中，且已將它初始化為`undefinded`，可進行賦值了，給你。
+>
 > ***Engine***:Hi *Scope Manager(全域範疇)*，我找到了target reference名為`nextStudent`，你有聽過它嗎?
+>
 > ***Scope Manager(全域範疇)***:有，它已經被宣告於這個範疇中，且已將它初始化為`undefinded`，可進行賦值了，給你。
+>
 > ***Engine***:Hi *Scope Manager(全域範疇)*，我找到了source reference名為`getStudentName`，你有聽過它嗎?
+>
 > ***Scope Manager(全域範疇)***:有，它已經被宣告於這個範疇中，給你。
+>
 > ***Engine***:太好了，`getStudentName`是一個函式，我將執行它。
+>
 > ***Engine***:Hi *Scope Manager(全域範疇)*，我們現在需要實例化函式的範疇。
+>
 > ...
 
 [[info]]
@@ -254,8 +273,11 @@ console.log(nextStudent);
 我們來看一下這段語句`for (let student of students) {`，`students`不再該範疇當中，它是如何找到它的:
 
 > ***Engine***:Hi *Scope Manager(函式範疇)*，我找到了source reference名為`students`，你有聽過它嗎?
+>
 > ***Scope Manager(函式範疇)***:沒有，我從來沒聽過它，您可能需要去外面的範疇尋找。
+>
 > ***Engine***:Hi *Scope Manager(全域範疇)*，我找到了source reference名為`students`，你有聽過它嗎?
+>
 > ***Scope Manager(全域範疇)***:有，它已經被宣告於這個範疇中，給你。
 
 ### 查找失敗(Lookup Failures)
@@ -295,8 +317,11 @@ console.log(nextStudent);
 看看它們的溝通模式:
 
 > ***Engine***:Hi *Scope Manager(函式範疇)*，我找到了target reference名為`nextStudent`，你有聽過它嗎?
+>
 > ***Scope Manager(函式範疇)***:沒有，我從來沒聽過它，您可能需要去外面的範疇尋找。
+>
 > ***Engine***:Hi *Scope Manager(全域範疇)*，我找到了target reference名為`nextStudent`，你有聽過它嗎?
+>
 > ***Scope Manager(全域範疇)***:沒有，但我們在非嚴格模式下，我幫你創建它了，儘管拿去使用。
 
 在嚴格模式下，會啟動保護的機制:
