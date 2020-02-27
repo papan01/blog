@@ -639,5 +639,5 @@ forAgainstLet.print();
 
 ## Reference
 
-- [You don't know JavaScript](https://github.com/getify/You-Dont-Know-JS)
+- [You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)
 - [You don't know JavaScript Yet:#1 什麼是JavaScript](/archives/2020-01-01-you-dont-know-js-yet-1)
