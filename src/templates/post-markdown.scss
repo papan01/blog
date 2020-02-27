@@ -79,6 +79,14 @@ $alertStyles: (
     }
   }
 
+  blockquote p {
+    margin-bottom: $relative-spacing-normal;
+    margin-top: 1.9 * $relative-spacing-normal;
+    border-left: 4px solid var(--blue1);
+    padding-left: 0.8 * $relative-spacing-normal;
+    text-align: justify;
+  }
+
   .gatsby-resp-image-wrapper {
     margin: $relative-spacing-normal 0;
   }
