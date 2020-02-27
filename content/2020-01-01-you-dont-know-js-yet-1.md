@@ -153,13 +153,13 @@ Interpreted語言通常是由上到下、一行一行的逐行執行，通常在
 在解析之後會轉換為二進制(binary)的形式，然後交給"JS Virtual Machine"去執行，有些人說Virtual Machine是以Interpreted的方式去執行byte code，
 但用同樣的論點去說明Java或其他JVM驅動語言也是一樣的道理，這樣說明Java不是Compiled語言而是Interpreted語言嗎?這相當矛盾。
 
-而JS引擎解析過後的程式碼可以再利用JIT(Just-In-Time)進行多次的處理與優化，這些動作被說明為Interpretation或者Compilation都是合理的，但實際上這是一個相當複雜的步驟。
+而JS Engine解析過後的程式碼可以再利用JIT(Just-In-Time)進行多次的處理與優化，這些動作被說明為Interpretation或者Compilation都是合理的，但實際上這是一個相當複雜的步驟。
 
 總結一下JS的整個流程:
 
-1. 工程師寫好程式碼，使用Babel將其進行編譯，然後透過Webpack進行打包(或者其他建構方式)，然後交付給JS引擎。
-1. JS引擎將它解析成AST。
-1. 然後JS引擎再將AST轉換為某種二進制的中間表示式(binary intermediate representation(IR))，然後透過最佳化的JIT compiler進行轉換或者細化。
+1. 工程師寫好程式碼，使用Babel將其進行編譯，然後透過Webpack進行打包(或者其他建構方式)，然後交付給JS Engine。
+1. JS Engine將它解析成AST。
+1. 然後JS Engine再將AST轉換為某種二進制的中間表示式(binary intermediate representation(IR))，然後透過最佳化的JIT compiler進行轉換或者細化。
 1. 最後JS Virtual Machine執行程式。
 ![you-dont-know-js-yet-1-3](/static/images/you-dont-know-js-yet-1-3.png)
 
@@ -215,3 +215,7 @@ JS是ECMAScript標準(在撰寫本文時為ES2019版本)的實現，該標準由
 JS是一種multi-paradigm語言，意味著語法和功能讓開發人員可以混合使用。
 
 JS是一種編譯(compiler)語言，在執行之前先進行處理並驗證程序(並且報告任何錯誤！)。
+
+## Reference
+
+- [You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)
