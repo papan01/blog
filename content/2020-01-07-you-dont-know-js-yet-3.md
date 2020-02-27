@@ -159,7 +159,7 @@ for (let [idx,val] of arr.entries()) {
 
 ## 閉包(Closure)
 
-「閉包是讓函式記住與持續訪問在其範疇之外的變量的一種能力，即使該函式在其他範疇中執行也是如此。」
+「閉包是讓函式記住與持續訪問在其範疇之外的變數的一種能力，即使該函式在其他範疇中執行也是如此。」
 
 我們平常在寫程式時一定都有使用過閉包，但可能不是很了解閉包，因為網路上有許多抽象的定義甚至用很正式的學術語言來談論它，但這對我們來說沒有幫助，
 所以在這邊我們想給予它一些清楚且具體的定義。
@@ -194,8 +194,8 @@ howdy("Grant");
 `greeting(..)`會回傳函式`who(..)`的一個實例，`who(..)`中有使用了`greeting(..)`的參數`msg`，當我們第一次執行`greeting(..)`後，將會把參數`msg`
 的reference分配給`hello`變數，第二次呼叫同理。
 
-當`greeting(..)`呼叫完畢後我們通常希望垃圾回收機制能幫我們把所有變量從memory中清除掉，但在上面的例子中`msg`並沒有被清掉，這就是閉包的功能。此時在`hello`與`howdy`中的`msg`
-與當初賦予它們的`msg`具有相同的reference，也就是`greeting(..)`範疇的reference，所以實際上這些變量是直接被保留下來的。
+當`greeting(..)`呼叫完畢後我們通常希望垃圾回收機制能幫我們把所有變數從memory中清除掉，但在上面的例子中`msg`並沒有被清掉，這就是閉包的功能。此時在`hello`與`howdy`中的`msg`
+與當初賦予它們的`msg`具有相同的reference，也就是`greeting(..)`範疇的reference，所以實際上這些變數是直接被保留下來的。
 
 再看看另外一個例子:
 
@@ -240,7 +240,7 @@ for (let [idx,btn] of buttons.entries()) {
 在我看到[You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)這部分之前，我對`this`的觀念跟書上說的一樣，將其他語言的`this`與JS中的`this`混為一談，
 最常被誤解的一種就是:函式中的`this`指向其函式本身，另外一種誤解(我原本也那麼認為):方法中的`this`指向其所屬物件，但這兩個都不正確。
 
-在定義函式時，它會將相關的變數通過閉包附加到它的範疇當中，而範疇是用來控制當前函式所有變量的reference。但函式除了範疇之外還有另外一個特徵會引響到它能存取的變數，我們稱其為"Execution Context"
+在定義函式時，它會將相關的變數通過閉包附加到它的範疇當中，而範疇是用來控制當前函式所有變數的reference。但函式除了範疇之外還有另外一個特徵會引響到它能存取的變數，我們稱其為"Execution Context"
 ，並且透過`this`關鍵字暴露給函式。
 
 範疇是靜態的，在我們定義函式的時候就決定要存取哪些變數，但Execution Context是動態的，完全取決於函式調用的方式。
@@ -392,6 +392,6 @@ mathHomework.study();
 
 ## Reference
 
-- [You don't know JavaScript](https://github.com/getify/You-Dont-Know-JS)
+- [You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)
 - [You don't know JavaScript Yet:#1 什麼是JavaScript](/archives/2020-01-01-you-dont-know-js-yet-1)
 - [You don't know JavaScript Yet:#2 概觀JS](/archives/2020-01-04-you-dont-know-js-yet-2)
