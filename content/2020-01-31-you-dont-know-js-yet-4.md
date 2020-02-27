@@ -23,7 +23,7 @@ tags:
 
 3. 產生程式碼(Code Generation):將AST轉換成可執行的程式碼，通常是機器語言，這步驟會隨著語言以及平台的不同有大幅度的變化。
 
-JS引擎所進行的工作比上述的三個階段複雜得多，與其他語言一樣在剖析與產生程式碼的的過程中，會有最佳化執行效能的步驟，包含消除不必要的元素等等。但與其他語言不同的部分，JS沒有充足的時間來進行最佳化，因為JS的編譯不是在建置(build)步驟中預先處理，它必須在執行前的幾毫秒(或者更短)內發生，所以JS會使用各種技巧例如使用JIT來延遲編譯或者hot re-compile等等。
+JS Engine所進行的工作比上述的三個階段複雜得多，與其他語言一樣在剖析與產生程式碼的的過程中，會有最佳化執行效能的步驟，包含消除不必要的元素等等。但與其他語言不同的部分，JS沒有充足的時間來進行最佳化，因為JS的編譯不是在建置(build)步驟中預先處理，它必須在執行前的幾毫秒(或者更短)內發生，所以JS會使用各種技巧例如使用JIT來延遲編譯或者hot re-compile等等。
 
 ## 兩個階段
 
@@ -40,7 +40,7 @@ greeting = ."Hi";
 // SyntaxError: unexpected token .
 ```
 
-這段程式碼不會print出`"Hello"`，取而代之的是SyntaxError，由於`"Hi"`之前的`.`造成語法錯誤，若JS是逐行執行那麼很有可能會先print`"Hello"`之後在拋出SyntaxError，但實際上JS引擎在執行前會剖析整個程式碼。
+這段程式碼不會print出`"Hello"`，取而代之的是SyntaxError，由於`"Hi"`之前的`.`造成語法錯誤，若JS是逐行執行那麼很有可能會先print`"Hello"`之後在拋出SyntaxError，但實際上JS Engine在執行前會剖析整個程式碼。
 
 第二個例子:
 
@@ -55,7 +55,7 @@ function saySomething(greeting,greeting) {
 }
 ```
 
-這段程式碼不會print出`"Howdy"`，儘管格式是正確的語句，而問題出在`saySomething(...)`，由於裏頭使用了嚴格模式，所以禁止函式使用重複名稱的參數，若在非嚴格模式下是允許那麼做的，這不像上一個例子中的語法錯誤，而是屬於嚴格模式規範中的早期錯誤。那麼JS引擎是如何知道`greeting`參數已經重複?甚至如何知道`"use strict"`的存在?合理的答案就是JS引擎在執行前會剖析整個程式碼。
+這段程式碼不會print出`"Howdy"`，儘管格式是正確的語句，而問題出在`saySomething(...)`，由於裏頭使用了嚴格模式，所以禁止函式使用重複名稱的參數，若在非嚴格模式下是允許那麼做的，這不像上一個例子中的語法錯誤，而是屬於嚴格模式規範中的早期錯誤。那麼JS Engine是如何知道`greeting`參數已經重複?甚至如何知道`"use strict"`的存在?合理的答案就是JS Engine在執行前會剖析整個程式碼。
 
 最後一個例子:
 
@@ -73,7 +73,7 @@ saySomething();
 // ReferenceError: Cannot access 'greeting' before initialization
 ```
 
-這裡需要注意的是錯誤發生是在`greeting = "Howdy"`上，而錯誤描述說明的語句是指`let greeting = "Hi"`而不是上面的`var greeting = "Hello"`，由於過早訪問變數產生衝突，這還牽扯到暫時死區(Temporal Dead Zone，TDZ)與提升(Hositing)，這兩個議題將在後面章節談到，而這也是JS引擎是否在較早過程中已經處理了此程式碼並且設置了範疇與變數的存取，只有在執行前進行剖析才能準確地完成。
+這裡需要注意的是錯誤發生是在`greeting = "Howdy"`上，而錯誤描述說明的語句是指`let greeting = "Hi"`而不是上面的`var greeting = "Hello"`，由於過早訪問變數產生衝突，這還牽扯到暫時死區(Temporal Dead Zone，TDZ)與提升(Hositing)，這兩個議題將在後面章節談到，而這也是JS Engine是否在較早過程中已經處理了此程式碼並且設置了範疇與變數的存取，只有在執行前進行剖析才能準確地完成。
 
 ## Compiler的細語
 
@@ -101,7 +101,7 @@ console.log(nextStudent);
 // Suzy
 ```
 
-除了宣告之外，程式碼中所有變量或者識別字均為以下兩種角色的其中一種:目標(target)/來源(source)。
+除了宣告之外，程式碼中所有變數或者識別字均為以下兩種角色的其中一種:目標(target)/來源(source)。
 
 [[warning]]
 |或許你有讀過有關於Left-Hand Side(LHS)與Right-Hand Side(RHS)，其中LHS表示target而RHS表示source，
@@ -206,11 +206,11 @@ with (badIdea) {
 這裡有些部分在原文中都保留於後面的章節講述，這一章算是先給我們預習一下，在本文中我們可以看到作者想要表達的幾個地方:
 
 - 語彙範疇是在編譯期定義的範疇，而範疇在我們寫好程式碼就已成定局。
-- 竟量使用嚴格模式來編寫程式碼，避免使用`eval(..)`與`with(..)`，因為這會導致JS引擎進行最佳化的結果無效。
+- 盡量使用嚴格模式來編寫程式碼，避免使用`eval(..)`與`with(..)`，因為這會導致JS Engine進行最佳化的結果無效。
 
 ## Reference
 
-- [You don't know JavaScript](https://github.com/getify/You-Dont-Know-JS)
+- [You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)
 - [You don't know JavaScript Yet:#1 什麼是JavaScript](/archives/2020-01-01-you-dont-know-js-yet-1)
 - [You don't know JavaScript Yet:#2 概觀JS](/archives/2020-01-04-you-dont-know-js-yet-2)
 - [You don't know JavaScript Yet:#3 深入JS的核心](/archives/2020-01-07-you-dont-know-js-yet-3)
