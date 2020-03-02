@@ -8,7 +8,7 @@ tags:
   - YDKJSY
 ---
 
-在前一章我們有解釋過[語彙範疇](/archives/2020-02-23-you-dont-know-js-yet-5)的部分，若沒看過的朋友可以去看看一下，可以幫助您閱讀這篇。
+在巢狀範疇中，連接範疇與範疇之間的部分稱為範疇鏈，它定義了如何存取變數以及去哪裡存取變數。在前一章我們有解釋過[語彙範疇](/archives/2020-02-23-you-dont-know-js-yet-5)的部分，若沒看過的朋友可以去看看一下，可以幫助您閱讀這篇。
 
 ## 遮蔽(Shadowing)
 
@@ -199,7 +199,7 @@ var askQuestion = function(){
 };
 ```
 
-這裡的函式表達式是使用匿名的，它沒有識別字所以不會去影響到其他範疇。
+這裡的函式表達式是使用匿名的，我們也稱它為**匿名函式**，它沒有識別字所以不會去影響到其他範疇。
 
 ## 箭頭函式(Arrow Functions)
 
@@ -210,3 +210,35 @@ var askQuestion = () => {
     // ..
 };
 ```
+
+箭頭函式透過`=>`進行定義的動作，不須透過`function`關鍵字。`(..)`中可以帶有參數，如同平常宣告函式一樣，而`{..}`中也是如此，
+如果忽略`{..}`的部分，則代表直接回傳一個值，不需透過關鍵字`return`。箭頭函式與匿名函式有些類似的地方，它們都沒有識別字，也就是我們無法直接透過識別字使用它。箭頭函式可以讓語法較為簡潔，但由於它可以使用不同形式來表達(有無`(..)`或者`{..}`)，有時會讓人混亂:
+
+```javascript
+() => 42
+
+id => id.toUpperCase()
+
+(id,name) => ({ id, name })
+
+(...args) => {
+    return args[args.length - 1];
+};
+```
+
+這裡會提到箭頭函式的原因是因為有些人認為箭頭函式與標準函式的語彙範疇行為上有所不同，但實際上這句話是錯的，除了箭頭函式是匿名的以外，其他部分與標準函式沒有區別，無論箭頭函式是否帶有`{..}`，內層(巢狀)範疇都與標準函式的行為相同。
+
+## 總結
+
+- 當函式被定義時會產生新的範疇，程式中由許多函式所結合，而這些函式的範疇彼此會產生一種階層的關係，我們稱它為範疇鏈，用來控制變數的存取。
+- 遮蔽(Shadowing)是我們較常會遇到的問題，若在不同的範疇中使用了相同的變數名稱，就會有遮蔽的現象。
+
+## Reference
+
+- [You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)
+- [You don't know JavaScript Yet:#1 什麼是JavaScript](/archives/2020-01-01-you-dont-know-js-yet-1)
+- [You don't know JavaScript Yet:#2 概觀JS](/archives/2020-01-04-you-dont-know-js-yet-2)
+- [You don't know JavaScript Yet:#3 深入JS的核心](/archives/2020-01-07-you-dont-know-js-yet-3)
+- [You don't know JavaScript Yet:#4 範疇](/archives/2020-01-31-you-dont-know-js-yet-4)
+- [You don't know JavaScript Yet:#5 說明語彙範疇](/archives/2020-02-23-you-dont-know-js-yet-5)
+
