@@ -36,7 +36,7 @@ console.log(studentName);
 // Suzy
 ```
 
-首先看到`var studentName = "Suzy"`(line 1)為全域範疇的變數，另外一個相同名稱的變量存在於函式`printStudent(studentName)`參數範疇，而現在的問題是，函式`printStudent(..)`中的`studentName = studentName.toUpperCase()`，`studentName`會是參考全域範疇的變量還是參數範疇中的變量?
+首先看到`var studentName = "Suzy"`(line 1)為全域範疇的變數，另外一個相同名稱的變數存在於函式`printStudent(studentName)`參數範疇，而現在的問題是，函式`printStudent(..)`中的`studentName = studentName.toUpperCase()`，`studentName`會是參考全域範疇的變數還是參數範疇中的變數?
 
 當進行查找時，優先從當前範疇開始搜尋，所以函式範疇中未找到`studentName`，接著會往參數範疇(這裡我們使用[參數範疇](/archives/2020-02-23-you-dont-know-js-yet-5#%E5%8F%83%E6%95%B8%E7%AF%84%E7%96%87parameter-scope)概念)尋找，所以在這裡找到了`studentName`，就會停止往上繼續搜尋，所以全域範疇的`studentName`就不會被考慮，我們這邊就稱參數遮蔽(Shadowing)了全域變數。
 
