@@ -126,11 +126,11 @@ window.hello();
 // Hello, Kyle!
 ```
 
-這是JS規範預設的行為，外部範疇為全域範疇，`studentName`被創建為全域變量。但在其它的JS環境中並非如此，所以你無法說文件最外層中的範疇為全域範疇，這也是令人容易混淆的地方，視JS環境而定是我們需要注意的地方。
+這是JS規範預設的行為，外部範疇為全域範疇，`studentName`被創建為全域變數。但在其它的JS環境中並非如此，所以你無法說文件最外層中的範疇為全域範疇，這也是令人容易混淆的地方，視JS環境而定是我們需要注意的地方。
 
-### 全域變量遮蔽(shadowing)全域物件屬性
+### 全域變數遮蔽(shadowing)全域物件屬性
 
-在前一章我們有描述過何謂[遮蔽(shadowing)](https://papan01.com/archives/2020-02-27-you-dont-know-js-yet-6#%E9%81%AE%E8%94%BDshadowing)，在這裡想討論的是有關於"全域變量(global variable)"與"全域物件屬性(global object property)"在全域範疇中若有相同名稱會有什麼差異:
+在前一章我們有描述過何謂[遮蔽(shadowing)](https://papan01.com/archives/2020-02-27-you-dont-know-js-yet-6#%E9%81%AE%E8%94%BDshadowing)，在這裡想討論的是有關於"全域變數(global variable)"與"全域物件屬性(global object property)"在全域範疇中若有相同名稱會有什麼差異:
 
 ```javascript
 window.something = 42;
@@ -144,7 +144,7 @@ console.log(window.something);
 // 42
 ```
 
-在這種情況下，全域變量總是會遮蔽全域物件屬性，當然這是一種壞的撰寫方式，這樣寫只會讓讀你程式的人拳頭緊緊的而已，要避免這種狀況最好的辦法是使用`var`進行全域宣告，`let`與`const`用於區塊範疇中。
+在這種情況下，全域變數總是會遮蔽全域物件屬性，當然這是一種壞的撰寫方式，這樣寫只會讓讀你程式的人拳頭緊緊的而已，要避免這種狀況最好的辦法是使用`var`進行全域宣告，`let`與`const`用於區塊範疇中。
 
 ### Window的屬性:name
 
@@ -180,7 +180,7 @@ self.studentID;
 // undefined
 ```
 
-上面可以看到透過`var`與`function`宣告的變量都有鏡射到`self`這個全域範疇中，而使用`let`則沒有。
+上面可以看到透過`var`與`function`宣告的變數都有鏡射到`self`這個全域範疇中，而使用`let`則沒有。
 
 ### Developer Tools Console/REPL
 
@@ -209,8 +209,104 @@ hello();
 export hello;
 ```
 
-若我們只是單純的載入這個檔案，與前面的行為沒什麼區別，但若透過關鍵字`import`導入此檔案，全域範疇的行為可能就不是我們想的那樣，根據之前的邏輯來看，`studentName`與`hello`都屬於全域變量，並且我們也可以透過全域物件`window`(若在browser環境下)使用它們，但實際上這裡最外層的範疇並非全域範疇，反而比較像是模組範疇，它並沒有像全域範疇那樣，將全域變量隱式的加入到全域物件屬性中，所以也沒有像`window`這種全域物件可以使用，但這並不是說你不能在這裡使用`window`來使用全域物件屬性。
+若我們只是單純的載入這個檔案，與前面的行為沒什麼區別，但若透過關鍵字`import`導入此檔案，全域範疇的行為可能就不是我們想的那樣，根據之前的邏輯來看，`studentName`與`hello`都屬於全域變數，並且我們也可以透過全域物件`window`(若在browser環境下)使用它們，但實際上這裡最外層的範疇並非全域範疇，反而比較像是模組範疇，它並沒有像全域範疇那樣，將全域變數隱式的加入到全域物件屬性中，所以也沒有像`window`這種全域物件可以使用，但這並不是說你不能在這裡使用`window`來使用全域物件屬性。
 
 ESM鼓勵最大程度地減少對全域範疇的依賴，在全局範疇中，我們可以導入當前模組所需要的任何模組，這樣就很少會看到全域範疇或其全域物件的用法，但是實際上依舊有大量的內建全域變數可以使用。
 
 ### Node
+
+在Node中每個檔案都是module(ES module或者CommonJS module)，這所造成的影響也會與上述ES modules類似，實際上Node最外層的範疇永遠不會是全域範疇。在這裡我們使用CommonJS module作為例子(這是Node一開始就支援的module規格，後來才加入ES module):
+
+```javascript
+var studentName = "Kyle";
+
+function hello() {
+    console.log(`Hello, ${ studentName }!`);
+}
+
+hello();
+// Hello, Kyle!
+
+module.exports.hello = hello;
+```
+
+如之前我們介紹wrapper function一般，Node也會有效率的使用一個wrapper function將`var`或者`function`所宣告的變數置入其中，以便使用，所以它們會隸屬於該函式的範疇，而不會是全域範疇，我們可以把上面代碼想像透過Node包裝後的結果如下(只是示意，與實際有所差異):
+
+```javascript
+function Module(module,require,__dirname,...) {
+    var studentName = "Kyle";
+
+    function hello() {
+        console.log(`Hello, ${ studentName }!`);
+    }
+
+    hello();
+    // Hello, Kyle!
+
+    module.exports.hello = hello;
+}
+```
+
+從上面很明顯看到為什麼`studentName`與`hello`不屬於全域變數。
+
+Node定義了一些諸如`require()`之類的全域變數，但它實際上不屬於全域範疇內的識別字(意思就是不是全域物件屬性)，它比較像是透過注入的方式到每一個module中，有點類似於上面程式碼中那樣。那麼我們到底該如何在Node中使用全域範疇?Node提供了一個物件`global`，它類似於在browser中的`window`一樣:
+
+```javascript
+global.studentName = "Kyle";
+
+function hello() {
+    console.log(`Hello, ${ studentName }!`);
+}
+
+hello();
+// Hello, Kyle!
+
+module.exports.hello = hello;
+```
+
+上面我們將`studentName`加入到全域物件`global`中，此時它就會類似於前面所述的全域變數一般提供使用，`global`這個識別字不是由JS所定義的，而是由Node所定義的。
+
+## Global This
+
+綜合我們上述所講的JS在不同環境中，整理一下JS可能會或者可能不會的行為:
+
+- 在最外層的範疇中使用`var`或`function`(或`let`，`const`和`class`)宣告一個全域變數。
+- 如果將var或function用於宣告，則還會將全域變數加入為全域物件屬性。
+- 使用`window`，`self`或`global`等識別字引用全域物件。
+
+這裡還要介紹另外一個透過`new Function(..)`來獲取全域物件的方法:
+
+```javascript
+const theGlobalScopeObject = (new Function("return this"))();
+```
+
+使用`new Function`有點類似於`eval()`，它可以動態的建構輸入字串參數作為其函式內容的函式，所以`this`將會作為全域物件的reference回傳。
+所以在上面我們介紹了`window`、`self`、`global`與`new Function`作為我們使用全域物件的手段。
+而在ES2020中，JS定義了一個對於全域物件標準化的reference，稱為`globalThis`，這可以用來代替上述的方法。
+我們也可以寫一個polyfill用於所有環境中:
+
+```javascript
+const theGlobalScopeObject =
+    (typeof globalThis !== "undefined") ? globalThis :
+    (typeof global !== "undefined") ? global :
+    (typeof window !== "undefined") ? window :
+    (typeof self !== "undefined") ? self :
+    (new Function("return this"))();
+```
+
+不過這當然不是一個好的方式，但如果你想安全的使用全域物件，至少這個能起到作用。
+
+## 總結
+
+全域範疇在不同環境中有不同的存取方式，在ES6的`import`與`export`出現之後，已經較少直接在全域範疇宣告變數使用了，
+但我們依舊有使用到它的機會，所以了解全域範疇依然是重要的。
+
+## Reference
+
+- [You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)
+- [You don't know JavaScript Yet:#1 什麼是JavaScript](/archives/2020-01-01-you-dont-know-js-yet-1)
+- [You don't know JavaScript Yet:#2 概觀JS](/archives/2020-01-04-you-dont-know-js-yet-2)
+- [You don't know JavaScript Yet:#3 深入JS的核心](/archives/2020-01-07-you-dont-know-js-yet-3)
+- [You don't know JavaScript Yet:#4 範疇](/archives/2020-01-31-you-dont-know-js-yet-4)
+- [You don't know JavaScript Yet:#5 說明語彙範疇](/archives/2020-02-23-you-dont-know-js-yet-5)
+- [You don't know JavaScript Yet:#6 範疇鏈](/archives/2020-02-27-you-dont-know-js-yet-6)
