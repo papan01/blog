@@ -268,7 +268,7 @@ module.exports.hello = hello;
 
 ## Global This
 
-綜合我們上述所講的JS在不同環境中，整理一下JS可能會或者可能不會的行為:
+綜合我們上述所講的，JS在不同環境中可能會或者可能不會的行為:
 
 - 在最外層的範疇中使用`var`或`function`(或`let`，`const`和`class`)宣告一個全域變數。
 - 如果將var或function用於宣告，則還會將全域變數加入為全域物件屬性。
