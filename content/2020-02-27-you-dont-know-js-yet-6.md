@@ -14,7 +14,7 @@ tags:
 
 這裡先開門見山解釋遮蔽(Shadowing)是什麼意思:
 
-- **遮蔽(Shadowing)**: 若在不同的巢狀範疇中有兩個以上相同的識別字(Identifier)，那麼當進行查找時，搜尋到第一個符合的識別字，就會停止搜尋。
+- **遮蔽(Shadowing)**: 若在不同的巢狀範疇中有兩個以上相同的識別字(identifier)，那麼當進行查找時，搜尋到第一個符合的識別字，就會停止搜尋。
 
 讓我們用例子慢慢解釋:
 
@@ -38,7 +38,7 @@ console.log(studentName);
 
 首先看到`var studentName = "Suzy"`(line 1)為全域範疇的變數，另外一個相同名稱的變數存在於函式`printStudent(studentName)`參數範疇，而現在的問題是，函式`printStudent(..)`中的`studentName = studentName.toUpperCase()`，`studentName`會是參考全域範疇的變數還是參數範疇中的變數?
 
-當進行查找時，優先從當前範疇開始搜尋，所以函式範疇中未找到`studentName`，接著會往參數範疇(這裡我們使用[參數範疇](/archives/2020-02-23-you-dont-know-js-yet-5#%E5%8F%83%E6%95%B8%E7%AF%84%E7%96%87parameter-scope)概念)尋找，所以在這裡找到了`studentName`，就會停止往上繼續搜尋，所以全域範疇的`studentName`就不會被考慮，我們這邊就稱參數遮蔽(Shadowing)了全域變數。
+當進行查找時，優先從當前範疇開始搜尋，所以函式範疇中未找到`studentName`，接著會往參數範疇(這裡我們使用[參數範疇](/archives/2020-02-23-you-dont-know-js-yet-5#%E5%8F%83%E6%95%B8%E7%AF%84%E7%96%87parameter-scope)概念)尋找，所以在這裡找到了`studentName`，就會停止往上繼續搜尋，所以全域範疇的`studentName`就不會被考慮，我們這邊就稱參數遮蔽(shadowing)了全域變數。
 
 ### 避免遮蔽的技巧
 
@@ -140,7 +140,7 @@ var askQuestion = function(){
 };
 ```
 
-這會與上面產生一樣的結果，差別在於此變數是透過[函式表達式](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/function)宣告，所以它的定義將不會被"提升(hoist)"。而函式宣告與函式表達式兩者主要的差別在於識別字所產生的行為
+這會與上面產生一樣的結果，差別在於此變數是透過[函式表達式](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/function)宣告，所以它的定義將不會被[hoisting](/archives/2020-03-06-you-dont-know-js-yet-8)。而函式宣告與函式表達式兩者主要的差別在於識別字所產生的行為
 ，考慮以下例子:
 
 ```javascript
@@ -189,7 +189,7 @@ askQuestion();
 // TypeError
 ```
 
-嚴格模式中會拋出`TypeError`;而非嚴格模式中依舊會賦值失敗但不會拋出錯誤訊息。
+嚴格模式中會拋出`TypeError`;而非嚴格模式中會賦值失敗但不會拋出錯誤訊息。
 
 最後我們回到前面的例子:
 
@@ -241,4 +241,3 @@ id => id.toUpperCase()
 - [You don't know JavaScript Yet:#3 深入JS的核心](/archives/2020-01-07-you-dont-know-js-yet-3)
 - [You don't know JavaScript Yet:#4 範疇](/archives/2020-01-31-you-dont-know-js-yet-4)
 - [You don't know JavaScript Yet:#5 說明語彙範疇](/archives/2020-02-23-you-dont-know-js-yet-5)
-
