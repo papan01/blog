@@ -8,7 +8,7 @@ tags:
   - YDKJSY
 ---
 
-前兩篇文章講的是在JS中比較Height-Level的部分，在這篇中將會深入討論JS核心的工作原理，當然這只是[You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)入門的前幾篇而已，有更多關於以下議題的討論將放在以後的篇章中。
+前兩篇文章講的是在JS中比較height-level的部分，在這篇中將會深入討論JS核心的工作原理。這篇是[You Don't Know JS Yet: Get Started-Digging to the Roots of JS](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch3.md)的閱讀筆記，有更多關於以下議題的討論將放在以後的篇章中。
 
 ## 迭代(Iteration)
 
@@ -17,10 +17,10 @@ tags:
 ### ES6 迭代協定
 
 可迭代(iterable)協定允許JS物件定義它們自己的迭代行為，內建的可迭代物件有`String`、`Array`、`Map`與`Set`等等，若自己定義的物件則需要自己實現迭代行為，ES6提供了`Symbol.iterator`屬性，在物件中透過定義`Symbol.iterator`就被認為是一個可迭代的。`Symbol.iterator`本身是一個無參數函式，當我們透過`for..of`時就會執行這個函數並且返回一個迭代器(iterator)。
-迭代器協定定義了`next()`這個方法，而`next()`必須包回傳一個擁有以下兩個屬性之物件的無參數函式：
+迭代器協定定義了`next()`這個方法，而`next()`必須回傳一個擁有以下兩個屬性之物件的無參數函式：
 
-- **done(boolean)**:若迭代器已迭代完畢整個可迭代序列，則值為 true。在這個情況下 value 可以是代表迭代器的回傳值。若迭代器能夠產出序列中的下一個值，則值為 false。相當於完全不指定 done 屬性。
-- **value**: 任何由迭代器所回傳的值。可於done為true時省略。
+- **done(boolean)**:若迭代器已迭代完畢整個可迭代序列，則值為`true`。在這個情況下value可以是代表迭代器的回傳值。若迭代器能夠產出序列中的下一個值，則值為`false`。相當於完全不指定`done`屬性。
+- **value**: 任何由迭代器所回傳的值。可於`done`為`true`時省略。
 
 首先看看下面的範例:
 
@@ -191,11 +191,9 @@ howdy("Grant");
 // Howdy, Grant!
 ```
 
-`greeting(..)`會回傳函式`who(..)`的一個實例，`who(..)`中有使用了`greeting(..)`的參數`msg`，當我們第一次執行`greeting(..)`後，將會把參數`msg`
-的reference分配給`hello`變數，第二次呼叫同理。
+`greeting(..)`會回傳函式`who(..)`的一個實例，`who(..)`中有使用了`greeting(..)`的參數`msg`，當我們第一次執行`greeting(..)`後，將會把參數`msg`的reference分配給`hello`變數，第二次呼叫同理。
 
-當`greeting(..)`呼叫完畢後我們通常希望垃圾回收機制能幫我們把所有變數從memory中清除掉，但在上面的例子中`msg`並沒有被清掉，這就是閉包的功能。此時在`hello`與`howdy`中的`msg`
-與當初賦予它們的`msg`具有相同的reference，也就是`greeting(..)`範疇的reference，所以實際上這些變數是直接被保留下來的。
+當`greeting(..)`呼叫完畢後我們通常希望垃圾回收機制能幫我們把所有變數從memory中清除掉，但在上面的例子中`msg`並沒有被清掉，這就是閉包的功能。此時在`hello`與`howdy`中的`msg`與當初賦予它們的`msg`具有相同的reference，也就是`greeting(..)`範疇的reference，所以實際上這些變數是直接被保留下來的。
 
 再看看另外一個例子:
 
@@ -233,15 +231,15 @@ for (let [idx,btn] of buttons.entries()) {
 
 每次迭代都為`btn`增加點擊事件，其中`onClick`使用了外部變數`idx`，儘管`idx`使用`let`宣告，但實際上`onClick`已經保留了`idx`的值了，所以每次點擊都能夠獲取到當前button的index，此行為與前面的閉包是一樣的邏輯。
 
-閉包在任何語言中被普遍的運用且是編程模式中重要的一環，在[You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)的第二冊專門討論範疇與閉包，若有不清楚的地方可以先去看看，我會在往後補上該冊的筆記。
+閉包在任何語言中被普遍的運用且是編程模式中重要的一環，在[You Don't Know JS Yet: Scope & Closures](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/README.md)專門討論範疇與閉包，若有不清楚的地方可以先去看看，我會在往後補上該冊的筆記。
 
 ## 關鍵字`this`
 
-在我看到[You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)這部分之前，我對`this`的觀念跟書上說的一樣，將其他語言的`this`與JS中的`this`混為一談，
+在我看到這部分之前，我對`this`的觀念跟書上說的一樣，將其他語言的`this`與JS中的`this`混為一談，
 最常被誤解的一種就是:函式中的`this`指向其函式本身，另外一種誤解(我原本也那麼認為):方法中的`this`指向其所屬物件，但這兩個都不正確。
 
-在定義函式時，它會將相關的變數通過閉包附加到它的範疇當中，而範疇是用來控制當前函式所有變數的reference。但函式除了範疇之外還有另外一個特徵會引響到它能存取的變數，我們稱其為"Execution Context"
-，並且透過`this`關鍵字暴露給函式。
+在定義函式時，它會將相關的變數通過閉包附加到它的範疇當中，而範疇是用來控制當前函式所有變數的reference。但函式除了範疇之外還有另外一個特徵會影響到它能存取的變數，我們稱其為"Execution Context"
+，它會透過`this`關鍵字暴露給函式。
 
 範疇是靜態的，在我們定義函式的時候就決定要存取哪些變數，但Execution Context是動態的，完全取決於函式調用的方式。
 
@@ -262,7 +260,7 @@ var assignment = classroom("Kyle");
 ```
 
 外部函式`classroom(..)`返回一個`study()`的實例，除此之外沒別的了。但內部函式`study()`除了將`teacher`變數透過閉包保存於它的範疇當中外，裡面還使用了`this`關鍵字，
-這意味著`study()`已與Execution Context聯繫。接著我們使用`classroom(Kyle)`將其內部函式配置給`assignment`變數，此時我們執行`assignment`(如同執行`study()`)會發生什麼事呢?
+這意味著`study()`已與Execution Context聯繫。接著我們使用`classroom(..)`將其內部函式配置給`assignment`變數，此時我們執行`assignment`(如同執行`study()`)會發生什麼事呢?
 
 ```javascript
 assignment();
@@ -299,7 +297,7 @@ assignment.call(otherHomework);
 
 ## 原型(Prototype)
 
-假設我們要獲取物件的某個屬性不存在會發什麼事呢?得到的就是`undefined`，而prototype你可以把它想像是隱藏在物件定義中的一個屬性，
+假設我們要獲取物件的某個屬性不存在會發什麼事呢?得到的就是`undefined`，而prototype我們可以把它想像是隱藏在物件定義中的一個屬性，
 每一個實例都能用獲取它，當物件找不到它要的屬性時，就會去找prototype中有沒有，當然這還會涉及到一個叫原型鍊(prototype chain)的東西。
 
 「原型鍊是將一連串的物件透過prototype連結起來。」
@@ -356,7 +354,7 @@ homework.topic;
 // "JS" -- not "Math"
 ```
 
-但此時otherHomework就會"shadowing"topic屬性:
+但此時otherHomework就會[shadowing](/archives/2020-02-27-you-dont-know-js-yet-6#%E9%81%AE%E8%94%BDshadowing)topic屬性:
 ![YDKJSY-3-1](/static/images/you-dont-know-js-yet-3-2.png)
 
 ### 回頭來看`this`
@@ -386,9 +384,7 @@ mathHomework.study();
 
 ## 總結
 
-[You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)的第一冊大致上就差不多到這邊，原文中還有第四章，但那章是在介紹接下來幾冊的導覽。
-在原文中有兩個附錄:[Appendix A: Exploring Further](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/apA.md)與[Appendix B: Practice, Practice, Practice!](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/apB.md)，附錄A有些額外的知識可以去看一下，而附錄B則是作者出一些題目讓我們練習用的，強烈建議你可以去看看附錄B，
-好讓自己更熟悉一點。這本書看到這邊我依舊還有許多疑問沒有弄清楚，但我想往後看下去會越看越明白，後面幾冊的筆記我會再花時間慢慢補上，希望對你有些幫助。
+[You Don't Know JS Yet: Get Started](https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/get-started)大致上就差不多到這邊，原文中還有第四章，但那章是在介紹接下來幾冊的導覽。在原文中有兩個附錄:[Appendix A: Exploring Further](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/apA.md)與[Appendix B: Practice, Practice, Practice!](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/apB.md)，附錄A有些額外的知識可以去看一下，而附錄B則是作者出一些題目讓我們練習用的，強烈建議你可以去看看附錄B，好讓自己更熟悉一點。這本書看到這邊我依舊還有許多疑問沒有弄清楚，但我想往後看下去會越看越明白，後面幾冊的筆記我會再花時間慢慢補上，希望對您有些幫助。
 
 ## Reference
 
