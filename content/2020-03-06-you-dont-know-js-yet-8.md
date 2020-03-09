@@ -8,7 +8,7 @@ tags:
   - YDKJSY
 ---
 
-在前面的幾個章節中，我們曾經提到了關於「提升」(Hoisting)與「TDZ」(Temporal Dead Zone)等名詞，但一直未對這些名詞有詳細的說明
+在前面的幾個章節中，我們曾經提到了關於「提升」(hoisting)與「TDZ」(Temporal Dead Zone)等名詞，但一直未對這些名詞有詳細的說明
 ，而變數的生命週期與這兩個名詞息息相關，裡面隱藏了許多細節，我們將在這章探討當變數被創建到可以被使用的整個過程。
 
 ## 可以使用變數的時間點
@@ -83,3 +83,15 @@ var greeting = "Howdy!";
 
 前面已經提過`var`所宣告的變數會被提升到該範疇的開頭，所以不難想像會有這種結果，在編譯期時識別字`greeting`被提升並且賦予`undefined`，到了執行期第一行程式就可以合法地進行賦值。
 
+## 從另一個角度看Hoisting
+
+Hoisting不是JS engine在執行時的具體步驟，我們將它想成JS在執行之前的一個設置動作會更好的理解它，有一個典型主張解釋JS實際上在執行之前會重寫程式碼，我們用上面的程式碼作為範例，重寫後會看起來如下:
+
+```javascript
+var greeting;           // hoisted declaration
+greeting = "Hello!";    // the original line 1
+console.log(greeting);  // Hello!
+greeting = "Howdy!";    // `var` is gone!
+```
+
+## 未初始化的變數(又稱為TDZ)
