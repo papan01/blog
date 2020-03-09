@@ -73,7 +73,10 @@ saySomething();
 // ReferenceError: Cannot access 'greeting' before initialization
 ```
 
-這裡需要注意的是錯誤發生是在`greeting = "Howdy"`上，而錯誤描述說明的語句是指`let greeting = "Hi"`而不是上面的`var greeting = "Hello"`，由於過早訪問變數產生衝突，這還牽扯到暫時死區(Temporal Dead Zone，TDZ)與提升(Hositing)，這兩個議題將在後面章節談到，而這也是JS Engine是否在較早過程中已經處理了此程式碼並且設置了範疇與變數的存取，只有在執行前進行剖析才能準確地完成。
+這裡需要注意的是錯誤發生是在`greeting = "Howdy"`上，而錯誤描述說明的語句是指`let greeting = "Hi"`而不是上面的`var greeting = "Hello"`，由於過早訪問變數產生衝突，這還牽扯到暫時死區(Temporal Dead Zone，TDZ)與提升(Hositing)，而這也是JS Engine是否在較早過程中已經處理了此程式碼並且設置了範疇與變數的存取，只有在執行前進行剖析才能準確地完成。
+
+[[info]]
+|暫時死區(Temporal Dead Zone，TDZ)與提升(Hositing)將會在[You don't know JavaScript Yet:#8 變數神秘的生命週期](/archives/2020-03-06-you-dont-know-js-yet-8)中討論到。
 
 ## Compiler的細語
 
@@ -104,9 +107,7 @@ console.log(nextStudent);
 除了宣告之外，程式碼中所有變數或者識別字均為以下兩種角色的其中一種:目標(target)/來源(source)。
 
 [[warning]]
-|或許你有讀過有關於Left-Hand Side(LHS)與Right-Hand Side(RHS)，其中LHS表示target而RHS表示source，
-|就像使用`=`進行賦值的左右兩側一樣，但是target與source並不是總是出現在`=`左右兩側，因此我們在考慮target與source時可以不必規定是在
-|左右兩側的哪裡，避免混淆。
+|或許你有讀過有關於Left-Hand Side(LHS)與Right-Hand Side(RHS)，其中LHS表示target而RHS表示source，就像使用`=`進行賦值的左右兩側一樣，但是target與source並不是總是出現在`=`左右兩側，因此我們在考慮target與source時可以不必規定是在左右兩側的哪裡，避免混淆。
 
 如何判斷target與source呢?在任一個地方被賦予值的就是target，否則就是source。
 
@@ -139,10 +140,7 @@ getStudentName(73)
 function getStudentName(studentID) {
 ```
 
-`function`的宣告是比較特別的一種target，想像把它看成`var getStudentName = function(studentID)`，但這樣不是很精確，
-實際上`getStudentName`與`= function(studentID)`都是在編譯期(compile-time)就進行了處理，這兩個的關聯在範疇的開頭就自動建立起來了，而不是等到`=`的賦值動作。
-
-所以在這個例子中一共有五個target。
+`function`的宣告是比較特別的一種target，可以把它想成類似`var getStudentName = function(studentID)`，但實際上也不是很正確，`getStudentName`會在編譯期就宣告完成，而`= function(studentID)`則也會於編譯期直接賦予`getStudentName`而不是等到`=`才進行賦值(這裡是以使用函式宣告的角度來解說，由於這裡牽扯到[function hoisting](/archives/2020-03-06-you-dont-know-js-yet-8#hoisting-函式宣告-vs-函式表達式)，在那裡會有較詳細的解說)。
 
 ### Sources
 
@@ -152,8 +150,6 @@ function getStudentName(studentID) {
 
 [[info]]
 |你可能對於`id`、`name`與`log`感到困惑，但們不屬於變數而是屬性。
-
-原文中的這一小節是為了下一章進行鋪路，在下一張會更深入了解為何要討論target與source的重要性。
 
 ## 作弊:在執行期修改範疇
 
