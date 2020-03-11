@@ -8,7 +8,7 @@ tags:
   - YDKJSY
 ---
 
-這是我閱讀[You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)的讀書筆記，希望藉此記錄下來作為重點整理，以便往後複習。這章節的內容主要在講述有關於JavaScript知識，但不是「新手入門」那種如何宣告變數與寫Hello World之類的。
+這是我閱讀[You Don't Know JS Yet: Get Started-What Is JavaScript?](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch1.md)的讀書筆記，希望藉此記錄下來作為重點整理，以便往後複習。這章節的內容主要在講述有關於JavaScript知識，但不是「新手入門」那種如何宣告變數與寫Hello World之類的。
 
 ## 關於JavaScript的名稱
 
@@ -17,7 +17,7 @@ tags:
 ## JavaScript規範
 
 [TC39](https://github.com/tc39)是一個管理JavaScript的技術指導委員會，主要的任務就是為了管理語言的官方規範，他們會定期開會，商議變更進行投票，然後再提交給ECMA標準化。TC39委員會的會員大約由50到100人組成，而這些人來至瀏覽器(Mozilla，Google，Apple)和設備製造商(Samsung)等等。
-所有TC39提案都通過五個階段進行，由於我們是程序員，所以它是從0開始的！階段0到階段4。您可以在此處了解有關階段流程的更多信息:<https://tc39.es/process-document/>。我們一般人也能提出想法，但只有TC39的委員認為它是可行的，才會正式提案為"階段0"，當提案狀態來到"階段4"後，該提案就會被視為下一年度的修訂標準中，相關的提案可以參考:<https://github.com/tc39/proposals/>。所有的瀏覽器與設備製造商都致力於實現這些標準，只是會有實現功能的時間問題，這意味著我們只需要學習一種JavaScript，它就能在所有支援JavaScript的瀏覽器或設備上運行。
+所有TC39提案都通過五個階段進行，由於我們是程式發開者，所以它是從0開始的！階段0到階段4。您可以在此處了解有關階段流程的更多信息:<https://tc39.es/process-document/>。我們一般人也能提出想法，但只有TC39的委員認為它是可行的，才會正式提案為"階段0"，當提案狀態來到"階段4"後，該提案就會被視為下一年度的修訂標準中，相關的提案可以參考:<https://github.com/tc39/proposals/>。所有的瀏覽器與設備製造商都致力於實現這些標準，只是會有實現功能的時間問題，這意味著我們只需要學習一種JavaScript，它就能在所有支援JavaScript的瀏覽器或設備上運行。
 
 ### 基於Web的規範
 
@@ -53,9 +53,8 @@ console.log("Hellow World");
 
 ### 向前兼容/向後兼容
 
-JS是屬於向後兼容的但不向前兼容，這意味著如果你使用了1995年編寫的JS程式碼，依舊能在現今的JS上運行，這無疑是一項偉大的創舉，要知道一直能保持向後兼容
-近25年，絕非簡單的事，但這也造成了巨大的負擔。此規則有一些小例外，TC39還是會去修改舊有的程式，但會去收集網路上現有的資料來評估修改過後的破壞量規模，以權衡更多的
-網站與用戶。
+JS是屬於向後兼容但不向前兼容，這意味著如果你使用了1995年編寫的JS程式碼，依舊能在現今的JS上運行，這無疑是一項偉大的創舉，要知道一直能保持向後兼容
+近25年，絕非簡單的事，但這也造成了巨大的負擔。此規則有一些小例外，TC39還是會去修改舊有的程式，但會去收集網路上現有的資料來評估修改過後破壞的規模，以權衡更多的網站與用戶。
 
 HTML與CSS是屬於向前兼容但不向後兼容，若你使用1995年編寫的HTML或CSS在現代的瀏覽器上，可能將無法使用，但是，如果你在2010年之後的瀏覽器上使用2019年的新功能，
 則頁面不會損壞，那些無法被辨識的CSS/HTML將被忽略，只解讀瀏覽器能解讀的。
@@ -95,8 +94,7 @@ if (something) {
 原本裡面使用let宣告的變數，被抽離出來使用了獨一無二的名稱作為代替，從而產生無干擾的結果。
 
 [[info]]
-| 我們為什麼要使用最新的ES2019而不使用既有能跑的JS呢?  
-| 因為新的規範往往能夠使你的程式碼較為乾淨且能夠有效傳遞編程思維，這有助於我們追蹤、Refactoring等等。
+| 我們為什麼要使用最新的ES2019而不使用既有能跑的JS呢?因為新的規範往往能夠使你的程式碼較為乾淨且能夠有效傳遞編程思維，這有助於我們追蹤、Refactoring等等。
 
 ### 填補差異
 
@@ -132,7 +130,7 @@ if (!Promise.prototype.finally) {
 
 ## JS是Interpreted(直譯)還是Compiled(編譯)語言
 
-大多數的人認為JS是一種Interpreted(Scripting)語言，但實際上JS是**Compiled語言**(以原作者的論點)。
+大多數的人認為JS是一種Interpreted(Scripting)語言，但實際上JS是**Compiled語言**。
 
 在程式語言中，與Compiled語言相比，Interpreted語言一直被視為次等語言，因為被認為未做性能優化，或者認為它們常使用動態類型，
 而非靜態類型，這感覺上像是另類的種族歧視。Compiled通常會產生二進制(binary)形式之後再去執行，由於我們在JS上沒有見過這種行為，
@@ -146,8 +144,7 @@ Interpreted語言通常是由上到下、一行一行的逐行執行，通常在
 ![you-dont-know-js-yet-1-2](/static/images/you-dont-know-js-yet-1-2.png)
 
 在此處理模型下，第5行的錯誤將會在解析階段就被捕獲，通常此種錯誤屬於語法上的錯誤，runtime上的錯誤也只能等到執行時才能發現。
-所有的Compiled語言都是已解析的，解析後的最後一步就是生成可執行的形式。一旦程式碼解析完畢，將會把解析過後的程式轉換成另外一種
-稱為抽象語法樹(Abstract Syntax Tree，AST)的形式，解析的動作可以看做把`var x = 2`拆解成`var`、`x`、`=`、`2`，接著再組成AST。
+所有的Compiled語言都是已解析的，解析後的最後一步就是生成可執行的形式。一旦程式碼解析完畢，將會把解析過後的程式轉換成另外一種稱為抽象語法樹(Abstract Syntax Tree，AST)的形式，解析的動作可以看做把`var x = 2`拆解成`var`、`x`、`=`、`2`，接著再組成AST。
 
 而JS程式在執行前就已進行解析，在規範中必須將早期錯誤(early errors)在執行前就先被發現出來，通常是一些靜態錯誤，例如變數名稱重複等等。
 在解析之後會轉換為二進制(binary)的形式，然後交給"JS Virtual Machine"去執行，有些人說Virtual Machine是以Interpreted的方式去執行byte code，
@@ -159,7 +156,7 @@ Interpreted語言通常是由上到下、一行一行的逐行執行，通常在
 
 1. 工程師寫好程式碼，使用Babel將其進行編譯，然後透過Webpack進行打包(或者其他建構方式)，然後交付給JS Engine。
 1. JS Engine將它解析成AST。
-1. 然後JS Engine再將AST轉換為某種二進制的中間表示式(binary intermediate representation(IR))，然後透過最佳化的JIT compiler進行轉換或者細化。
+1. 然後JS Engine再將AST轉換為某種二進制的中間表示式(binary intermediate representation(IR))，然後透過負責最佳化的JIT compiler進行轉換或者細化。
 1. 最後JS Virtual Machine執行程式。
 ![you-dont-know-js-yet-1-3](/static/images/you-dont-know-js-yet-1-3.png)
 

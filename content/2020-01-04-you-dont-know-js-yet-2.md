@@ -8,14 +8,12 @@ tags:
   - YDKJSY
 ---
 
-這是我閱讀[You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)的讀書筆記，
-這章節主要的內容在講述值、型別、函數、比較和模組化等等，這不算是一個「JS入門」的章節，所以不會有太多詳細的介紹，
-更多是稍微提到或者是點醒讀者一些可能認知上的誤解。
+這是我閱讀[You Don't Know JS Yet: Get Started-Surveying JS](https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/get-started/ch2.md)的讀書筆記，這章節主要的內容在講述值、型別、函數、比較和模組化等等，這不算是一個「JS入門」的章節，所以不會有太多詳細的介紹，更多是稍微提到或者是點醒讀者一些可能認知上的誤解。
 
 ## 值(Values)
 
 值的概念有一點抽象，它是程式中最基本的單元，它可以是數字或者字串甚至是幾何學上的一個點。
-值可以用兩種形式表現:**原始值(Primitive Values)**與**物件(Object)**。
+值可以用兩種形式表現:**原始值(primitive values)**與**物件(object)**。
 
 簡單的例子:
 
@@ -64,13 +62,13 @@ while(value != undefined) {
 }
 ```
 
-最後一種原始值稱為Symbol，它是一種特殊用途的值，它通常拿來做為物件中的特殊key值。
+最後一種原始值稱為`Symbol`，它是一種特殊用途的值，它通常拿來做為物件中的特殊key值。
 
 ```javascript
 hitchhikersGuide[Symbol("foo")];
 ```
 
-平常我們不會使用到Symbol，只有在開發一些比較low-level的libraires或者frameworks時才可能需要用到。
+平常我們不會使用到`Symbol`，只有在開發一些比較low-level的libraires或者frameworks時才可能需要用到。
 
 ### 陣列(Arrays)和物件(Objects)
 
@@ -99,7 +97,7 @@ console.log(`My name is ${name.first})
 
 ### 型別(Types)
 
-為了區別這些值，可以使用`typeof`來判斷它的型別是原始值(primitive)或者物件(object)或者是其他種類型:
+為了區別這些值，可以使用`typeof`來判斷它的型別是原始值(primitive)或者物件(object)或者是其它種類型:
 
 ```javascript
 typeof 42;                  // "number"
@@ -125,14 +123,14 @@ var name = "Kyle";
 var age;
 ```
 
-`var`這個識別字為其中一種宣告變數的方式，再看看另外一種方式:
+`var`這個關鍵字為其中一種宣告變數的方式，再看看另外一種方式:
 
 ```javascript
 let name = "Kyle";
 let age;
 ```
 
-使用`let`跟使用`var`有些不同之處，會因為所在的範疇(Scope)而有不一樣的存取限制，看看以下的例子:
+使用`let`跟使用`var`有些不同之處，會因為所在的範疇(scope)而有不一樣的存取限制，看看以下的例子:
 
 ```javascript
 var adult = true;
@@ -149,7 +147,7 @@ console.log(age);
 // Error!
 ```
 
-在`if`這個範疇裡面有使用`var`宣告的name與使用`let`宣告的age，但在離開了這個範疇之後，name依舊可以從中獲得訊息，但當我們想取得age時，就會拋出錯誤，這意味著使用`var`它將能再更大範圍的地方被存取到。
+在`if`這個範疇裡面有使用`var`宣告的name與使用`let`宣告的`age`，但在離開了這個範疇之後，`name`依舊可以從中獲得訊息，但當我們想取得`age`時，就會拋出錯誤，這意味著使用`var`它將能再更大範圍的地方被存取到。
 
 接著我們來看看第三種`const`的用法，它與`let`相似，但它必須在宣告時就賦予它一個值且在這之後它的值將不能被修改:
 
@@ -173,12 +171,11 @@ actors = [];              // Error!
 最好的方式是讓`const`只賦予一個簡單的原始值，這樣比較清楚且不會造成日後他人不小心修改到。
 
 [[info]]
-| 針對`var`/`let`/`const`，這裡建議使用`let`與`const`就好，我們通常會希望變數在離開宣告的Scope時就被自動清除，當然這不代表`var`毫無用處，
-| 我們依舊可以在適當的地方使用它。
+| 針對`var`/`let`/`const`，這裡建議使用`let`與`const`就好，我們通常會希望變數在離開宣告的Scope時就被自動清除，當然這不代表`var`毫無用處，我們依舊可以在適當的地方使用它。
 
 ## 函式(Functions)
 
-函式一詞在不同的地方有不同的意義，例如在FP(Functional Programming)中，其具有精確的數學定義與嚴格的規則。
+函式一詞在不同的地方有不同的意義，例如在FP(functional programming)中，其具有精確的數學定義與嚴格的規則。
 
 在JS中，我們把函式視為一種特殊的值，它為了達到某種目的而且可以重複的使用，當我們提供一些input給函式，它會返回一個或多個結果，它看起來如下:
 
@@ -222,7 +219,7 @@ whatToSay.greeting(); // Hello!
 
 在我們寫JS的時候肯定會用到比較運算，例如`>`、`==`、`===`等等，這小節會把重點放在`===`與`==`上。
 
-首先來看`===`嚴格相等(Strict Equality)，JS的嚴格相等通常比較兩邊的值(Value)與型別(Type)是否相同且不允許在比較中進行任何強制轉型(coercion):
+首先來看`===`嚴格相等(strict equality)，JS的嚴格相等通常比較兩邊的值(value)與型別(type)是否相同且不允許在比較中進行任何強制轉型(coercion):
 
 ```javascript
 3 === 3.0;              // true
@@ -286,12 +283,12 @@ x === [ 1, 2, 3 ];    // false
 
 ### 強制轉型比較(Coercion Comparisons)
 
-接著我們來說說`==`寬鬆相等(Loose Equality)，寬鬆相等在許多的JS社群引發眾怒，大夥都公開批評它的設計不良，使用容易產生危險、出錯，連
+接著我們來說說`==`寬鬆相等(loose equality)，寬鬆相等在許多的JS社群引發眾怒，大夥都公開批評它的設計不良，使用容易產生危險、出錯，連
 JS的創造者Brendan Eich都對自己的這個設計失誤感到失望。
 
 因為寬鬆相等在進行比較時並不會比較型別，也因此這樣造成多數人的誤解，進而覺得難用。
 
-與`===`類似，兩者都會進行值的比較，所以當兩邊比較的型別相等時，實際上`==`與`===`做的事情一模一樣沒有區別，只是當兩邊比較的型別不同時，`==`會進行強制轉型，一旦轉為相同的型別之後，再進行值得比較，而`===`不會進行強制轉型:
+與`===`類似，兩者都會進行值的比較，所以當兩邊比較的型別相等時，實際上`==`與`===`做的事情一模一樣沒有區別，只是當兩邊比較的型別不同時，`==`會進行強制轉型，一旦轉為相同的型別之後，再進行值的比較，而`===`不會進行強制轉型:
 
 ```javascript
 42 == "42";             // true
@@ -321,7 +318,7 @@ JS使用兩種主要的模式來組織程式碼:**類別(classes)**和**模組(m
 
 物件導向(object-oriented)、類別導向(class oriented)與類別(classes)這幾個名詞有些微的一點差異，它們的定義是不通用的。若您有學過C++或者Java等物件導向(object-oriented)語言，那麼這部分對您應該相當熟悉。
 
-類別是對自訂數據結構的"型別(Type)"作定義，其中包含數據與對數據進行操作的行為(方法)，但類別並不是具體的值(Value)，這個值就是本篇一開始所介紹的，我們需要透過實例化(Instantiation)使其成為一個物件，我們通常會透過關鍵字new進行一次或多次的實例化，變成物件後，就能對其進行操作，看看以下的範例:
+類別是對自訂數據結構的"型別(type)"作定義，其中包含數據與對數據進行操作的行為(method，方法)，但類別並不是具體的值(value)，這個值就是本篇一開始所介紹的，我們需要透過實例化(instantiation)使其成為一個物件，我們通常會透過關鍵字`new`進行一次或多次的實例化，變成物件後，就能對其進行操作，看看以下的範例:
 
 ```javascript
 class Page {
@@ -359,14 +356,14 @@ mathNotes.print();
 // ..
 ```
 
-Page類別中的數據為文本其儲存於`this.text`屬性中，而`print()`則是將文本打印到console的行為(方法)。
+`Page`類別中的數據為文本其儲存於`this.text`屬性中，而`print()`則是將文本打印到`console`的行為(方法)。
 
-而Notebook的數據為儲存Page實例的陣列，它的行為(方法)有`addPage()`與`print()`。
+而`Notebook`的數據為儲存`Page`實例的陣列，它的行為(方法)有`addPage()`與`print()`。
 
-`var mathNotes = new Notebook()`這一段為Netebook類別實例的地方，`var page = new Page(text)`則為Page類別實例的地方，
+`var mathNotes = new Notebook()`這一段為`Netebook`類別實例化的地方，`var page = new Page(text)`則為`Page`類別實例化的地方，
 行為(方法)只能在在實例上調用(不能直接透過類別呼叫)，例如上面的`mathNotes.addPage("Arithmetic: + - * / ...")`與`page.print()`。
 
-若不使用類別依舊可以達到上面的功能，但在缺乏組織性的情況下，程式碼會難以管理及閱讀並且更容易出錯與維護。
+若不使用類別依舊可以達到上面的功能，但在缺乏組織性的情況下，程式碼會難以管理及閱讀並且更容易出錯。
 
 ### 類別繼承(Class Inheritance)
 
@@ -422,7 +419,7 @@ class BlogPost extends Publication {
 }
 ```
 
-Book和BlogPost都使用extends來擴展Publication，每個建構函數(constructor)中的super(..)可以委託父類Publication的構造函數進行初始化的工作，然後根據其各自的類型(即子類)執行更具體的操作。例如:
+`Book`和`BlogPost`都使用`extends`來擴展`Publication`，每個建構函數(constructor)中的super(..)可以委託父類`Publication`的構造函數進行初始化的工作，然後根據其各自的類型(即子類)執行更具體的操作。例如:
 
 ```javascript
 var YDKJS = new Book({
@@ -462,7 +459,7 @@ forAgainstLet.print();
 
 ### 經典模組(Classic Modules)
 
-ES6為模組添加了新的語法，但在這之前模組就已經被廣泛運用在JS當中，儘管沒有任何額外的專用的語法。
+ES6為模組添加了新的語法，但在這之前模組就已經被廣泛運用在JS當中，儘管沒有任何額外的專用語法。
 
 經典模組透過外部函式來返回一個模組的實例(與類別不同，不需透過new關鍵字)，這個實例包含了一個或多個方法用於操作隱藏在模組內部中的數據。
 因為模組實際上只是一個函式，調用它就等同於產生該模組的實例，因此對這種函數的另一種描述稱為"模組工廠(module factories)"。
@@ -520,10 +517,10 @@ function BlogPost(title,author,pubDate,URL) {
 
 與類別相比，兩者有以下幾個差異:
 
-- 類別中的數據與方法儲存於物件的實例當中，在裡頭存取數據需透過`this`，而模組只要是在它的Scope當中都能進行存取，無需使用`this`。
-- 對於類別的實例化API是隱藏在類別的定義中的，而所有的數據和方法都是公開的。模組可以透過公開的方法來創建，而只有開放的數據與方法可以使用，否則其他都是私有的。
+- 類別中的數據與方法儲存於物件的實例當中，在裡頭存取數據需透過`this`，而模組只要是在它的範疇當中都能進行存取，無需使用`this`。
+- 對於類別的實例化API是隱藏在類別的定義中的，並且所有的數據和方法都是公開的。模組可以透過公開的方法來創建，而只有開放的數據與方法可以使用，否則其他都是私有的。
 
-在2019年針對模組化又有區分AMD(Asynchronous Module Definition)、UMD(Universal Module Definition)、CommonJS(classic Node.js style modules)還有ES6的模組化，這些模組化的功能基本上都依賴於相同的基本原理，稍後會提到關於ES6模組化的部分。
+在2019年針對模組化又有區分AMD(Asynchronous Module Definition)、UMD(Universal Module Definition)、CommonJS(classic Node.js style modules)與ES6的模組化，這些模組化的功能基本上都依賴於相同的基本原理，稍後會提到關於ES6模組化的部分。
 
 下面為使用模組的例子:
 
@@ -589,7 +586,7 @@ export function create(title,author,pubDate) {
 }
 ```
 
-接著在`blogpost.js`中`import``publication.js`這個模組:
+接著在`blogpost.js`中使用`import`關鍵字來參考`publication.js`這個模組:
 
 ```javascript
 import { create as createPub } from "publication.js";

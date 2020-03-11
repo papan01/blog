@@ -8,7 +8,7 @@ tags:
   - YDKJSY
 ---
 
-在前一篇文章中有稍微介紹了一點語彙範疇(Lexical Scope)的概念:*在編譯期確定程式碼的所屬範疇，將此範疇模型稱為「語彙範疇」*。
+在前一篇文章中有稍微介紹了一點語彙範疇(lexical scope)的概念:*在編譯期確定程式碼的所屬範疇，將此範疇模型稱為「語彙範疇」*。
 在此篇當中則會以一些隱喻來更深入描述它的行為，理解JS Engine、Compiler與Scope Manager之間是如何交互運作的。
 
 ## 第一個隱喻:彈珠與泡泡
@@ -16,7 +16,7 @@ tags:
 第一個例子是將理解範疇比喻為有顏色的彈珠與泡泡。
 
 想像你有很多個紅色、藍色與綠色的彈珠，要將他們分類到對應顏色的泡泡，當你想要某種顏色的彈珠時，你就知道你該去哪個泡泡拿。
-而這個比喻中，變數就是彈珠，而泡泡就是範疇(函式或者區塊中)，當然這裡只是概念上的想像，實際上每個彈珠的顏色會取決於發現彈珠的範疇(泡泡)。
+而這個比喻中，變數就是彈珠，而泡泡就是範疇(函式或者區塊中)，當然這裡只是概念上的想像，實際上每個彈珠的顏色會取決於發現彈珠的泡泡(範疇)。
 
 拿上一篇的程式作為例子:
 
@@ -60,7 +60,7 @@ console.log(nextStudent);
 [[info]]
 |實際上`studentID`並不完全屬於藍色泡泡的範疇，將在稍後介紹隱含範疇(Implied Scopes)中的參數範疇(Parameter Scope)。
 
-每個範疇都被定義於函式(functions)或者區塊(blocks)中，彼此有可能被另外一個泡泡包覆著(巢狀範疇)，而每個ㄧ個範疇不會同時隸屬於其他範疇。每個彈珠(變數/識別字)的顏色都根據所在的範疇(泡泡)而不同。
+每個範疇都被定義於函式(functions)或者區塊(blocks)中，彼此有可能被另外一個泡泡包覆著(巢狀範疇)，而每個ㄧ個範疇不會同時隸屬於其他範疇。每個彈珠(變數/識別字)的顏色都根據所在的泡泡(範疇)而不同。
 
 JS engine在編譯的過程中，當遇到了變數時，就會去詢問"*我現在在哪一個範疇(泡泡)當中?*"，該變數被指定為相同的顏色，表示它屬於該範疇(泡泡)。從上面的例子我們可以來看看範疇有哪些行為:
 
@@ -72,7 +72,7 @@ JS engine通常不會在執行期去確認這些變數屬於哪一個範疇，�
 
 當我讀完原文時發現自己對於變數(Variable)/識別字 (Identifier)的定義有點模糊，所以這裡稍微先整理一下這兩個名詞的意思:
 
-- **識別字 (identifier)**: 識別字 用於在程式中的一個實體名稱，變數也是識別字 的一種。其他像是class name，function name等等都是屬於識別字 (意味著有進行宣告的動作)。
+- **識別字 (identifier)**: 識別字用於在程式中的一個實體名稱，變數也是識別字的一種。其他像是class name，function name等等都是屬於識別字 (意味著有進行宣告的動作)。
 - **變數(Variable)**: 變數則為一個名稱用於賦予記憶體位置，通常夾帶一個值(value)，可以在程式執行時對其進行修改。
 
 ### 參數範疇(Parameter Scope)
@@ -109,8 +109,7 @@ function getStudentName(studentID = maxID, maxID) {
 }
 ```
 
-此段程式碼會造成TDZ(Temporal Dead Zone) error，有關TDZ的描述會在後面章節補上，這裡就把它想為在賦值前對其進行存取，就會導致error，因為參數由左向右操作，
-`maxID`已經被定義，但是它還沒進行初始化，若反過來就不會產生TDZ error。
+此段程式碼會造成[TDZ(Temporal Dead Zone)](/archives/2020-03-06-you-dont-know-js-yet-8#未初始化的變數又稱為tdz) error，這裡可以先把它想為在賦值前對其進行存取的話就會導致error，因為參數由左向右操作，`maxID`已經被定義，但是它還沒進行初始化，若反過來就不會產生TDZ error:
 
 ```javascript
 function getStudentName(maxID,studentID = maxID) {
@@ -201,9 +200,9 @@ console.log(nextStudent);
 // Suzy
 ```
 
-首先我們先來看看`var students = [..]`它如何宣告、初始化與賦值的部分。我們的朋友Engine它會看到兩個不同的操作，第一個是在編譯期Compiler處理的過程，第二個是執行期由Engine處理的過程。
+首先我們先來看看`var students = [..]`它如何宣告、初始化與賦值的部分。我們的朋友Engine它會看到兩個不同的操作，第一個是在編譯期Compiler處理的過程，第二個是執行期由他自己處理的過程。
 
-首先我們來關注Compiler的部分，關於Compiler在編譯期做了些什麼，可以參考我上一篇[編譯程式碼](https://papan01.com/archives/2020-01-31-you-dont-know-js-yet-4#%E7%B7%A8%E8%AD%AF%E7%A8%8B%E5%BC%8F%E7%A2%BC)，一旦Compiler生成程式碼之後就有諸多細節需要考慮，首先我們可以合理的假設Compiler會對其配置記憶體，標記它為`students`，然後Engine將後面數組的reference指派給它等等:
+首先我們來關注Compiler的部分，關於Compiler在編譯期做了些什麼，可以參考上一篇[編譯程式碼](/archives/2020-01-31-you-dont-know-js-yet-4#編譯程式碼)，一旦Compiler生成程式碼之後就有諸多細節需要考慮，首先我們可以合理的假設Compiler會對其配置記憶體，標記它為`students`，然後Engine將後面數組的reference指派給它之類的動作:
 
 1. 當Compiler遇到`var students`時，它會去詢問Scope Manager是否變數`students`已經存在於某個特定的範疇中，若已存在則忽略此宣告並且繼續往下，否則，Compiler會生成程式碼要求Scope Manager在執行期時創建一個名為`students`的變數在範疇中。
 
@@ -256,7 +255,7 @@ console.log(nextStudent);
 > ...
 
 [[info]]
-|這裡有提到target與source，可以參考我前一篇所寫的[compiler的細語](https://papan01.com/archives/2020-01-31-you-dont-know-js-yet-4#compiler%E7%9A%84%E7%B4%B0%E8%AA%9E)。
+|這裡有提到target與source，可以參考前一篇[Compiler的細語](https://papan01.com/archives/2020-01-31-you-dont-know-js-yet-4#compiler%E7%9A%84%E7%B4%B0%E8%AA%9E)。
 
 我們整理一下針對`var students = [..]`處理的兩個步驟:
 
@@ -268,7 +267,7 @@ console.log(nextStudent);
 在前面的例子Engine在遇到`getStudentName`的source reference會要求Scope Manager進行實例化函式範疇，接著透過查找參數`studentID`
 將`73`賦予給它。`getStudentName(..)`在全域範疇中，而for迴圈又在`getStudentName(..)`的範疇中，所以範疇可以是任意深度的巢狀範疇。
 
-每一個範疇都有屬於它們自己的Scope Manager，每次執行都會實例化一次，並且自動對裡面的識別字 進行註冊(此動作稱之為hoisting，在之後的文章中介紹)。任何識別字 來自一個函式的宣告，都會自動的被初始化使其關聯於該函式，而任何識別字 透過`var`進行宣告(同理`const`、`let`也是)，都會自動的被初始化為`undefined`以便可以使用，否則，變數都將保留為未初始化的狀態(屬於TDZ的狀態)並且不能被使用直到它被宣告與初始化後才能夠被執行。
+每一個範疇都有屬於它們自己的Scope Manager，每次執行都會實例化一次，並且自動對裡面的識別字進行註冊(此動作稱之為[hoisting](/archives/2020-03-06-you-dont-know-js-yet-8))。任何識別字來自一個函式的宣告，都會自動的被初始化使其關聯於該函式，而任何識別字透過`var`進行宣告(同理`const`、`let`也是)，都會自動的被初始化為`undefined`以便可以使用，否則，變數都將保留為未初始化的狀態(或稱為TDZ的狀態)並且不能夠被使用直到它被初始化後才能夠被執行。
 
 我們來看一下這段語句`for (let student of students) {`，`students`不再該範疇當中，它是如何找到它的:
 

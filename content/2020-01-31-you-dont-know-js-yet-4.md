@@ -8,20 +8,20 @@ tags:
   - YDKJSY
 ---
 
-我們在編寫程式時，通常會存在許多變數，而這些變數都有它所居住的地方，等到我們需要時去存取它。JS定義了一個明確的規則用來管理這些變數稱為範疇(Scope)，在我們討論範疇之前，我們必須先理解JS是如何處理與執行程式。
+我們在編寫程式時，通常會存在許多變數，而這些變數都有它所居住的地方，等到我們需要時去存取它。JS定義了一個明確的規則用來管理這些變數稱為範疇(scope)，在我們討論範疇之前，我們必須先理解JS是如何處理與執行程式。
 
 ## 編譯程式碼
 
-在[You don't know JavaScript Yet:#1 什麼是JavaScript](/archives/2020-01-01-you-dont-know-js-yet-1)中，我們討論過關於JS是屬於編譯(Compiler)語言，而我們需要討論此行為的原因是因為範疇完全取決於編譯時期。
+在[You don't know JavaScript Yet:#1 什麼是JavaScript](/archives/2020-01-01-you-dont-know-js-yet-1)中，我們討論過關於JS是屬於編譯(compiler)語言，而我們需要討論此行為的原因是因為範疇完全取決於編譯時期。
 
 我們的程式碼通常經由編譯執行以下三個階段:
 
-1. 語彙單元化(Tokenizing)/語彙分析(Lexing)：將字串拆解成有意義的(對程式語言來說)組塊，這些組塊就叫做token(語彙單元)，例如:
+1. 語彙單元化(tokenizing)/語彙分析(lexing)：將字串拆解成有意義的(對程式語言來說)組塊，這些組塊就叫做token(語彙單元)，例如:
 `var a = 2;` 就會解析成`var`、`a`、`=`、`2`、`;`，空白則視情況是否具有意義。
 
-2. 剖析或稱語法分析(Parsing):透過上一步驟由token所構成的串流(stream)或者陣列(array)組成抽象語法樹(abstract syntax tree，AST)。
+2. 剖析或稱語法分析(parsing):透過上一步驟由token所構成的串流(stream)或者陣列(array)組成抽象語法樹(abstract syntax tree，AST)。
 
-3. 產生程式碼(Code Generation):將AST轉換成可執行的程式碼，通常是機器語言，這步驟會隨著語言以及平台的不同有大幅度的變化。
+3. 產生程式碼(code generation):將AST轉換成可執行的程式碼，通常是機器語言，這步驟會隨著語言以及平台的不同有大幅度的變化。
 
 JS Engine所進行的工作比上述的三個階段複雜得多，與其他語言一樣在剖析與產生程式碼的的過程中，會有最佳化執行效能的步驟，包含消除不必要的元素等等。但與其他語言不同的部分，JS沒有充足的時間來進行最佳化，因為JS的編譯不是在建置(build)步驟中預先處理，它必須在執行前的幾毫秒(或者更短)內發生，所以JS會使用各種技巧例如使用JIT來延遲編譯或者hot re-compile等等。
 
@@ -73,7 +73,10 @@ saySomething();
 // ReferenceError: Cannot access 'greeting' before initialization
 ```
 
-這裡需要注意的是錯誤發生是在`greeting = "Howdy"`上，而錯誤描述說明的語句是指`let greeting = "Hi"`而不是上面的`var greeting = "Hello"`，由於過早訪問變數產生衝突，這還牽扯到暫時死區(Temporal Dead Zone，TDZ)與提升(Hositing)，這兩個議題將在後面章節談到，而這也是JS Engine是否在較早過程中已經處理了此程式碼並且設置了範疇與變數的存取，只有在執行前進行剖析才能準確地完成。
+這裡需要注意的是錯誤發生是在`greeting = "Howdy"`上，而錯誤描述說明的語句是指`let greeting = "Hi"`而不是上面的`var greeting = "Hello"`，由於過早訪問變數產生衝突，這還牽扯到暫時死區(Temporal Dead Zone，TDZ)與提升(Hositing)，而這也是JS Engine是否在較早過程中已經處理了此程式碼並且設置了範疇與變數的存取，只有在執行前進行剖析才能準確地完成。
+
+[[info]]
+|暫時死區(Temporal Dead Zone，TDZ)與提升(Hositing)將會在[You don't know JavaScript Yet:#8 變數神秘的生命週期](/archives/2020-03-06-you-dont-know-js-yet-8)中討論到。
 
 ## Compiler的細語
 
@@ -104,9 +107,7 @@ console.log(nextStudent);
 除了宣告之外，程式碼中所有變數或者識別字均為以下兩種角色的其中一種:目標(target)/來源(source)。
 
 [[warning]]
-|或許你有讀過有關於Left-Hand Side(LHS)與Right-Hand Side(RHS)，其中LHS表示target而RHS表示source，
-|就像使用`=`進行賦值的左右兩側一樣，但是target與source並不是總是出現在`=`左右兩側，因此我們在考慮target與source時可以不必規定是在
-|左右兩側的哪裡，避免混淆。
+|或許你有讀過有關於Left-Hand Side(LHS)與Right-Hand Side(RHS)，其中LHS表示target而RHS表示source，就像使用`=`進行賦值的左右兩側一樣，但是target與source並不是總是出現在`=`左右兩側，因此我們在考慮target與source時可以不必規定是在左右兩側的哪裡，避免混淆。
 
 如何判斷target與source呢?在任一個地方被賦予值的就是target，否則就是source。
 
@@ -139,10 +140,7 @@ getStudentName(73)
 function getStudentName(studentID) {
 ```
 
-`function`的宣告是比較特別的一種target，想像把它看成`var getStudentName = function(studentID)`，但這樣不是很精確，
-實際上`getStudentName`與`= function(studentID)`都是在編譯期(compile-time)就進行了處理，這兩個的關聯在範疇的開頭就自動建立起來了，而不是等到`=`的賦值動作。
-
-所以在這個例子中一共有五個target。
+`function`的宣告是比較特別的一種target，可以把它想成類似`var getStudentName = function(studentID)`，但實際上也不是很正確，`getStudentName`會在編譯期就宣告完成，而`= function(studentID)`則也會於編譯期直接賦予`getStudentName`而不是等到`=`才進行賦值(這裡是以使用函式宣告的角度來解說，由於這裡牽扯到[function hoisting](/archives/2020-03-06-you-dont-know-js-yet-8#hoisting-函式宣告-vs-函式表達式)，在那裡會有較詳細的解說)。
 
 ### Sources
 
@@ -152,8 +150,6 @@ function getStudentName(studentID) {
 
 [[info]]
 |你可能對於`id`、`name`與`log`感到困惑，但們不屬於變數而是屬性。
-
-原文中的這一小節是為了下一章進行鋪路，在下一張會更深入了解為何要討論target與source的重要性。
 
 ## 作弊:在執行期修改範疇
 

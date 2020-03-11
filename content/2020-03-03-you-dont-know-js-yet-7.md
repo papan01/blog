@@ -17,7 +17,7 @@ tags:
 
 第一，如果使用ES modules(沒有使用bundler)，那麼這些檔案會被個別的載入，每個檔案都屬於一個module，透過使用關鍵字`import`引用其他檔案達到相互協作，而這中間不需要透過任何範疇。
 
-第二，如果使用bundler(例如webpack)，所有的檔案都會被bundle成一個大的檔案，接著你再使用這個大的檔案在你的網頁上，那麼瀏覽器只需要處理這個大的檔案即可。但即使只有一個檔案，裡面仍然需要一些機制用來註冊引用的名稱，以便於存取，例如使用wrapper function或 universal module definition(UMD)，透過一個額外的範疇將module置入其中，每個module都可以共享這個範疇的變數:
+第二，如果使用bundler(例如webpack)，所有的檔案都會被bundle成一個大的檔案，接著你再使用這個大的檔案在你的網頁上，那麼瀏覽器只需要處理這個大的檔案即可。但即使只有一個檔案，裡面仍然需要一些機制用來註冊引用的名稱，以便於存取，例如使用wrapper function或universal module definition(UMD)，透過一個額外的範疇將module置入其中，每個module都可以共享這個範疇的變數:
 
 ```javascript
 (function wrappingOuterScope(){
@@ -130,7 +130,7 @@ window.hello();
 
 ### 全域變數遮蔽(shadowing)全域物件屬性
 
-在前一章我們有描述過何謂[遮蔽(shadowing)](https://papan01.com/archives/2020-02-27-you-dont-know-js-yet-6#%E9%81%AE%E8%94%BDshadowing)，在這裡想討論的是有關於"全域變數(global variable)"與"全域物件屬性(global object property)"在全域範疇中若有相同名稱會有什麼差異:
+在前一章我們有描述過何謂[遮蔽(shadowing)](/archives/2020-02-27-you-dont-know-js-yet-6#%E9%81%AE%E8%94%BDshadowing)，在這裡想討論的是有關於"全域變數(global variable)"與"全域物件屬性(global object property)"在全域範疇中若有相同名稱會有什麼差異:
 
 ```javascript
 window.something = 42;
@@ -268,7 +268,7 @@ module.exports.hello = hello;
 
 ## Global This
 
-綜合我們上述所講的JS在不同環境中，整理一下JS可能會或者可能不會的行為:
+綜合我們上述所講的，JS在不同環境中可能會或者可能不會的行為:
 
 - 在最外層的範疇中使用`var`或`function`(或`let`，`const`和`class`)宣告一個全域變數。
 - 如果將var或function用於宣告，則還會將全域變數加入為全域物件屬性。
