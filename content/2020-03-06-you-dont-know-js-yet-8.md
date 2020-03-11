@@ -8,7 +8,7 @@ tags:
   - YDKJSY
 ---
 
-在前面的幾個章節中，我們曾經提到了關於「提升」(hoisting)與「TDZ」(Temporal Dead Zone)等名詞，但一直未對這些名詞有詳細的說明
+在前面的幾個章節中，我們曾經提到了關於「提升」(hoisting)與「TDZ」(Temporal Dead Zone)等名詞，但一直未對這些名詞有詳細的說明
 ，而變數的生命週期與這兩個名詞息息相關，裡面隱藏了許多細節，我們將在這章探討當變數被創建到可以被使用的整個過程。
 
 ## 可以使用變數的時間點
@@ -26,7 +26,7 @@ function greeting() {
 ```
 
 上面這段程式碼再平常不過了，你也一定有寫過類似的程式碼，它可以正常的執行，但你是否有想過為什麼宣告在執行之後卻能夠正常的執行呢?
-在[範疇](/archives/2020-01-31-you-dont-know-js-yet-4)這一章節談論到，範疇在編譯期就已經被決定好，所有的識別字都會在此時註冊(register)於範疇中。除此之外，在每次進入範疇時，所有的識別字都被註冊於範疇的開頭，即使變數被宣告於範疇中最下面的地方，依舊會在編譯期被合法的註冊於範疇開頭，而這有一個術語稱為**提升(Hoisting)**。
+在[範疇](/archives/2020-01-31-you-dont-know-js-yet-4)這一章節談論到，範疇在編譯期就已經被決定好，所有的識別字都會在此時註冊(register)於範疇中。除此之外，在每次進入範疇時，所有的識別字都被註冊於範疇的開頭，即使變數被宣告於範疇中最下面的地方，依舊會在編譯期被合法的註冊於範疇開頭，而這有一個術語稱為**提升(Hoisting)**。
 
 但只單靠hoisting依舊無法解釋為什麼`greeting()`可以在宣告前就被呼叫，也就是說我們無法解釋`greeting`的值(function reference)是如何被賦予的，答案是因為函式宣告比起其他變數有一個特別的特徵稱為*function hoisting*。當函式的識別字被註冊於範疇的開頭時，會自動的初始化其function reference，這就是為什麼我們可以在整個範疇中使用函式的原因。
 
@@ -37,7 +37,7 @@ function greeting() {
 
 ### Hoisting: 函式宣告 vs. 函式表達式
 
-*Function hoisting*只適用於[函式宣告](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)而不適用於[函式表達式](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/function):
+*Function hoisting*只適用於[函式宣告](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)而不適用於[函式表達式](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/function):
 
 ```javascript
 greeting();
@@ -61,7 +61,7 @@ var greeting = function greeting() {
 };
 ```
 
-實際上在透過`var`宣告的變數都會被初始化為`undefined`，一但初始化之後就可以被使用(進行賦值或者檢索)，所以上面第一行的`greeting`實際上已經存在但未被賦值，直到第四行透過函式表達式賦值後才有function reference。
+實際上在透過`var`宣告的變數都會被初始化為`undefined`，一但初始化之後就可以被使用(進行賦值或者檢索)，所以上面第一行的`greeting`實際上已經存在但未被賦值，直到第四行透過函式表達式賦值後才有function reference。
 
 根據上面我們可以歸納如下:
 
@@ -81,7 +81,7 @@ console.log(greeting);
 var greeting = "Howdy!";
 ```
 
-前面已經提過`var`所宣告的變數會被提升到該範疇的開頭，所以不難想像會有這種結果，在編譯期，識別字`greeting`被提升並且賦予`undefined`，到了執行期第一行程式就可以合法地進行賦值。
+前面已經提過`var`所宣告的變數會被提升到該範疇的開頭，所以不難想像會有這種結果，在編譯期，識別字`greeting`被提升並且賦予`undefined`，到了執行期第一行程式就可以合法地進行賦值。
 
 ## 從另一個角度看Hoisting
 
@@ -136,7 +136,7 @@ var studentName;
 console.log(studentName);   // ???
 ```
 
-若在之前我們未曾看過有關於hoisting的部分，我們通常會認為第二個`var studentName`會重新宣告一次，所以最後的`console.log(studentName)`會是`undefind`，但回顧上面關於hoisting的描述，很顯然的我們可以確定它並不會印出`undefind`而是`Frank`，只要想像前一節的模式將程式碼重寫如下:
+若在之前我們未曾看過有關於hoisting的部分，我們通常會認為第二個`var studentName`會重新宣告一次，所以最後的`console.log(studentName)`會是`undefinded`，但回顧上面關於hoisting的描述，很顯然的我們可以確定它並不會印出`undefinded`而是`Frank`，只要想像前一節的模式將程式碼重寫如下:
 
 ```javascript
 var studentName;
@@ -152,7 +152,7 @@ console.log(studentName);
 
 在我寫這系列的第五章中[「第二個隱喻:朋友間的對話」](/archives/2020-02-23-you-dont-know-js-yet-5#第二個隱喻朋友間的對話)曾經有提到，當Compiler遇到已經宣告過的變數，則會選擇忽略它，所以這裡第二個`var studentName`會直接被忽略。
 
-這裡有一個重點，`var studentName`不代表`var studentName = undefind`，這是很多人容易誤解的地方，只有當Compiler第一次遇到這個變數時，會自動將其初始化為`undefind`，之後都選擇忽略，看看下面程式碼:
+這裡有一個重點，`var studentName`不代表`var studentName = undefinded`，這是很多人容易誤解的地方，只有當Compiler第一次遇到這個變數時，會自動將其初始化為`undefinded`，之後都選擇忽略，看看下面程式碼:
 
 ```javascript
 var studentName = "Frank";
@@ -202,7 +202,7 @@ var greeting = "Hello!";
 typeof greeting;        // "string"
 ```
 
-第一個`var greeting`為首次宣告，所以會被自動初始化為`undefind`，接著`function`宣告會直接將其function reference賦予給`greeting`，接著第二個`var greeting`會被忽略，最後的`var greeting = ..`則會進行賦值的動作。
+第一個`var greeting`為首次宣告，所以會被自動初始化為`undefinded`，接著`function`宣告會直接將其function reference賦予給`greeting`，接著第二個`var greeting`會被忽略，最後的`var greeting = ..`則會進行賦值的動作。
 
 接著來看看`let`:
 
