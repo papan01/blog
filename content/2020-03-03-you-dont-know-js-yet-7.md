@@ -130,7 +130,7 @@ window.hello();
 
 ### 全域變數遮蔽(shadowing)全域物件屬性
 
-在前一章我們有描述過何謂[遮蔽(shadowing)](https://papan01.com/archives/2020-02-27-you-dont-know-js-yet-6#%E9%81%AE%E8%94%BDshadowing)，在這裡想討論的是有關於"全域變數(global variable)"與"全域物件屬性(global object property)"在全域範疇中若有相同名稱會有什麼差異:
+在前一章我們有描述過何謂[遮蔽(shadowing)](/archives/2020-02-27-you-dont-know-js-yet-6#%E9%81%AE%E8%94%BDshadowing)，在這裡想討論的是有關於"全域變數(global variable)"與"全域物件屬性(global object property)"在全域範疇中若有相同名稱會有什麼差異:
 
 ```javascript
 window.something = 42;
