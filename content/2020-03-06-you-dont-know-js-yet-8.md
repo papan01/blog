@@ -252,6 +252,7 @@ console.log(studentName);
 
 studentName = "Suzy";   // TypeError
 ```
+
 [[warning]]
 |這裡要注意到`SyntaxError`與`TypeError`之間差異，這常容易被忽略。`SyntaxError`會在編譯期拋出，意思就是程式還沒執行前就拋出Error，而`TypeError`則是程式已經執行後，遇到錯誤才拋出，所以上面那段程式碼會先打印出`Frank`，等到對`studentName`進行賦值時才會拋出`TypeError`。
 
@@ -278,7 +279,7 @@ while (keepGoing) {
 }
 ```
 
-上面的`value`算重複宣告嗎?這樣會導致`SyntaxError`嗎?實際上不算重複宣告所以也不會拋出Error。每次一次進入`while`區塊都是一個新的範疇，而在前面有提到`let`會與最近的區塊範疇連結，`value`是屬於在該範疇當中的識別字，當範疇被實例化`value`也只會被宣告一次，因此不會構成重複宣告。但若是`var`呢?
+上面的`value`算重複宣告嗎?這樣會導致`SyntaxError`嗎?實際上不算重複宣告所以也不會拋出Error。每次一次進入`while`區塊都是一個新的範疇，而在前面有提到`let`會與最近的區塊範疇連結，`value`是屬於在該範疇當中的識別字，當範疇被實例化，`value`也只會被宣告一次，因此不會構成重複宣告。但若是`var`呢?
 
 ```javascript
 var keepGoing = true;
@@ -338,7 +339,7 @@ for (let student of students) {
 }
 ```
 
-這兩個結果都與上面的結論一樣，`index`與`student`的範疇都屬於迴圈中，上面這些看起來都沒什麼問題，結著來看看`const`:
+這兩個結果都與上面的結論一樣，`index`與`student`的範疇都屬於迴圈中，上面這些看起來都沒什麼問題，接著來看看`const`:
 
 ```javascript
 var keepGoing = true;
@@ -390,7 +391,6 @@ for (const i = 0; i < 3; i++) {
 
 上面我們透過改寫的方式只是幫助我們理解用的，或許你可能會期待JS把`const $$i = 0`改成使用`let $$i = 0`，這樣就可以允許在標準的`for`迴圈中使用`const`，這當然是有可能的，但是我們若不看改寫的部分，`const i = 0`很明顯的就不允許被重新賦值，若JS允許了這件事，則會產生奇怪的矛盾，所以這裡不允許被這樣使用是合理的。
 
-
 ## 未初始化的變數(又稱為TDZ)
 
 前面提到過，使用`var`宣告的變數會被提升到它所屬範疇的最上面，並且被自動的初始化`undefined`
@@ -415,14 +415,14 @@ console.log(studentName);
 let studentName;
 ```
 
-結果還是一樣得到`ReferenceError`，我們已經在第一行試圖的對這個"未初始化"的變數`studentName`進行初始化，但為什麼依舊得到相同的結果呢?唯一解決的方式是在`let`與`const`宣告時對其進行賦值:
+結果還是一樣得到`ReferenceError`，我們已經在第一行試圖對這個"未初始化"的變數`studentName`進行初始化，但為什麼依舊得到相同的結果呢?唯一解決的方式是在`let`與`const`宣告時對其進行賦值:
 
 ```javascript
 let studentName = "Suzy";
 console.log(studentName);   // Suzy
 ```
 
-這裡實際上是將`let studentName = undefined`透過`"Suzy"`代替它，或者把它看成以下程式碼:
+這裡實際上是將`let studentName = undefined`透過`"Suzy"`代替`undefined`，或者把它看成以下程式碼:
 
 ```javascript
 // ..
@@ -460,11 +460,11 @@ function askQuestion() {
 }
 ```
 
-進入範疇後`studentName`的TDZ也同時也開始了，在一開始呼叫函式`askQuestion`但此時`studentName`還在TDZ中，意味著無法使用`studentName`，所以會拋出`ReferenceError`。還記得前面說過對於hoisting的誤解嗎?許多人認為這樣的結果代表`let`與`const`不會被提升(hoisting)，但實際上是因為誤解了hoisting的意思。
+進入範疇後`studentName`的TDZ也同時開始了，在一開始呼叫函式`askQuestion`，但此時`studentName`還在TDZ中，意味著無法使用`studentName`，所以當嘗試去使用還在TDZ中的變數會拋出`ReferenceError`。還記得前面說過對於hoisting的誤解嗎?許多人認為這樣的結果代表`let`與`const`不會被提升(hoisting)，但實際上是因為誤解了hoisting的意思。
 
-只要想著hoisting實際上只是將識別字"**註冊(register)**"於範疇最上方即可。看看`var`與`let/const`的差別，關鍵在於是否在提升後有"**自動初始化**"這件事上，`var`會在被提升之後進行自動初始化，而`let/const`則不會，會被誤導的原因多半是因為我們前面透過「**想像**」來改寫程式碼的那部分，記住，JS並沒有真正執行這一步驟，那只是用來幫助我們理解而已。Hoisting跟自動初始化是不同操作，不該把它們統稱為hoisting。
+只要想著hoisting是將識別字"**註冊(register)**"於範疇最上方即可。看看`var`與`let/const`的差別，關鍵在於是否在提升後有"**自動初始化**"這件事上，`var`會在被提升之後進行自動初始化，而`let/const`則不會，會被誤導的原因多半是因為我們前面透過「**想像**」來改寫程式碼的那部分，記住，JS並沒有真正執行這一步驟，那只是用來幫助我們理解而已。Hoisting跟自動初始化是不同操作，不該把它們統稱為hoisting。
 
-我們已經看過`let`與`const`不會自動初始化於範疇的最上方，接下來我們搭配前幾章所說的[遮蔽(shadowing)](/archives/2020-02-27-you-dont-know-js-yet-6#遮蔽shadowing)來證明它具備hoisting:
+我們已經看過`let`與`const`不會自動初始化於範疇的最上方，接下來我們搭配前面章節所說的[遮蔽(shadowing)](/archives/2020-02-27-you-dont-know-js-yet-6#遮蔽shadowing)來證明它具備hoisting:
 
 ```javascript
 var studentName = "Kyle";
