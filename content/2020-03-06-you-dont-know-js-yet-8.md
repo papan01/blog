@@ -504,4 +504,4 @@ var studentName = "Kyle";
 - [You don't know JavaScript Yet:#4 範疇](/archives/2020-01-31-you-dont-know-js-yet-4)
 - [You don't know JavaScript Yet:#5 說明語彙範疇](/archives/2020-02-23-you-dont-know-js-yet-5)
 - [You don't know JavaScript Yet:#6 範疇鏈](/archives/2020-02-27-you-dont-know-js-yet-6)
-- [You don't know JavaScript Yet:#7 全域範疇](/archives/2020-03-06-you-dont-know-js-yet-7)
+- [You don't know JavaScript Yet:#7 全域範疇](/archives/2020-03-03-you-dont-know-js-yet-7)
