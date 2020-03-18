@@ -348,7 +348,7 @@ onSubmit(function trackAction(evt){
 onSubmit();
 ```
 
-我們建立函式`checkout(..)`與函式`trackAction(..)`作為參數傳給`cb`進行監聽點擊事件並且將它們儲存於`clickHandlers`作為閉包封存的變數。在最後一行我們不帶任何參數用來執行清除的動作，這將會取消所有曾經監聽過的點擊事件並且把`clickHandlers`清成空陣列，這代表經由`cb`使用`checkout(..)`與`trackAction(..)`的函式reference都一併被清除了，所以GC就會釋放它們的記憶體。
+我們建立函式`checkout(..)`與函式`trackAction(..)`作為參數傳給`cb`進行監聽點擊事件並且函式`onClick`會對`cb`進行封存。在最後一行我們不帶任何參數用來執行清除的動作，這將會取消所有曾經監聽過的點擊事件並且把`clickHandlers`清成空陣列，這代表經由`cb`使用`checkout(..)`與`trackAction(..)`的函式reference都一併被清除了，所以GC就會釋放它們的記憶體。
 
 考慮程式整體運行狀況以及效能，將不再需要使用的事件取消監聽比進行監聽更為重要。
 
