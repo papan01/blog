@@ -76,6 +76,7 @@ var student = students.find(
         student.id == studentID
 );
 ```
+
 ORANGE(4)中參考了BLUE(2)的`studentID`，這個箭頭函式是基於持有`studentID`的閉包，所以實際上`greetStudent(..)`沒有持有`studentID`，不過這不影響運作，但了解事實有助於理解閉包，即使是小小的箭頭函式也能擁有閉包。
 
 讓我們看看一個經常被引用作為閉包的例子:
@@ -100,7 +101,7 @@ add42To(9);     // 51
 
 ### 即時鏈結，而非快照
 
-在前面的兩個例子中，我們透過閉包保存的變量來讀取值，感覺很像是當我們要讀取值時，閉包在某個時間點將值的快照(閉包當時的值)傳給我們，這是很多人容易誤解的地方。
+在前面的兩個例子中，我們透過閉包保存的變數來讀取值，感覺很像是當我們要讀取值時，閉包在某個時間點將值的快照(閉包當時的值)傳給我們，這是很多人容易誤解的地方。
 
 閉包實際上為即時鏈結，你不只可以對變數進行讀取的動作，也能夠進行賦值的動作，這代表閉包所封存的是一個完整的變數，這也是閉包為什麼如此強大並且用在許多程式語言上的原因。
 
@@ -293,7 +294,7 @@ greetStudent("Kyle");
 
 ## 閉包的生命週期與垃圾回收(Garbage Collection, GC)
 
-由於閉包本質上與函式的實例關聯著，只要這個函式reference一直被使用著，閉包中的變量也會持續存在著。
+由於閉包本質上與函式的實例關聯著，只要這個函式reference一直被使用著，閉包中的變數也會持續存在著。
 
 假設你有十個函數全部都封存某個變數，但隨著時間流逝，其中九個函式reference已經被丟棄了，但只要還有一個函式的reference還存在，仍然會保留該變數，直到最後一個函式reference被丟棄，這個變數就會被GC處理掉。
 
@@ -352,5 +353,150 @@ onSubmit();
 
 考慮程式整體運行狀況以及效能，將不再需要使用的事件取消監聽比進行監聽更為重要。
 
-### 封存變量還是範疇
+### 封存部分變數還是整個範疇
 
+我們應該只封存我們有參考到的變數，還是將整個範疇鏈的變數都進行封存呢?
+
+概念上來說，只封存有參考到的變數就好，但實際情況沒有我們想的那麼簡單，考慮以下程式碼:
+
+```javascript
+function manageStudentGrades(studentRecords) {
+    var grades = studentRecords.map(getGrade);
+
+    return addGrade;
+
+    // ************************
+
+    function getGrade(record){
+        return record.grade;
+    }
+
+    function sortAndTrimGradesList() {
+        // sort by grades, descending
+        grades.sort(function desc(g1,g2){
+            return g2 - g1;
+        });
+
+        // only keep the top 10 grades
+        grades = grades.slice(0,10);
+    }
+
+    function addGrade(newGrade) {
+        grades.push(newGrade);
+        sortAndTrimGradesList();
+        return grades;
+    }
+}
+
+var addNextGrade = manageStudentGrades([
+    { id: 14, name: "Kyle", grade: 86 },
+    { id: 73, name: "Suzy", grade: 87 },
+    { id: 112, name: "Frank", grade: 75 },
+    // ..many more records..
+    { id: 6, name: "Sarah", grade: 91 }
+]);
+
+// later
+
+addNextGrade(81);
+addNextGrade(68);
+// [ .., .., ... ]
+```
+
+函式`manageStudentGrades(..)`接收一組學生成績的陣列並且回傳函式`addGrade(..)`的reference給`addNextGrade`，每當呼叫`addNextGrade(..)`就會新增一個成績，接著將成績排序後取前十名，`grades`透過閉包保存於`addGrade(..)`之中，這是其中一個被`addGrade(..)`封存的變數，還有另外一個被封存的對象是函式`sortAndTrimGradesList()`，函式也是閉包封存的對象之一。
+
+想想看還有哪些是被封存的變數?
+
+函式`getGrade(..)`有被封存嗎?它只被用於`manageStudentGrades(..)`範疇的一開始，但沒被用於`addGrade(..)`與`sortAndTrimGradesList()`中，所以它沒有被封存。
+
+再看看`studentRecords`，它與`getGrade(..)`一樣只被用於範疇的一開始，若`studentRecords`有被封存的話，那麼對記憶體來說絕對是一大負擔，但我們透過觀察，實際上它並沒有被封存。
+
+根據我們前面理解閉包的定義，當`manageStudentGrades(..)`執行完畢時，未被封存的變數都會被GC給清除掉。我們可以嘗試使用在chrome上的DevTools中進行Debug，設立一個中斷點在`addGrade(..)`中，接著可以注意到變數`studentRecords`未被列出它的值，這能夠證明它並沒有被封存。
+
+但是上述這種驗證方式可靠嗎?看看下面例子:
+
+```javascript
+function storeStudentInfo(id,name,grade) {
+    return function getInfo(whichValue){
+        // warning:
+        //   using `eval(..)` is a bad idea!
+        var val = eval(whichValue);
+        return val;
+    };
+}
+
+var info = storeStudentInfo(73,"Suzy",87);
+
+info("name");
+// Suzy
+
+info("grade");
+// 87
+```
+
+注意到內部函式`getInfo`並沒有封存`id`、`name`或者`grade`，但是我們透過執行`info(..)`仍然可以獲得這些值，這違背我們上面談論到的。
+
+所以根據這邊的結果，所有的變數不論是否有被內部函式參考都會被閉包保留著。那麼回到我們一開始的議題，這樣是否傾向於整個範疇鏈的變數都會被封存呢?視情況而定。
+
+許多現代化的JS engine都會做最佳化的動作，將那些未明確使用的變數從閉包中移除。但正如我們上面看到使用`eval(..)`的情況，在某些情況下JS engine則無法做優化的動作，這時閉包中就會擁有所有的原始變數。換句話說，閉包必須根據不同的範疇進行最佳化的動作，它會盡量減少變數保留的數量，這結果就如同我們一開始說明閉包那樣，沒用到的變數都將被GC清除掉。
+
+但在幾年前，許多JS engine都沒有進行這種優化，若你運行在老舊的設備或者未更新的瀏覽器中，記憶體占用的時間會比我們想像中還要來的長。由於這個優化並非在規範當中，所以我們不該依賴每台電腦的JS engine都會幫我們做這種事。
+
+若你使用了一個較大的陣列或者物件，當你不再使用它並且不希望保留它的記憶體時，進行手動丟棄的動作(有點像養成良好資源回收的概念)，而不是依賴閉包的優化與GC。
+
+讓我們試著修改前面`manageStudentGrades(..)`的例子，變數`studentRecords`由於我們不再使用它了，所以可以透過下面方式來進行手動清除:
+
+```javascript
+function manageStudentGrades(studentRecords) {
+    var grades = studentRecords.map(getGrade);
+
+    // unset `studentRecords` to prevent unwanted
+    // memory retention in the closure
+    studentRecords = null;
+
+    return addGrade;
+    // ..
+}
+```
+
+我們並沒有真正的從閉包中清除掉`studenRecords`，因為那並不再我們能控制的範圍內，我們只能確保它就算被遺留於閉包當中，它至少不會占用太多的記憶體，至於最後清除這個變數的工作，就交給GC處理就好。除了`studenRecords`以外，實際上`getGrade`也是我們需要清理的對象。
+
+了解閉包在程式中出現的位置以及它包含哪些變數是很重要的，仔細的管理這些閉包，僅保留最基本的需求而不浪費多餘的記憶體，不論在哪種程式語言中都是很重要的一環。
+
+## 另一種角度看閉包
+
+我們先來看看前面的例子:
+
+```javascript
+// outer/global scope: RED(1)
+
+function adder(num1) {
+    // function scope: BLUE(2)
+
+    return function addTo(num2){
+        // function scope: GREEN(3)
+
+        return num1 + num2;
+    };
+}
+
+var add10To = adder(10);
+var add42To = adder(42);
+
+add10To(15);    // 25
+add42To(9);     // 51
+```
+
+我們當前的觀點認為，無論在何處傳遞和調用函式，閉包都會保留一個回去原始範疇的隱藏路徑，以便於訪問被封存的變數。我們透過下圖來說明此概念：
+
+![YDKJSY-10-1](/static/images/you-dont-know-js-yet-10-1.png)
+<figcaption><em>Fig.1:Visualizing Closures(https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/images/fig4.png)</em></figcaption>
+
+上面例子中的內部函式`addTo(..)`透過函式`adder(..)`回傳它的實例給RED(1)範疇中的變數(`add10To`與`add42To`)，但我們可以用另外一種思考方式，可以假想回傳的函數實例實際上是回傳它所屬位置的範疇，當然這也包含整個範疇鏈，也就是說這個賦值的動作實際上是把整個範疇都傳遞過去，而非只是一個函式，我們透過下圖來觀察與上面的差異:
+
+![YDKJSY-10-2](/static/images/you-dont-know-js-yet-10-2.png)
+<figcaption><em>Fig.2:Visualizing Closures (Alternative)(https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/images/fig5.png)</em></figcaption>
+
+從上圖可以看到函式`adder(..)`每次都會創立一個新的BLUE(2)範疇，其中包含了變量`num1`，以及函式`addTo(..)`的實例與它的範疇GREEN(3)，與*Fig.1*不同的地方在於`addTo(..)`它的位置留在BLUE(2)之中，然後`add10To`與`add42To`移到RED(1)之中，且它們不再只是表示`addTo(..)`的實例。當`add10To`被執行時，它依舊存在於BLUE(2)，所以它可以很自然的存取範疇鏈的變數。
+
+所以上面兩個描述方式哪一個是對的呢?實際上兩個都是對的，只是用範疇鏈的觀點來看待閉包，更貼近我們實際使用程式時的狀況。閉包描述了一個函式的實例不僅僅只是一個函式而已，還有其背後連結整個範疇鏈的能力。不論你選擇哪一種方式來理解閉包，我們透過程式觀察到的狀況都是一樣的。
