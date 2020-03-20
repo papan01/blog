@@ -500,3 +500,92 @@ add42To(9);     // 51
 從上圖可以看到函式`adder(..)`每次都會創立一個新的BLUE(2)範疇，其中包含了變量`num1`，以及函式`addTo(..)`的實例與它的範疇GREEN(3)，與*Fig.1*不同的地方在於`addTo(..)`它的位置留在BLUE(2)之中，然後`add10To`與`add42To`移到RED(1)之中，且它們不再只是表示`addTo(..)`的實例。當`add10To`被執行時，它依舊存在於BLUE(2)，所以它可以很自然的存取範疇鏈的變數。
 
 所以上面兩個描述方式哪一個是對的呢?實際上兩個都是對的，只是用範疇鏈的觀點來看待閉包，更貼近我們實際使用程式時的狀況。閉包描述了一個函式的實例不僅僅只是一個函式而已，還有其背後連結整個範疇鏈的能力。不論你選擇哪一種方式來理解閉包，我們透過程式觀察到的狀況都是一樣的。
+
+## 透過閉包改善程式碼
+
+前面我們已經了解閉包到底如何運作的，接下來我們來討論如何使用閉包來改善程式碼架構。
+
+假設我們有一個按鈕，按下去就會透過Ajax請求發送與接收一些資料。首先我們先不使用閉包:
+
+```javascript
+var APIendpoints = {
+    studentIDs:
+        "https://some.api/register-students",
+    // ..
+};
+
+var data = {
+    studentIDs: [ 14, 73, 112, 6 ],
+    // ..
+};
+
+function makeRequest(evt) {
+    var btn = evt.target;
+    var recordKind = btn.dataset.kind;
+    ajax(
+        APIendpoints[recordKind],
+        data[recordKind]
+    );
+}
+
+// <button data-kind="studentIDs">
+//    Register Students
+// </button>
+btn.addEventListener("click",makeRequest);
+```
+
+函式`makeRequest(..)`用於從點擊事件接收一個`evt`物件，這函式會從目標按鈕中獲取`data-kind`屬性，並使用獲取到的值進行對應的Ajax請求。
+
+上面這段程式碼可以正常的運作，但有一些問題存在，它在每次事件觸發時都會去獲取DOM屬性，這會造成效能的低落，理當說我們只要再加入監聽時，將它的DOM屬性記下就好，所以我們可以透過閉包來解決這問題:
+
+```javascript
+var APIendpoints = {
+    studentIDs:
+        "https://some.api/register-students",
+    // ..
+};
+
+var data = {
+    studentIDs: [ 14, 73, 112, 6 ],
+    // ..
+};
+
+function setupButtonHandler(btn) {
+    var recordKind = btn.dataset.kind;
+
+    btn.addEventListener(
+        "click",
+        function makeRequest(){
+            ajax(
+                APIendpoints[recordKind],
+                data[recordKind]
+            );
+        }
+    );
+}
+
+// <button data-kind="studentIDs">
+//    Register Students
+// </button>
+
+setupButtonHandler(btn);
+```
+
+這裡改使用函式`setupButtonHandler(..)`，在其中我們只進行一次檢索DOM屬性的動作，接著就加入按鈕的事件監聽，其中函式`makeRequest(..)`會封鎖外部變數`recordKind`，在每次觸發事件時，都會使用相同的值，而不用像前面一樣每次都檢索一次。
+
+除此之外，我們還可以替換`ajax`中參數的部分，由於在每次觸發時需要從全域變數`APIendpoints`與`data`進行檢索的動作，我們可以透過以下這種方式來改寫:
+
+```javascript
+function setupButtonHandler(btn) {
+    var recordKind = btn.dataset.kind;
+    var requestURL = APIendpoints[recordKind];
+    var requestData = data[recordKind];
+
+    btn.addEventListener(
+        "click",
+        function makeRequest(evt){
+            ajax(requestURL,requestData);
+        }
+    );
+}
+```
