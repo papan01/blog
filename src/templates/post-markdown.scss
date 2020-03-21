@@ -60,6 +60,10 @@ $alertStyles: (
     padding-left: 1em;
   }
 
+  figcaption {
+    margin-bottom: $relative-spacing-normal;
+  }
+
   ol {
     counter-reset: ol-counter;
     list-style-position: outside;
