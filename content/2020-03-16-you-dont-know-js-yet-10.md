@@ -8,7 +8,7 @@ tags:
   - YDKJSY
 ---
 
-在[「You don't know JavaScript Yet:#3 深入JS的核心」](/archives/2020-01-07-you-dont-know-js-yet-3)中曾經有談論過關於[閉包(Closures)](/archives/2020-01-07-you-dont-know-js-yet-3#閉包closure)，在前面幾個章節中也時不時會提到閉包，但一直未深入討論這個話題，終於到了這章能好好地探究它了。閉包是程式語言重要的特色之一，它不僅只在JS中存在，若要當一個JS大師，那麼善用閉包是必須熟悉的技巧。
+在[「You don't know JavaScript Yet:#3 深入JS的核心」](/archives/2020-01-07-you-dont-know-js-yet-3)中曾經有談論過關於[閉包(Closures)](/archives/2020-01-07-you-dont-know-js-yet-3#閉包closure)，在前面幾個章節中也時不時會提到閉包，但一直未深入討論這個話題，終於到了這章能好好地探究它了。閉包是程式語言重要的特色之一，它不僅只在JS中存在，若要當一個JS大師，那麼善用閉包是必須熟練的技巧。
 
 ## 初探閉包
 
@@ -56,14 +56,14 @@ chosenStudents[1]("Howdy");
 // Howdy, Frank!
 ```
 
-首先`lookupStudent(..)`會回傳函式`greetStudent(..)`，這裡執行了兩次並將結果儲存於陣列`chosenStudents`當中，我們透過`.name`這個屬性來確認函式是否符合我們的預期，它也確實是`greetStudent(..)`的實例。
+首先`lookupStudent(..)`會回傳函式`greetStudent(..)`，這裡執行了兩次`lookupStudent(..)`並將結果儲存於陣列`chosenStudents`當中，我們透過`.name`這個屬性來確認函式是否符合我們的預期，它也確實是`greetStudent(..)`的實例。
 
-接著在每次`lookupStudent(..)`執行完畢後，通常內部變數都會透過GC(garbage collected)自動釋放記憶體，只保留回傳值`greetStudent(..)`，這邊就是我們想要觀察的地方。`greetStudent(..)`允許輸入一個參數`greeting`，同時在它裡面使用了來至於`lookupStudent`範疇中的`students`與`studentID`，這種參考外部範疇變數的行為稱為**閉包(closure)**，若學術一點的說法:*`greetStudent(..)` closes over the outer variables `students` and `studentID`*，這句話傳達幾個意思:
+接著在每次`lookupStudent(..)`執行完畢後，通常內部變數都會透過GC(garbage collected)自動釋放記憶體，只保留回傳值`greetStudent(..)`，這邊就是我們想要觀察的地方。`greetStudent(..)`允許輸入一個參數`greeting`，同時在它裡面使用了來至於`lookupStudent`範疇中的`students`與`studentID`，並將它們封存於內部函式之中，這種參考外部範疇變數並將其封存的行為稱為**閉包(closure)**，若學術一點的說法:*`greetStudent(..)` closes over the outer variables `students` and `studentID`*，這句話傳達幾個意思:
 
-1. `greetStudent(..)`為閉包，意味著它是函是。
+1. `greetStudent(..)`為閉包，意味著它是函式。
 2. 閉包將一些變數`students`與`studentID`封存(closes over, 若有更好的翻譯歡迎提供)於它的範疇當中。
 
-在第三章中曾經有給閉包一個簡單的定義:「閉包是讓函式記住與持續訪問在其範疇之外的變數的一種能力，即使該函式在其他範疇中執行也是如此。」，用這個定義來看這個例子，閉包使得`greetStudent(..)`能持續訪問它範疇之外的變數(`students`與`studentID`)即使`lookupStudent(..)`已經執行完畢，所以`students`與`studentID`並不會被GC給清掉而是保留它們的記憶體。在這之後`greetStudent`在全域範疇中執行時，這些變數依然被保留著。
+在第三章中曾經有給閉包一個簡單的定義:「閉包是讓函式記住與持續訪問在其範疇之外的變數的一種能力，即使該函式在其他範疇中執行也是如此。」，用這個定義來看這個例子，閉包使得`greetStudent(..)`能持續訪問它範疇之外的變數(`students`與`studentID`)即使`lookupStudent(..)`已經執行完畢，`students`與`studentID`也不會被GC給清掉而是保留它們的記憶體。在這之後`greetStudent`在全域範疇中執行時，這些變數依然被保留著。
 
 如果JS沒有閉包的能力，當`lookupStudent(..)`回傳`greetStudent(..)`之後，代表`students`與`studentID`都將被GC給回收，若此時在執行任意一個`greetStudent(..)`，它會嘗試去尋找函式範疇BLUE(2)中的變數，但BLUE(2)已經不存在了，所以會拋出`ReferenceError`。但實際上執行`chosenStudents[0]("Hello")`是有跑出`Hello, Sarah`的，所以代表`students`與`studentID`都還存在於記憶體當中，這就是閉包的能力。
 
@@ -97,7 +97,7 @@ add42To(9);     // 51
 
 每一次實例化`adder(..)`都將變數`num1`封存於`addTo(..)`中，當`adder(..)`執行完畢也不會釋放`num1`的記憶體，所以當上面執行`add10To(15)`時，就等同於`10 + 15`，每次執行`add10To(..)`都會是`10 + num2`。
 
-但在這裡要說一個很容易被忽略的重要細節，前面再介紹[「語彙範疇」](/archives/2020-02-23-you-dont-know-js-yet-5)時，我們知道範疇決定於編譯期，但在上面的例子，每次進行實例化`adder(..)`都會創建一個新的函式`addTo(..)`，並且為它們建立新的閉包，儘管閉包是基於語彙範疇，但閉包的特徵表現於函式實例化的時候。
+在這裡要說一個很容易被忽略的重要細節，前面章節再介紹[「語彙範疇」](/archives/2020-02-23-you-dont-know-js-yet-5)時，我們知道範疇決定於編譯期，但在上面的例子，每次進行實例化`adder(..)`都會創建一個新的函式`addTo(..)`，並且為它們建立新的閉包，儘管閉包是基於語彙範疇，但閉包的特徵表現於函式實例化的時候。
 
 ### 即時鏈結，而非快照
 
@@ -196,7 +196,7 @@ keeps[2]();   // 2
 
 這樣在迴圈中每次都會建立一個獨立的`i`出來，就不會有上面的問題。
 
-### 如果沒辦法看見它呢
+### 如果沒辦法觀察到閉包呢
 
 如果一個閉包它存在於程式的某處，但我們無法察覺到它的存在，這重要嗎?實際上不重要。重要的是我們能透過觀察來察覺閉包的存在。
 
@@ -242,7 +242,7 @@ student();
 // Kyle
 ```
 
-實際上全域變數沒辦法透過觀察來確認它是否用於閉包，因為它在任何地方都能夠被使用，且在範疇鏈當中沒有比它在更上層的範疇了。`students`雖然被用於內部函式`firstStudent()`當中，但由於`students`位處於全域範疇當中，透過這樣調用跟使用正常的語彙範疇沒什麼區別。所有函式都能使用全域變數，無論該程式語言是否支援閉包，使用閉包有點多此一舉的感覺。
+實際上全域變數沒辦法透過觀察來確認它是否用於閉包，因為它在任何地方都能夠被使用。`students`雖然被用於內部函式`firstStudent()`當中，但由於`students`位處於全域範疇當中，透過這樣調用跟使用正常的語彙範疇沒什麼區別。所有函式都能使用全域變數，無論該程式語言是否支援閉包，在此處使用閉包有點多此一舉的感覺。
 
 下一個例子中，變數若沒有被使用到，就不會有閉包的存在:
 
@@ -288,7 +288,7 @@ greetStudent("Kyle");
 
 - 必須有一個函式被調用。
 - 這個函式至少使用一個外部範疇的變數。
-- 必須再與這個(些)變數不同的範疇中，使用這個函式。
+- 必須在與這個(些)變數不同的範疇中，使用這個函式。
 
 這意味著我們應該以是否能夠觀察到閉包會對程式造成影響或者產生什麼行為來定義閉包，而不是將閉包透過某種學術定義來說明它。
 
@@ -349,7 +349,7 @@ onSubmit(function trackAction(evt){
 onSubmit();
 ```
 
-我們建立函式`checkout(..)`與函式`trackAction(..)`作為參數傳給`cb`進行監聽點擊事件並且函式`onClick`會對`cb`進行封存。在最後一行我們不帶任何參數用來執行清除的動作，這將會取消所有曾經監聽過的點擊事件並且把`clickHandlers`清成空陣列，這代表經由`cb`使用`checkout(..)`與`trackAction(..)`的函式reference都一併被清除了，所以GC就會釋放它們的記憶體。
+我們建立函式`checkout(..)`與函式`trackAction(..)`傳給函式`listener(..)`的參數`cb`進行監聽點擊事件並且函式`onClick`會對`cb`進行封存。在最後一行我們不帶任何參數用來執行清除的動作，這將會取消所有曾經監聽過的點擊事件並且把`clickHandlers`清成空陣列，這代表經由`cb`使用`checkout(..)`與`trackAction(..)`的函式reference都一併被清除了，所以GC就會釋放它們的記憶體。
 
 考慮程式整體運行狀況以及效能，將不再需要使用的事件取消監聽比進行監聽更為重要。
 
@@ -436,11 +436,11 @@ info("grade");
 
 注意到內部函式`getInfo`並沒有封存`id`、`name`或者`grade`，但是我們透過執行`info(..)`仍然可以獲得這些值，這違背我們上面談論到的。
 
-所以根據這邊的結果，所有的變數不論是否有被內部函式參考都會被閉包保留著。那麼回到我們一開始的議題，這樣是否傾向於整個範疇鏈的變數都會被封存呢?視情況而定。
+這邊的結果與前面我們所描述的又不一樣了，變數不論是否有被內部函式參考都會被閉包保留著。那麼回到我們一開始的議題，這樣是否傾向於整個範疇鏈的變數都會被封存呢?視情況而定。
 
 許多現代化的JS engine都會做最佳化的動作，將那些未明確使用的變數從閉包中移除。但正如我們上面看到使用`eval(..)`的情況，在某些情況下JS engine則無法做優化的動作，這時閉包中就會擁有所有的原始變數。換句話說，閉包必須根據不同的範疇進行最佳化的動作，它會盡量減少變數保留的數量，這結果就如同我們一開始說明閉包那樣，沒用到的變數都將被GC清除掉。
 
-但在幾年前，許多JS engine都沒有進行這種優化，若你運行在老舊的設備或者未更新的瀏覽器中，記憶體占用的時間會比我們想像中還要來的長。由於這個優化並非在規範當中，所以我們不該依賴每台電腦的JS engine都會幫我們做這種事。
+但在幾年前，許多JS engine都沒有進行這種優化，若你運行在老舊的設備或者未更新的瀏覽器中，未清除的變數其記憶體占用的時間會比我們想像中還要來的長。由於這個優化並非在規範當中，所以我們不該依賴每台設備的JS engine都會幫我們做優化的動作。
 
 若你使用了一個較大的陣列或者物件，當你不再使用它並且不希望保留它的記憶體時，進行手動丟棄的動作(有點像養成良好資源回收的概念)，而不是依賴閉包的優化與GC。
 
@@ -459,7 +459,7 @@ function manageStudentGrades(studentRecords) {
 }
 ```
 
-我們並沒有真正的從閉包中清除掉`studenRecords`，因為那並不再我們能控制的範圍內，我們只能確保它就算被遺留於閉包當中，它至少不會占用太多的記憶體，至於最後清除這個變數的工作，就交給GC處理就好。除了`studenRecords`以外，實際上`getGrade`也是我們需要清理的對象。
+我們並沒有真正的從閉包中清除掉`studenRecords`，因為那並不在我們能控制的範圍內，我們只能確保它就算被遺留於閉包當中，它至少不會占用太多的記憶體，至於最後清除這個變數的工作，就交給GC處理就好。除了`studenRecords`以外，實際上`getGrade`也是我們需要清理的對象。
 
 了解閉包在程式中出現的位置以及它包含哪些變數是很重要的，仔細的管理這些閉包，僅保留最基本的需求而不浪費多餘的記憶體，不論在哪種程式語言中都是很重要的一環。
 
@@ -492,20 +492,20 @@ add42To(9);     // 51
 ![YDKJSY-10-1](/static/images/you-dont-know-js-yet-10-1.png)
 <figcaption><em>Fig.1:Visualizing Closures(https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/images/fig4.png)</em></figcaption>
 
-上面例子中的內部函式`addTo(..)`透過函式`adder(..)`回傳它的實例給RED(1)範疇中的變數(`add10To`與`add42To`)，但我們可以用另外一種思考方式，可以假想回傳的函數實例實際上是回傳它所屬位置的範疇，當然這也包含整個範疇鏈，也就是說這個賦值的動作實際上是把整個範疇都傳遞過去，而非只是一個函式，我們透過下圖來觀察與上面的差異:
+上面例子中的內部函式`addTo(..)`透過函式`adder(..)`回傳它的實例給RED(1)範疇中的變數(`add10To`與`add42To`)，但我們可以用另外一種思考方式，想像回傳的函數實例實際上是回傳它所屬位置的範疇，其中也包含整個範疇鏈，也就是說這個賦值的動作實際上是把整個範疇都傳遞過去，而非只是一個函式。我們透過下圖來看看這個概念與上面的差異:
 
 ![YDKJSY-10-2](/static/images/you-dont-know-js-yet-10-2.png)
 <figcaption><em>Fig.2:Visualizing Closures (Alternative)(https://github.com/getify/You-Dont-Know-JS/blob/2nd-ed/scope-closures/images/fig5.png)</em></figcaption>
 
-從上圖可以看到函式`adder(..)`每次都會創立一個新的BLUE(2)範疇，其中包含了變量`num1`，以及函式`addTo(..)`的實例與它的範疇GREEN(3)，與*Fig.1*不同的地方在於`addTo(..)`它的位置留在BLUE(2)之中，然後`add10To`與`add42To`移到RED(1)之中，且它們不再只是表示`addTo(..)`的實例。當`add10To`被執行時，它依舊存在於BLUE(2)，所以它可以很自然的存取範疇鏈的變數。
+從上圖可以看到函式`adder(..)`每次都會創立一個新的BLUE(2)範疇，其中包含了變量`num1`，以及函式`addTo(..)`的實例與它的範疇GREEN(3)。與*Fig.1*不同的地方在於`addTo(..)`它的位置留在BLUE(2)之中，然後`add10To`與`add42To`移到RED(1)之中，且它們不再只是表示`addTo(..)`的實例。當`add10To`被執行時，它依舊存在於BLUE(2)，所以它可以很自然的存取範疇鏈的變數。
 
 所以上面兩個描述方式哪一個是對的呢?實際上兩個都是對的，只是用範疇鏈的觀點來看待閉包，更貼近我們實際使用程式時的狀況。閉包描述了一個函式的實例不僅僅只是一個函式而已，還有其背後連結整個範疇鏈的能力。不論你選擇哪一種方式來理解閉包，我們透過程式觀察到的狀況都是一樣的。
 
 ## 透過閉包改善程式碼
 
-前面我們已經了解閉包到底如何運作的，接下來我們來討論如何使用閉包來改善程式碼架構。
+前面我們已經了解閉包到底如何運作的了，接下來我們來討論如何使用閉包來改善程式碼架構。
 
-假設我們有一個按鈕，按下去就會透過Ajax請求發送與接收一些資料。首先我們先不使用閉包:
+假設我們有一個按鈕，按下去就會透過Ajax發送與接收一些資料。首先我們先看看不使用閉包的例子:
 
 ```javascript
 var APIendpoints = {
@@ -571,7 +571,7 @@ function setupButtonHandler(btn) {
 setupButtonHandler(btn);
 ```
 
-這裡改使用函式`setupButtonHandler(..)`，在其中我們只進行一次檢索DOM屬性的動作，接著就加入按鈕的事件監聽，其中函式`makeRequest(..)`會封鎖外部變數`recordKind`，在每次觸發事件時，都會使用相同的值，而不用像前面一樣每次都檢索一次。
+這裡改使用函式`setupButtonHandler(..)`，在其中我們只進行一次檢索DOM屬性的動作，接著就加入按鈕的事件監聽，其中函式`makeRequest()`會封鎖外部變數`recordKind`，在每次觸發事件時，都會使用相同的值，而不用像前面一樣每次都檢索一次。
 
 除此之外，我們還可以替換`ajax`中參數的部分，由於在每次觸發時需要從全域變數`APIendpoints`與`data`進行檢索的動作，我們可以透過以下這種方式來改寫:
 
@@ -583,9 +583,60 @@ function setupButtonHandler(btn) {
 
     btn.addEventListener(
         "click",
-        function makeRequest(evt){
+        function makeRequest(){
             ajax(requestURL,requestData);
         }
     );
 }
 ```
+
+函式`makeRequest()`也封存了變數`requestURL`與`requestDate`，這樣看起來比較具有可讀性且效率也比較好。
+
+我們利用閉包的特性，將一些訊息(變數)封裝於函式之中，這些帶有訊息的函式就不需要帶入參數而可以直接使用，這可以使程式碼變得較為簡潔並且還提供了使用更好的語義名稱來標記函數的機會。
+
+我們可以再進一步改進程式碼，讓程式可重複使用:
+
+```javascript
+function defineHandler(requestURL,requestData) {
+    return function makeRequest(){
+        ajax(requestURL,requestData);
+    };
+}
+
+function setupButtonHandler(btn) {
+    var recordKind = btn.dataset.kind;
+    var handler = defineHandler(
+        APIendpoints[recordKind],
+        data[recordKind]
+    );
+    btn.addEventListener("click",handler);
+}
+```
+
+這段程式碼與前面介紹的相當類似，只是我們讓`makeRequest()`提前進行封存的動作並將結果賦予變數`handler`，
+函式`defineHandler(..)`在程式中將能被重複的使用。我們還明確地將閉包限制為僅需要兩個變數(requestURL與requestData)。
+
+## 總結
+
+我們可以將閉包解釋成下面兩種模式:
+
+- **以觀察的角度**:閉包是一個函式的實例，即使該函式被傳遞到其他範疇，並在其他範疇被調用，它依舊會記住外部變數。
+- **以範疇鏈的角度**:閉包是一個函式的實例，它的範疇會保留於原本的位置，任何參考都會指向這個位置，之後的運作就如同於範疇鏈一般。
+
+閉包能為我們帶來的好處:
+
+- 閉包可以將訊息進行封存，記住已經確認過的訊息，而不必每次都進行計算或查詢的動作，進而提高程式執行的效率。
+- 閉包通過將變數封存於函式實例之中來增加程式的可讀性，確保當函式被調用時訊息有被保留下來，減少變數的曝光同時也能帶來[POLE](/archives/2020-03-12-you-dont-know-js-yet-9#最少曝光原則)的好處。
+
+## Reference
+
+- [You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)
+- [You don't know JavaScript Yet:#1 什麼是JavaScript](/archives/2020-01-01-you-dont-know-js-yet-1)
+- [You don't know JavaScript Yet:#2 概觀JS](/archives/2020-01-04-you-dont-know-js-yet-2)
+- [You don't know JavaScript Yet:#3 深入JS的核心](/archives/2020-01-07-you-dont-know-js-yet-3)
+- [You don't know JavaScript Yet:#4 範疇](/archives/2020-01-31-you-dont-know-js-yet-4)
+- [You don't know JavaScript Yet:#5 說明語彙範疇](/archives/2020-02-23-you-dont-know-js-yet-5)
+- [You don't know JavaScript Yet:#6 範疇鏈](/archives/2020-02-27-you-dont-know-js-yet-6)
+- [You don't know JavaScript Yet:#7 全域範疇](/archives/2020-03-03-you-dont-know-js-yet-7)
+- [You don't know JavaScript Yet:#8 變數神秘的生命週期](/archives/2020-03-06-you-dont-know-js-yet-8)
+- [You don't know JavaScript Yet:#9 限制範疇曝光](/archives/2020-03-12-you-dont-know-js-yet-9)
