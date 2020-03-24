@@ -191,5 +191,23 @@ function getName(studentID) {
 module.exports.getName = getName;
 ```
 
-變數`records`與函式`getName(..)`位於此模組中最上層的範疇，但這不是全域範疇，這曾經在前面的章節有討論過，所以你可以把這個範疇想成是上面例子中`defineStudent()`內的範疇。若要在CommonJS中公開API給外部使用，可以將欲公開的變數或函式添加到`module.exports`的屬性中。至於要將`module.exports`放置於哪裡沒有硬性的規定，建議將它們統一置於模組的最上面或最下面。
+變數`records`與函式`getName(..)`位於此模組中最上層的範疇，但這不是全域範疇，這曾經在前面的章節有討論過，所以你可以把這個範疇想成是上面例子中`defineStudent()`內的範疇。若要在CommonJS中公開API給外部使用，可以將欲公開的變數或函式添加到`module.exports`的屬性中，`module.exports`本身就像個空的物件。至於要將`module.exports`放置於哪裡沒有硬性的規定，建議將它們統一置於模組的最上面或最下面。
 
+有些開發人員習慣替換掉預設物件`module.exports`:
+
+```javascript
+// defining a new object for the API
+module.exports = {
+    // ..exports..
+};
+```
+
+這不是一個好的做法，如果多個像這樣的模組互相依賴，則會出現意外行為，因此不建議這樣做。如果想要透過物件一次導出多個API，可以透過以下方式:
+
+```javascript
+Object.assign(module.exports,{
+   // .. exports ..
+});
+```
+
+這與前不同之處在於將欲導出的API置入物件中，`Object.assign`會將這個物件的屬性進行淺拷貝到`module.exports`中，而並非像上面透過替換的方式。
