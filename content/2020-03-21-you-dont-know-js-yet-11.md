@@ -28,7 +28,7 @@ tags:
 
 為了更好的理解模組是什麼，底下我們將那些設計程式碼架構的方式分為模組與非模組來進行比較。
 
-### Namespaces (無狀態類)
+### 命名空間(無狀態類)
 
 如果只是將一些功能組合為一個集合而沒有資料，這就不算是模組所預期的封裝行為。這種將無狀態的函式進行分組於某個範圍中，這範圍有個專有名詞稱為**命名空間(namespace)**:
 
@@ -53,7 +53,7 @@ var Utils = {
 
 `Utils`在許多程式碼中相當常見，用於將一些常用的函式整理於這個區塊中，但這些函式皆為靜態且獨立的。但這樣並不能算是模組，通常會說我們定義了一個名為`Utils`的命名空間。
 
-### Data Structures (有狀態類)
+### 資料結構(有狀態類)
 
 即使在一個物件中包含了資料與功能，若沒有任何限制存取的機制，那麼這樣也不算是模組，且違反了POLE對於封裝的理念:
 
@@ -80,7 +80,7 @@ Student.getName(73);
 
 `records`未隱藏於公有API之後，`Student`儘管具有資料與功能的部分，但未限制其存取機制，所以它並非是一個模組，或者應該稱其為資料結構(data structures)的實例。
 
-### Modules (有狀態的存取控制)
+### 模組(有狀態的存取控制)
 
 為了體現模組模式的精神，我們不只要將資料與功能組合成一個有狀態的邏輯單元，同時還加入存取機制(私有/公有)。
 
@@ -122,7 +122,7 @@ Student.getName(73);   // Suzy
 
 使用IIFE意味著我們的程式只需要模組的單個實例，通常這被稱為"singleton"。若你曾經閱讀過design pattern，對這個名詞應該不太陌生，通常使用這種模式表示在你的程式中，只需要一個此模組的實例，若已經建立過一個實例了，則會返回該實例的reference。
 
-#### Module Factory(用於多個實例)
+#### 模組工廠(用於多個實例)
 
 若你想要創建多個實例，只要稍微改一下程式即可:
 
@@ -166,9 +166,9 @@ fullTime.getName(73);            // Suzy
 - 模組的內部範疇必須至少隱藏一項訊息，這些訊息代表模組的狀態。
 - 模組必須回傳公有API，其中至少包含一個函式，這個函式必須封存(閉包)那些表示模組狀態的訊息，以便保留當前的狀態。
 
-## Node CommonJS Modules
+## Node CommonJS模組
 
-在前面的章節中曾經在另外一個議題上討論過[「Node CommonJS Modules」](/archives/2020-03-03-you-dont-know-js-yet-7#node)。它與前面討論的經典模組不太一樣，CommonJS modules是基於檔案來管理模組，每一個檔案都是一個模組，所以在這檔案中你可以任意的使用IIFE或者模組工廠。
+在前面的章節中曾經在另外一個議題上討論過[「Node CommonJS模組」](/archives/2020-03-03-you-dont-know-js-yet-7#node)。它與前面討論的經典模組不太一樣，CommonJS modules是基於檔案來管理模組，每一個檔案都是一個模組，所以在這檔案中你可以任意的使用IIFE或者模組工廠。
 
 這裡一樣透過改寫上面的例子:
 
@@ -211,3 +211,32 @@ Object.assign(module.exports,{
 ```
 
 這與前不同之處在於將欲導出的API置入物件中，`Object.assign`會將這個物件的屬性進行淺拷貝到`module.exports`中，而並非像上面透過替換的方式。
+
+接著我們來看看如何導入這些模組:
+
+```javascript
+var Student = require("/path/to/student.js");
+
+Student.getName(73);
+// Suzy
+```
+
+`require(..)`為Node所提供的方法，你可以在後面帶入檔案的路徑就能導入該模組。
+
+CommonJS的所有模組都是使用singleton的模式，也就是不論你在哪裡導入該模組，都會返回相同的reference。用`require(..)`進行導入時，它會一次性的導入所有該模組的公有API，若只想使用其中一部分，可以透過以下的方式:
+
+```javascript
+var getName = require("/path/to/student.js").getName;
+// or alternately:
+var { getName } = require("/path/to/student.js");
+```
+
+CommonJS與經典模組類似，被導出的API一樣會對模組內部的資料保持閉包的特性，這也是程式如何保持singleton模組狀態的生命週期。
+
+[[info]]
+|若看到`require("student")`非相對路徑的寫法，它通常會從`node_modules`中尋找。
+
+
+## 現代ES模組(ESM)
+
+ESM與CommonJS有許多相似之處，都是以檔案做為一個模組，並且都是singleton實例，預設所有變數與函式都是私有的(private)。但有一個不同的地方在於所有ESM檔案都預設為嚴格模式，不需要再額外加`"use strict"`，且無法將其設為非嚴格模式。
