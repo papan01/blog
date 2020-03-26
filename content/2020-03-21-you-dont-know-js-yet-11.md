@@ -82,7 +82,7 @@ Student.getName(73);
 
 ### 模組(有狀態的存取控制)
 
-為了體現模組模式的精神，我們不只要將資料與功能組合成一個有狀態的邏輯單元，同時還加入存取機制(私有/公有)。
+為了體現模組模式的精神，我們不只要將資料與功能組合成一個有狀態的邏輯單元，同時還要加入存取機制(私有/公有)。
 
 我們將使用上一節`Student`的例子，將其改造為模組，這裡將會使用被稱為"經典模組(classic module)"的形式表示，這個形式原本被稱為"揭露模組(revealing module)"，其最早出現於2000年初期。考慮以下程式碼:
 
@@ -168,7 +168,7 @@ fullTime.getName(73);            // Suzy
 
 ## Node CommonJS模組
 
-在前面的章節中曾經在另外一個議題上討論過[「Node CommonJS模組」](/archives/2020-03-03-you-dont-know-js-yet-7#node)。它與前面討論的經典模組不太一樣，CommonJS modules是基於檔案來管理模組，每一個檔案都是一個模組，所以在這檔案中你可以任意的使用IIFE或者模組工廠。
+在前面的章節中曾經在另外一個議題上討論過[「Node CommonJS模組」](/archives/2020-03-03-you-dont-know-js-yet-7#node)。它與前面討論的經典模組不太一樣，CommonJS模組是基於檔案來管理模組，每一個檔案都是一個模組，所以在這檔案中你可以任意的使用IIFE或者模組工廠。
 
 這裡一樣透過改寫上面的例子:
 
@@ -240,3 +240,104 @@ CommonJS與經典模組類似，被導出的API一樣會對模組內部的資料
 ## 現代ES模組(ESM)
 
 ESM與CommonJS有許多相似之處，都是以檔案做為一個模組，並且都是singleton實例，預設所有變數與函式都是私有的(private)。但有一個不同的地方在於所有ESM檔案都預設為嚴格模式，不需要再額外加`"use strict"`，且無法將其設為非嚴格模式。
+
+ESM使用關鍵字`export`代替CommonJS的`modules.exports`，而使用關鍵字`import`代替`require(..)`。我們一樣使用前面的例子進行改寫:
+
+```javascript
+var records = [
+    { id: 14, name: "Kyle", grade: 86 },
+    { id: 73, name: "Suzy", grade: 87 },
+    { id: 112, name: "Frank", grade: 75 },
+    { id: 6, name: "Sarah", grade: 91 }
+];
+
+function getName(studentID) {
+    var student = records.find(
+        student => student.id == studentID
+    );
+    return student.name;
+}
+
+// ************************
+
+export getName;
+```
+
+這裡與使用CommonJS類似，你可以在任何你想要的地方使用`export`導出API，你也可以透過另外一種形式使用:
+
+```javascript
+export function getName(studentID) {
+    // ..
+}
+```
+
+這樣表示`getName`是一個標準的函式同時也是要被導出的API。還有另外一個關鍵字`default`，它需與`export`搭配使用:
+
+```javascript
+export default function getName(studentID) {
+    // ..
+}
+```
+
+我們可以將上面這兩種導出方式分為*default*與*named*，每個模組中可以有多個*named exports*，但只能有一個*default export*。我們透過例子看看它們的差別，首先是*named*：
+
+```javascript
+import { getName } from "/path/to/students.js";
+
+getName(73);   // Suzy
+```
+
+我們可以透過`{..}`來指定我們想要導入的API，所以允許一次導入多個，我們還可以透過`as`關鍵字來改變被導出API的名稱:
+
+```javascript
+import { getName as getStudentName }
+   from "/path/to/students.js";
+
+getStudentName(73);
+// Suzy
+```
+
+如果`getName`被改成使用`export default`的話，我們可以透過以下方式來導入:
+
+```javascript
+import getName from "/path/to/students.js";
+
+getName(73);   // Suzy
+```
+
+這裡省略了`{..}`，這也代表你只能導入預設的API，若你也想替它改變名稱，可以這樣做:
+
+```javascript
+import { default as getOtherName, /* .. others .. */ }
+   from "/path/to/students.js";
+
+getOtherName(73);   // Suzy
+```
+
+最後一種導入的方式可以透過`*`一次性的導入所有公有API，但相對的你必須一定要替它命名:
+
+```javascript
+import * as Student from "/path/to/students.js";
+
+Student.getName(73);   // Suzy
+```
+
+## 總結
+
+不論你使用上面哪一種方式來編寫模組，重要的是要知道模組所帶來的好處與效益，其對於我們在組織程式碼能帶來巨大的幫助。
+
+這一章也是原文第二冊[You Don't Know JS Yet: Scope & Closures](https://github.com/getify/You-Dont-Know-JS/tree/2nd-ed/scope-closures)的最後一章。在這冊中，講述了許多JS被廣泛討論的議題(hoisting、closures等等)，希望這些筆記能對你有些幫助，由於在撰寫這些文章的同時，原文正在替後面幾冊進行改版，後面的筆記會再慢慢補上。
+
+## Reference
+
+- [You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)
+- [You don't know JavaScript Yet:#1 什麼是JavaScript](/archives/2020-01-01-you-dont-know-js-yet-1)
+- [You don't know JavaScript Yet:#2 概觀JS](/archives/2020-01-04-you-dont-know-js-yet-2)
+- [You don't know JavaScript Yet:#3 深入JS的核心](/archives/2020-01-07-you-dont-know-js-yet-3)
+- [You don't know JavaScript Yet:#4 範疇](/archives/2020-01-31-you-dont-know-js-yet-4)
+- [You don't know JavaScript Yet:#5 說明語彙範疇](/archives/2020-02-23-you-dont-know-js-yet-5)
+- [You don't know JavaScript Yet:#6 範疇鏈](/archives/2020-02-27-you-dont-know-js-yet-6)
+- [You don't know JavaScript Yet:#7 全域範疇](/archives/2020-03-03-you-dont-know-js-yet-7)
+- [You don't know JavaScript Yet:#8 變數神秘的生命週期](/archives/2020-03-06-you-dont-know-js-yet-8)
+- [You don't know JavaScript Yet:#9 限制範疇曝光](/archives/2020-03-12-you-dont-know-js-yet-9)
+- [You don't know JavaScript Yet:#10 閉包(Closures)](/archives/2020-03-16-you-dont-know-js-yet-10)
