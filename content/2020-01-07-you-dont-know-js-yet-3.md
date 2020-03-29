@@ -236,14 +236,14 @@ for (let [idx,btn] of buttons.entries()) {
 ## 關鍵字`this`
 
 在我看到這部分之前，我對`this`的觀念跟書上說的一樣，將其他語言的`this`與JS中的`this`混為一談，
-最常被誤解的一種就是:函式中的`this`指向其函式本身，另外一種誤解(我原本也那麼認為):方法中的`this`指向其所屬物件，但這兩個都不正確。
+最常被誤解的一種就是:函式中的`this`指向其函式本身，另外一種誤解(我原本也那麼認為):方法中的`this`指向其所屬實例，但這兩個都不正確。
 
-在定義函式時，它會將相關的變數通過閉包附加到它的範疇當中，而範疇是用來控制當前函式所有變數的reference。但函式除了範疇之外還有另外一個特徵會影響到它能存取的變數，我們稱其為"Execution Context"
+在定義函式時，它會將相關的變數通過閉包附加到它的範疇當中，而範疇是用來控制當前函式所有變數的reference。但函式除了範疇之外還有另外一個特徵會影響到它能存取的變數，我們稱其為"execution context"
 ，它會透過`this`關鍵字暴露給函式。
 
-範疇是靜態的，在我們定義函式的時候就決定要存取哪些變數，但Execution Context是動態的，完全取決於函式調用的方式。
+範疇是靜態的，在我們定義函式的時候就決定要存取哪些變數，但execution context是動態的，完全取決於函式調用的方式。
 
-你可以把Execution Context作為一個有形的物件，它的屬性能提供函式執行時使用。
+你可以把execution context作為一個有形的物件，它的屬性能提供函式執行時使用。
 
 看看下面的例子:
 
@@ -260,15 +260,15 @@ var assignment = classroom("Kyle");
 ```
 
 外部函式`classroom(..)`返回一個`study()`的實例，除此之外沒別的了。但內部函式`study()`除了將`teacher`變數透過閉包保存於它的範疇當中外，裡面還使用了`this`關鍵字，
-這意味著`study()`已與Execution Context聯繫。接著我們使用`classroom(..)`將其內部函式配置給`assignment`變數，此時我們執行`assignment`(如同執行`study()`)會發生什麼事呢?
+這意味著`study()`已與execution context聯繫。接著我們使用`classroom(..)`將其內部函式配置給`assignment`變數，此時我們執行`assignment`(如同執行`study()`)會發生什麼事呢?
 
 ```javascript
 assignment();
 // Kyle wants you to study undefined  -- Oops :(
 ```
 
-可以預料到`this.topic`為`undefined`，因為我們未提供任何Execution Context。由於在執行`assignment`時，找不到當前函式的Execution Context中有`topic`這個屬性，所以它就會向外去找
-Global Execution Context，但依舊沒找到`topic`這個屬性，所以就回傳`undefined`。
+可以預料到`this.topic`為`undefined`，因為我們未提供任何execution context。由於在執行`assignment`時，找不到當前函式的execution context中有`topic`這個屬性，所以它就會向外去找
+global execution context，但依舊沒找到`topic`這個屬性，所以就回傳`undefined`。
 
 ```javascript
 var homework = {
