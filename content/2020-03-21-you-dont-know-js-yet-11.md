@@ -236,7 +236,6 @@ CommonJS與經典模組類似，被導出的API一樣會對模組內部的資料
 [[info]]
 |若看到`require("student")`非相對路徑的寫法，它通常會從`node_modules`中尋找。
 
-
 ## 現代ES模組(ESM)
 
 ESM與CommonJS有許多相似之處，都是以檔案做為一個模組，並且都是singleton實例，預設所有變數與函式都是私有的(private)。但有一個不同的地方在於所有ESM檔案都預設為嚴格模式，不需要再額外加`"use strict"`，且無法將其設為非嚴格模式。
