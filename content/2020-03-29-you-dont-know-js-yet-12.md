@@ -168,4 +168,40 @@ console.log( foo.count ); // 4
 
 ## 那麼什麼是`this`
 
-在第三章中的[「關鍵字this」](/archives/2020-01-07-you-dont-know-js-yet-3#關鍵字this)曾經有短暫提到關於`this`，當時曾經說過`this`會根據函式被調用的方式而有所不同。當一個函式被調用時，會創建一個名為"execution context"的東西，裡面會儲存跟這個函式有關的一些訊息，例如函式在哪裡被調用、函式如何被調用以及它擁有哪些變數等等。而execution context其中的一個屬性就是`this`的reference，在函式運行時可以透過`this`關鍵字暴露給函式使用。
+在第三章中的[「關鍵字this」](/archives/2020-01-07-you-dont-know-js-yet-3#關鍵字this)曾經有短暫提到關於`this`，當時曾經說過`this`會根據函式被呼叫的方式而有所不同。當一個函式被呼叫時，會創建一個名為"execution context"的東西，裡面會儲存跟這個函式有關的一些訊息，例如函式在哪裡被呼叫、函式如何被呼叫以及它擁有哪些變數等等。而execution context其中的一個屬性就是`this`的reference，在函式運行時可以透過`this`關鍵字暴露給函式使用。但`this`不是這短短幾句話就能解釋清楚的，下面將會一步一步慢慢的釐清`this`究竟是什麼，以及該如何用它，首先我們將先談論當函式被呼叫時，`this`完全基於函式是如何被呼叫的(call-site)。
+
+## 呼叫點(Call-site)
+
+`this`會在每次函式被呼叫時，與函式建立綁定的動作，所以要了解`this`如何綁定就必須先暸解**呼叫點(call-site)**，而呼叫點在乎的是函式被呼叫的地方，而不是它宣告的地方。
+
+你可能曾經聽過**呼叫堆疊(call-stack)**，可以想像它是由許多execution context所堆疊而成的stack，會根據我們目前執行到哪一步驟程式碼進行pop或push，所以它會紀錄當前是哪個函式被執行，所以我們關心的呼叫點就是這個當前要被執行的函式之前。
+
+考慮以下程式碼:
+
+```javascript
+function baz() {
+    // call-stack is: `baz`
+    // so, our call-site is in the global scope
+
+    console.log( "baz" );
+    bar(); // <-- call-site for `bar`
+}
+
+function bar() {
+    // call-stack is: `baz` -> `bar`
+    // so, our call-site is in `baz`
+
+    console.log( "bar" );
+    foo(); // <-- call-site for `foo`
+}
+
+function foo() {
+    // call-stack is: `baz` -> `bar` -> `foo`
+    // so, our call-site is in `bar`
+
+    console.log( "foo" );
+}
+
+baz(); // <-- call-site for `baz`
+```
+
