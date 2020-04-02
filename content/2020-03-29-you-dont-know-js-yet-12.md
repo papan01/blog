@@ -174,7 +174,10 @@ console.log( foo.count ); // 4
 
 `this`會在每次函式被呼叫時，與函式建立綁定的動作，所以要了解`this`如何綁定就必須先暸解**呼叫點(call-site)**，而呼叫點在乎的是函式被呼叫的地方，而不是它宣告的地方。
 
-你可能曾經聽過**呼叫堆疊(call-stack)**，可以想像它是由許多execution context所堆疊而成的stack，會根據我們目前執行到哪一步驟程式碼進行pop或push，所以它會紀錄當前是哪個函式被執行，所以我們關心的呼叫點就是這個當前要被執行的函式之前。
+你可能曾經聽過**呼叫堆疊(call-stack)**，可以想像它是由許多execution context所堆疊而成的stack，會根據我們目前執行到哪一步驟程式碼進行pop或push，所以它會紀錄當前是哪個函式被執行，我們關心的呼叫點就是當前要被執行的函式它是被誰給呼叫的。
+
+![call-stack-1](/static/images/call-stack-1.png)
+<figcaption><em>Call Stack(https://thepracticaldev.s3.amazonaws.com/i/mtsdy5lyka61ksrrzeww.png)</em></figcaption>
 
 考慮以下程式碼:
 
@@ -204,4 +207,12 @@ function foo() {
 
 baz(); // <-- call-site for `baz`
 ```
+
+`baz()`是我們當前要執行的函式，所以它會被放到呼叫堆疊中，此時呼叫點為全域範疇，因為`baz()`是在全域範疇中被呼叫的，接著在`baz()`中又呼叫了`bar()`，所以當進入到`bar()`中時，呼叫點就變為`baz`，以此類推下去。但我們很難透觀察將這些關係一眼就映射到大腦中，且也有可能出錯，另一個比較好的方式是使用Debug Tool來分析，下圖是我使用Chrome DevTools將上面的例子設定一個中斷點，通常我們可以設在最內層也就是`foo()`當中，藉此觀察其呼叫堆疊:
+
+![call-stack-2](/static/images/call-stack-2.png)
+
+通常呼叫點會是你當前停留函式的上一個，從上圖的Call Stack來看，`foo()`的呼叫點就是`bar`。
+
+## 規則
 
