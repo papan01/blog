@@ -116,7 +116,7 @@ Student.getName(73);   // Suzy
 
 `Student`為一個模組的實例，我們將`records`隱藏其中，不讓外部直接存取，這意味這它是受保護的，並且將`getName(..)`作為公有API提供給外部使用。
 
-我們透過[IIFE](/archives/2020-03-12-you-dont-know-js-yet-9#immediately-invoked-functions-expressionsiife)`defineStudent()`返回一個物件`publicAPI`，這個物件擁有函式`getName(..)`這個屬性。將公有API命名為`publicAPI`不是必須的，你可以根據你的習慣或者團隊的規範來命名，或者直接返回一個物件的形式，免去額外的命名。從外部透過`Student.getName(..)`調用曝光的內部函式，該函式透過閉包維護內部資料`records`。我們不一定要回傳一個物件，也可以直接回傳一個函式，這依舊符合經典模組的核心要點。
+我們透過[IIFE](/archives/2020-03-12-you-dont-know-js-yet-9#immediately-invoked-functions-expressionsiife)`defineStudent()`返回一個物件`publicAPI`，這個物件擁有函式`getName(..)`這個屬性。將公有API命名為`publicAPI`不是必須的，你可以根據你的習慣或者團隊的規範來命名，或者直接返回一個物件的形式，免去額外的命名。從外部透過`Student.getName(..)`呼叫曝光的內部函式，該函式透過閉包維護內部資料`records`。我們不一定要回傳一個物件，也可以直接回傳一個函式，這依舊符合經典模組的核心要點。
 
 根據語彙範疇的工作原理，在模組中定義的變數與函式都屬於私有的，只有作為屬性加入到函式返回的公有API物件中，才能提供給外部使用。
 
