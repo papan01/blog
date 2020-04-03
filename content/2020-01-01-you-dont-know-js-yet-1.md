@@ -47,7 +47,7 @@ console.log("Hellow World");
 
 2. **Object-Oriented(OO/classes)**: 將邏輯與數據整合成一個稱為class的單元，此類型的語言有: C++、C#、Java、Python等等。
 
-3. **Functional(FP)**: 將程式碼組織為函數，通常函數中比較偏向純粹的計算，再透過調用獲取數值，此類型的語言有: F#、Haskell、Lisp等等。
+3. **Functional(FP)**: 將程式碼組織為函數，通常函數中比較偏向純粹的計算，再透過呼叫獲取數值，此類型的語言有: F#、Haskell、Lisp等等。
 
 許多語言其實是支持所謂的multi-paradigm，這意思是工程師可以使用以上任何一種樣式來設計他們的程式碼，而JS也是屬於multi-paradigm。
 
