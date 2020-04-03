@@ -216,3 +216,149 @@ baz(); // <-- call-site for `baz`
 
 ## 規則
 
+前面介紹完呼叫點後，接著我們來看看呼叫點是如何決定當函式執行期間`this`會指向何處。
+
+在下面將會介紹四種不同的規則，我們需要觀察呼叫點後選擇哪一種規則適用當前情況，在介紹完規則之後，會再說明它們的優先順序。
+
+### 預設綁定(Default Binding)
+
+第一種規則為最常見的狀況，從字面上的意思顯而易見的可以知道它的優先權最低，也就是在另外幾種規則都沒發生的情況下，就會是這個預設的規則。
+
+考慮以下程式碼:
+
+```javascript
+function foo() {
+    console.log( this.a );
+}
+
+var a = 2;
+
+foo(); // 2
+```
+
+直接單獨的呼叫程式碼，此時的`this`在默認情況下是直接指向全域範疇(或者全域物件)，所以在全域範疇中透過`var`定義變數等同於在全域範疇中加入屬性，上面的`console.log( this.a )`若在browser環境下可以替換成`console.log( window.a )`，這是最單純的預設綁定。
+
+但若在這裡使用嚴格模式(strict mode)，則這個預設的規則屬於不合法的，此時會拋出`TypeError`:
+
+```javascript
+function foo() {
+    "use strict";
+
+    console.log( this.a );
+}
+
+var a = 2;
+
+foo(); // TypeError: `this` is `undefined`
+```
+
+但這個限定必須是`foo`裡的內容涵蓋於嚴格模式中，若是以下程式碼這種情況，則不在這限制範圍:
+
+```javascript
+function foo() {
+    console.log( this.a );
+}
+
+var a = 2;
+
+(function(){
+    "use strict";
+
+    foo(); // 2
+})();
+```
+
+不過在現代ES modules廣泛使用的情況下，因為ES modules預設就是嚴格模式，若未進行`this`的綁定，基本上都會拋出`TypeError`。
+
+### 隱性綁定
+
+第二個規則在於呼叫點是否經由一個物件，考慮以下程式碼:
+
+```javascript
+function foo() {
+    console.log( this.a );
+}
+
+var obj = {
+    a: 2,
+    foo: foo
+};
+
+obj.foo(); // 2
+```
+
+首先`foo()`是先宣告後才加到`obj`物件的屬性中，無論是直接在`obj`中宣告函式或者是像上面一樣先宣告後加入，`obj`都不會"真正"的擁有或者包含這個函式。
+
+這裡的呼叫點透過`obj`參考函式`foo`，在呼叫函式`foo()`的這段時間，我們可以說`obj`在"此時此刻"擁有或者包含函式`foo`。前面有說過，`this`會根據被呼叫的狀況而有所不同，在這個例子中，`foo()`被呼叫的同時，它會賦予物件`obj`的reference，而隱性綁定的規則在於，若它經由一個物件的reference，物件將被綁定於函式呼叫中的`this`，所以上面例子中的`this.a`也等同於使用`obj.a`。
+
+但這裡要注意的是，只有物件屬性鏈的最後一層會影響到`this`或呼叫點:
+
+```javascript
+function foo() {
+    console.log( this.a );
+    console.log( this.b );
+}
+
+var obj2 = {
+    a: 42,
+    foo: foo
+};
+
+var obj1 = {
+    a: 2,
+    b: 3,
+    obj2: obj2
+};
+
+obj1.obj2.foo();
+// 42
+// undefined
+```
+
+#### 隱性丟失(Implicitly Lost)
+
+在某些情況下，隱性綁定會有丟失的情況，此時`this`就會退回到預設綁定，之後就根據是否在嚴格模式中將`this`指向全域範疇或者拋出`TypeError`:
+
+```javascript
+function foo() {
+    console.log( this.a );
+}
+
+var obj = {
+    a: 2,
+    foo: foo
+};
+
+var bar = obj.foo;
+
+bar(); //undefined
+```
+
+這裡`bar`被賦予`obj.foo`的reference，但實際上這跟直接賦予它`foo`而不透過`obj`沒什麼區別，所以這裡必需判斷其行為是預設綁定。
+
+再看看一個類似的例子:
+
+```javascript
+function foo() {
+    console.log( this.a );
+}
+
+function doFoo(fn) {
+    // `fn` is just another reference to `foo`
+
+    fn(); // <-- call-site!
+}
+
+var obj = {
+    a: 2,
+    foo: foo
+};
+
+var a = "oops, global"; // `a` also property on global object
+
+doFoo( obj.foo ); // "oops, global"
+```
+
+這裡將`obj.foo`作為參數傳遞給`doFoo(..)`是類似的情況，`foo()`中的`this`一樣遵循著預設綁定。
+
+上述這種情況導致丟失`this`是相當常見的，這也是`this`容易造成混淆的其中一種原因，像上面這種callback函式的用法已經證明了我們無法控制函式的reference該如何被執行，也就是你無法傳遞一個函式的reference並讓它伴隨著綁定某個物件一起被傳遞，所以接下來將會看到另外一種方式用來固定`this`以解決這個問題。
