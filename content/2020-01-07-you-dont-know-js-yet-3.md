@@ -241,7 +241,7 @@ for (let [idx,btn] of buttons.entries()) {
 在定義函式時，它會將相關的變數通過閉包附加到它的範疇當中，而範疇是用來控制當前函式所有變數的reference。但函式除了範疇之外還有另外一個特徵會影響到它能存取的變數，我們稱其為"execution context"
 ，它會透過`this`關鍵字暴露給函式。
 
-範疇是靜態的，在我們定義函式的時候就決定要存取哪些變數，但execution context是動態的，完全取決於函式調用的方式。
+範疇是靜態的，在我們定義函式的時候就決定要存取哪些變數，但execution context是動態的，完全取決於函式呼叫的方式。
 
 你可以把execution context作為一個有形的物件，它的屬性能提供函式執行時使用。
 
@@ -291,7 +291,7 @@ assignment.call(otherHomework);
 // Kyle wants you to study Math
 ```
 
-最後一個例子我們透過調用`call(..)`將一個物件(這裡為otherHomework)傳遞給`this`的reference，使其能獲取到`topic`屬性。
+最後一個例子我們透過呼叫`call(..)`將一個物件(這裡為otherHomework)傳遞給`this`的reference，使其能獲取到`topic`屬性。
 
 從上面這些例子來看，`this`會根據執行時的行為來動態獲取屬性，也因此提供了更好的靈活性使用來自不同物件的數據與功能。
 
