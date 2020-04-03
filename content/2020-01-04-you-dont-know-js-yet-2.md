@@ -360,8 +360,7 @@ mathNotes.print();
 
 而`Notebook`的數據為儲存`Page`實例的陣列，它的行為(方法)有`addPage()`與`print()`。
 
-`var mathNotes = new Notebook()`這一段為`Netebook`類別實例化的地方，`var page = new Page(text)`則為`Page`類別實例化的地方，
-行為(方法)只能在在實例上調用(不能直接透過類別呼叫)，例如上面的`mathNotes.addPage("Arithmetic: + - * / ...")`與`page.print()`。
+`var mathNotes = new Notebook()`這一段為`Netebook`類別實例化的地方，`var page = new Page(text)`則為`Page`類別實例化的地方，行為(方法)只能在實例上呼叫(不能直接透過類別呼叫)，例如上面的`mathNotes.addPage("Arithmetic: + - * / ...")`與`page.print()`。
 
 若不使用類別依舊可以達到上面的功能，但在缺乏組織性的情況下，程式碼會難以管理及閱讀並且更容易出錯。
 
@@ -462,7 +461,7 @@ forAgainstLet.print();
 ES6為模組添加了新的語法，但在這之前模組就已經被廣泛運用在JS當中，儘管沒有任何額外的專用語法。
 
 經典模組透過外部函式來返回一個模組的實例(與類別不同，不需透過new關鍵字)，這個實例包含了一個或多個方法用於操作隱藏在模組內部中的數據。
-因為模組實際上只是一個函式，調用它就等同於產生該模組的實例，因此對這種函數的另一種描述稱為"模組工廠(module factories)"。
+因為模組實際上只是一個函式，呼叫它就等同於產生該模組的實例，因此對這種函數的另一種描述稱為"模組工廠(module factories)"。
 
 我們來看一下經典模組的樣貌:
 
