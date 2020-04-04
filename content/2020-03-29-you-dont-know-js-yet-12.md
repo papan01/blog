@@ -208,7 +208,7 @@ function foo() {
 baz(); // <-- call-site for `baz`
 ```
 
-`baz()`是我們當前要執行的函式，所以它會被放到呼叫堆疊中，此時呼叫點為全域範疇，因為`baz()`是在全域範疇中被呼叫的，接著在`baz()`中又呼叫了`bar()`，所以當進入到`bar()`中時，呼叫點就變為`baz`，以此類推下去。但我們很難透觀察將這些關係一眼就映射到大腦中，且也有可能出錯，另一個比較好的方式是使用Debug Tool來分析，下圖是我使用Chrome DevTools將上面的例子設定一個中斷點，通常我們可以設在最內層也就是`foo()`當中，藉此觀察其呼叫堆疊:
+`baz()`是我們當前要執行的函式，所以它會被放到呼叫堆疊中，此時呼叫點為全域範疇，因為`baz()`是在全域範疇中被呼叫的，接著在`baz()`中又呼叫了`bar()`，所以當進入到`bar()`中時，呼叫點就變為`baz`，以此類推下去。但我們很難透過觀察將這些關係一眼就映射到大腦中，且也有可能出錯，另一個比較好的方式是使用Debug Tool來分析，下圖是我使用Chrome DevTools將上面的例子設定一個中斷點，通常我們可以設在最內層也就是`foo()`當中，藉此觀察其呼叫堆疊:
 
 ![call-stack-2](/static/images/call-stack-2.png)
 
@@ -362,3 +362,60 @@ doFoo( obj.foo ); // "oops, global"
 這裡將`obj.foo`作為參數傳遞給`doFoo(..)`是類似的情況，`foo()`中的`this`一樣遵循著預設綁定。
 
 上述這種情況導致丟失`this`是相當常見的，這也是`this`容易造成混淆的其中一種原因，像上面這種callback函式的用法已經證明了我們無法控制函式的reference該如何被執行，也就是你無法傳遞一個函式的reference並讓它伴隨著綁定某個物件一起被傳遞，所以接下來將會看到另外一種方式用來固定`this`以解決這個問題。
+
+### 顯性綁定(Explicit Binding)
+
+上面的隱性綁定必須將函式的reference作為物件的屬性，然後透過物件呼叫該函式使得`this`能夠與該物件進行綁定。那麼有沒有能夠達到相同目的，但不需要像前面一樣賦予屬性又能綁定`this`呢?。在JS當中，所有的函式都能使用一些方法(透過`Function.Prototype`)，其中`call(..)`、`apply(..)`與`bind(..)`這三種方法可以讓我們進行綁定的動作，它們有一個共同點，就是第一個參數可以傳遞我們想要與`this`綁定的物件，這裡先介紹`call(..)`與`apply(..)`，它們兩個的用途一樣，差別在於後面傳入參數的形式不同而已，看看下面例子:
+
+```javascript
+function foo(b, c) {
+    console.log( this.a + b + c );
+}
+
+var obj = {
+    a: 2,
+};
+
+foo.call(obj, 3, 4) // 9
+foo.apply(obj, [4, 5]) // 11
+```
+
+透過這兩個方法，強制`obj`與`foo(..)`中的`this`進行綁定。
+
+如果我們使用原始值(primitive value，例如`string`、`number`或`boolean`)作為第一個參數與`this`進行綁定，那麼這些原始值將被視為透過標準內建物件(`new String(..)`、`new Number(..)`或`new Boolean(..)`)建立，這通常被稱為"boxing"。
+
+```javascript
+function foo(b, c) {
+    console.log( this + b + c );
+}
+
+foo.call(2, 3, 4) // 9
+foo.apply(2, [4, 5]) // 11
+```
+
+不過只單靠這樣依舊無法解決我們直接呼叫函式時`this`被丟失的問題，但我們可以透過一些小技巧來使其被強制綁定。
+
+#### 強制綁定(Hard Binding)
+
+考慮以下程式碼:
+
+```javascript
+function foo() {
+	console.log( this.a );
+}
+
+var obj = {
+	a: 2
+};
+
+var bar = function() {
+	foo.call( obj );
+};
+
+bar(); // 2
+setTimeout( bar, 100 ); // 2
+
+// `bar` hard binds `foo`'s `this` to `obj`
+// so that it cannot be overriden
+bar.call( window ); // 2
+```
