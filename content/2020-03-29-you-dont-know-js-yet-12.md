@@ -238,7 +238,7 @@ foo(); // 2
 
 直接單獨的呼叫程式碼，此時的`this`在默認情況下是直接指向全域範疇(或者全域物件)，所以在全域範疇中透過`var`定義變數等同於在全域範疇中加入屬性，上面的`console.log( this.a )`若在browser環境下可以替換成`console.log( window.a )`，這是最單純的預設綁定。
 
-但若在這裡使用嚴格模式(strict mode)，則這個預設的規則屬於不合法的，此時會拋出`TypeError`:
+但若在這裡使用嚴格模式(strict mode)，則這個預設的規則屬於不合法的，`this`屬於`undefined`:
 
 ```javascript
 function foo() {
@@ -268,9 +268,9 @@ var a = 2;
 })();
 ```
 
-不過在現代ES modules廣泛使用的情況下，因為ES modules預設就是嚴格模式，若未進行`this`的綁定，基本上都會拋出`TypeError`。
+不過在現代ES modules廣泛使用的情況下，因為ES modules預設就是嚴格模式。
 
-### 隱性綁定
+### 隱性綁定(Implicit Binding)
 
 第二個規則在於呼叫點是否經由一個物件，考慮以下程式碼:
 
@@ -401,15 +401,15 @@ foo.apply(2, [4, 5]) // 11
 
 ```javascript
 function foo() {
-	console.log( this.a );
+    console.log( this.a );
 }
 
 var obj = {
-	a: 2
+    a: 2
 };
 
 var bar = function() {
-	foo.call( obj );
+    foo.call( obj );
 };
 
 bar(); // 2
@@ -419,3 +419,357 @@ setTimeout( bar, 100 ); // 2
 // so that it cannot be overriden
 bar.call( window ); // 2
 ```
+
+我們透過宣告一個函式`bar()`將`foo.call(..)`置於其內部中，強制讓`obj`與`this`綁定並且同時呼叫`foo()`，之後不論我們透過什麼方式執行`bar`，`foo()`中的`this`都會與`obj`綁定，我們將這種模式稱為**強制綁定(Hard Binding)**。
+
+透過這種方式我們可以創建一個可以重複使用的函式:
+
+```javascript
+function foo(something) {
+    console.log( this.a, something );
+    return this.a + something;
+}
+
+// simple `bind` helper
+function bind(fn, obj) {
+    return function() {
+        return fn.apply( obj, arguments );
+    };
+}
+
+var obj = {
+    a: 2
+};
+
+var bar = bind( foo, obj );
+
+var b = bar( 3 ); // 2 3
+console.log( b ); // 5
+```
+
+你可能覺得這個`bind`很熟悉，實際上它就是我們前面提過三個方法的最後一種`bind(..)`，它已於ES5作為函式的內建方法`Function.prototype.bind`，使用方式如下:
+
+```javascript
+function foo(something) {
+    console.log( this.a, something );
+    return this.a + something;
+}
+
+var obj = {
+    a: 2
+};
+
+var bar = foo.bind( obj );
+
+var b = bar( 3 ); // 2 3
+console.log( b ); // 5
+```
+
+需要注意的是，`bind(..)`不同於`call(..)`與`apply(..)`，它會返回與第一個參數綁定的函式，而`call(..)`與`apply(..)`則是直接執行函式。
+
+#### API呼叫經由"context"
+
+許多第三方library或者JS內建的函式都會提供一個可選的參數，這個參數通常稱為"context"，也許你在其他程式碼中也看過類似"`ctx`"的命名，通常這種設計是確保你的callback函式中的`this`能與你輸入的物件進行綁定，而不需要再額外使用`bind(..)`:
+
+```javascript
+function foo(el) {
+    console.log( el, this.id );
+}
+
+var obj = {
+    id: "awesome"
+};
+
+// use `obj` as `this` for `foo(..)` calls
+[1, 2, 3].forEach( foo, obj ); // 1 awesome  2 awesome  3 awesome
+```
+
+像上面這個例子可以很容易的猜測在`forEach`的內部使用了`call(..)`或`apply(..)`等顯性綁定，節省我們自己進行綁定的麻煩。
+
+### `new`綁定(`new` Binding)
+
+第四種關於`this`綁定的規則就是透過`new`關鍵字，不過我們必須先釐清`new`在JS中與其他物件導向語言的差別。
+
+在傳統的物件導向語言中，通常類別(class)都會有一個建構子(constructor)，當類別透過`new`實例化時，類別的建構子就會被呼叫:
+
+```javascript
+something = new MyClass(..);
+```
+
+JS中的`new`基本上也類似於我們看到的那些物件導向語言，所以許多開發人員就直接將其他語言對於`new`機制淺移默化到JS中，但實際上JS使用`new`的機制與物件導向的類別沒什麼關聯，儘管它們的行為看起來很相似。
+
+在JS中，建構子就只是一個當透過`new`實例化某個物件會被執行的函式，這個執行的動作與類別沒什麼區別，但JS的建構子是不依附於類別，且也不是實例化一個類別，建構子就僅僅只是一個單純的函式。
+
+例如ES5.1規範說明當`Number(..)`函式作為一個建構子時:
+
+>15.7.2 The Number Constructor  
+When Number is called as part of a new expression it is a constructor: it initialises the newly created object.
+
+這說明不僅僅只有標準內建物件(例如`Number(..)`等)可以透過`new`將其視為建構子，所有的函式只要在前面加了`new`被呼叫時，它都算是一個建構子，且會實例化一個新的物件，這也說明JS與傳統的物件導向不同，JS不存在一個與類別綁定的建構函式。
+
+當我們透過`new`呼叫函式時，下面這幾件事情會被自動執行:
+
+1. 將會創建一個新的物件。
+2. 這新的物件會被鏈入原型鏈(prototype chain)(後面章節會談論到)。
+3. 這個新的物件將會與函式呼叫的`this`綁定。
+4. 除非這個函式本身返回了其他物件，否則這個被`new`呼叫的函式將會自動返回一個新建的物件。
+
+使用例子如下:
+
+```javascript
+function foo(a) {
+    this.a = a;
+}
+
+var bar = new foo( 2 );
+console.log( bar.a ); // 2
+```
+
+將`new`置於函式呼叫之前，這將會執行上述提到的那幾個步驟，接著返回一個物件的實例。
+
+## 一切皆有顺序
+
+接著我們來談論前面談到四種規則的優先順序，因為它們可能有同時存在的時候。
+
+首先是**預設綁定**，這前面也說過了，它的優先權一定是最低的。
+
+**隱性綁定**與**顯性綁定**哪個優先權高呢?我們可以測試一下:
+
+```javascript
+function foo() {
+    console.log( this.a );
+}
+
+var obj1 = {
+    a: 2,
+    foo: foo
+};
+
+var obj2 = {
+    a: 3,
+    foo: foo
+};
+
+obj1.foo(); // 2
+obj2.foo(); // 3
+
+obj1.foo.call( obj2 ); // 3
+obj2.foo.call( obj1 ); // 2
+```
+
+顯然**顯性綁定**的優先權大於**隱性綁定**。
+
+接著來看看**`new`綁定**:
+
+```javascript
+function foo(something) {
+    this.a = something;
+}
+
+var obj1 = {
+    foo: foo
+};
+
+var obj2 = {};
+
+obj1.foo( 2 );
+console.log( obj1.a ); // 2
+
+obj1.foo.call( obj2, 3 );
+console.log( obj2.a ); // 3
+
+var bar = new obj1.foo( 4 );
+console.log( obj1.a ); // 2
+console.log( bar.a ); // 4
+```
+
+這裡只能確定**`new`綁定**的優先權比**隱性綁定**高，由於`new`無法與`call(..)`或`apply(..)`一起使用，所以我們無法直接這樣比較**`new`綁定**與**顯示綁定**誰的優先權高，但我們可以透過前面提到的**強制綁定**來測試看看。
+
+根據我們前面的邏輯，**強制綁定**(顯性綁定的一種)的優先權應該會比**`new`綁定**來的高才是，讓我們測試看看:
+
+```javascript
+function foo(something) {
+    this.a = something;
+}
+
+var obj1 = {};
+
+var bar = foo.bind( obj1 );
+bar( 2 );
+console.log( obj1.a ); // 2
+
+var baz = new bar( 3 );
+console.log( obj1.a ); // 2
+console.log( baz.a ); // 3
+```
+
+`bar`透過`bind(..)`與`obj1`進行綁定的動作，但是`new bar(3)`沒有如我們預期般將`obj1.a`變為`3`，反而是使用`new`呼叫強制綁定的`bar`被覆蓋過去了。
+
+若我們使用前面由我們自己定義的`bind(..)`:
+
+```javascript
+function bind(fn, obj) {
+    return function() {
+        fn.apply( obj, arguments );
+    };
+}
+```
+
+會發現`new`無法覆蓋`bind(..)`而來的強制綁定，這是因為內建的`Function.prototype.bind(..)`實際上做的事情比我們想像還要來得多，下面為MDN網頁上關於`bind(..)`的[Polyfill](https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Polyfill):
+
+```javascript
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function(oThis) {
+    if (typeof this !== 'function') {
+      // closest thing possible to the ECMAScript 5
+      // internal IsCallable function
+      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+    }
+
+    var aArgs   = Array.prototype.slice.call(arguments, 1),
+        fToBind = this,
+        fNOP    = function() {},
+        fBound  = function() {
+          return fToBind.apply(this instanceof fNOP
+                 ? this
+                 : oThis,
+                 aArgs.concat(Array.prototype.slice.call(arguments)));
+        };
+
+    if (this.prototype) {
+      // Function.prototype doesn't have a prototype property
+      fNOP.prototype = this.prototype;
+    }
+    fBound.prototype = new fNOP();
+
+    return fBound;
+  };
+}
+```
+
+允許`new`綁定覆蓋強制綁定的部分在於:
+
+```javascript
+this instanceof fNOP ? this : oThis,
+// ... and:
+if (this.prototype) {
+    // Function.prototype doesn't have a prototype property
+    fNOP.prototype = this.prototype;
+}
+fBound.prototype = new fNOP();
+```
+
+上面這段程式碼相當的複雜，請原諒我還沒搞懂該如何解釋它，根據原文描述，它的意圖在於判斷強制綁定是否是透過`new`來呼叫，如果是，將會創建一個新的物件來替換掉原本`this`所指向的物件。
+
+那麼`new`綁定能覆蓋強制綁定有什麼用處呢?
+
+主要用於創造一個忽略`this`綁定但帶有後面任意數量參數`arg1, arg2, ...`作為一個預先設定的函式。`bind(..)`除了第一個參數是`this`綁定之外，後面參數可以由我們自己掌控，作為當前函式的標準參數(技術上稱為"partial application"，也能稱為柯里化(currying))。
+
+下面就是一個典型的例子:
+
+```javascript
+function foo(p1,p2) {
+    this.val = p1 + p2;
+}
+
+// using `null` here because we don't care about
+// the `this` hard-binding in this scenario, and
+// it will be overridden by the `new` call anyway!
+var bar = foo.bind( null, "p1" );
+
+var baz = new bar( "p2" );
+
+baz.val; // p1p2
+```
+
+### 判斷`this`
+
+根據上面的結果，整理一下這四個規則的優先順序:
+
+1. 函式是透過`new`被呼叫的嗎(`new`綁定)?如果是，就會將函式做為建構子，建立一個新的物件並將`this`指向它。  
+`var bar = new foo()`
+2. 函式是透過`call(..)`或`apply(..)`，甚至是透過`bind(..)`強制綁定後被呼叫的嗎(顯性綁定)?如果是，那麼`this`將指向指定的物件。  
+`var bar = foo.call( obj2 )`
+3. 函式是透過一個物件被呼叫的嗎(隱性綁定)?如果是，那麼`this`將指向該物件。  
+`var bar = obj1.foo()`
+4. 若非上述情況，則為預設綁定。如果再嚴格模式下，`this`會是`undefined`，否則就是全域物件(根據JS環境而定)。  
+`var bar = foo()`
+
+上面介紹的為正常情況下我們判斷`this`的規則，但...總有例外。
+
+## 綁定的特例
+
+如果我們嘗試在使用`call(..)`、`apply(..)`或`bind(..)`進行`this`綁定時，傳入的是一個`null`或者`undefined`作為綁定的對象，那麼這個綁定就會被忽略，直接變成預設綁定的結果:
+
+```javascript
+function foo() {
+    console.log( this.a );
+}
+
+var a = 2;
+
+foo.call( null ); // 2
+```
+
+那麼什麼情況下我們會傳遞`null`或`undefined`呢?假設你的參數存儲於一個陣列當中，你想透過展開傳入給函式，或者想使用柯里化替函式設定預設值:
+
+```javascript
+function foo(a,b) {
+    console.log( "a:" + a + ", b:" + b );
+}
+
+// spreading out array as parameters
+foo.apply( null, [2, 3] ); // a:2, b:3
+
+// currying with `bind(..)`
+var bar = foo.bind( null, 2 );
+bar( 3 ); // a:2, b:3
+```
+
+由於`foo(..)`中沒有使用到`this`，所以實際上我們不再乎`apply(..)`與`bind(..)`的第一個參數傳入是什麼，這時就可以使用`null`。另外由於ES6已經有了展開語法(spread syntax)，`apply(..)`的部分其實也可以直接透過下面程式碼替代就好:
+
+```javascript
+foo(..[2, 3]);
+```
+
+不過傳遞`null`有潛在風險，因為若函式中確實使用了`this`，而此時它會退化到預設綁定，好死不死全域物件又有想同名稱的屬性，那麼這就變成非預期的情況，除非你本來就打算使用全域物件中的屬性。當這種情況發生時，是很難debug的。
+
+為了解決這個問題，我們為`this`傳遞一個事先建立好的特殊物件，並且保證它不產生副作用。在數學中會將`ø`視為空集合，我們就借用它作為我們的特殊物件:
+
+```javascript
+function foo(a,b) {
+    console.log( "a:" + a + ", b:" + b );
+}
+
+// our empty object
+var ø = Object.create( null );
+
+// spreading out array as parameters
+foo.apply( ø, [2, 3] ); // a:2, b:3
+
+// currying with `bind(..)`
+var bar = foo.bind( ø, 2 );
+bar( 3 ); // a:2, b:3
+```
+
+透過`Object.create( null )`建立一個空的物件，它與`{}`相似，但少了委派指向`Object.prototype`的部分，所以空的更徹底。
+
+### 間接
+
+另外一種例外是間接的(無論是有心還是無心)引用了函式，那麼這函式就會退回到預設綁定:
+
+```javascript
+function foo() {
+    console.log( this.a );
+}
+
+var a = 2;
+var o = { a: 3, foo: foo };
+var p = { a: 4 };
+
+o.foo(); // 3
+(p.foo = o.foo)(); // 2
+p.foo(); // 4
+```
+
+`p.foo = o.foo`進行賦值的動作，此時這個賦值表達式的結果值只是一個指向底層函式物件的reference，所以此時受影響的呼叫點是`foo()`，而非`p.foo`或者`o.foo`，所以在這瞬間是退化到預設綁定的情況。
