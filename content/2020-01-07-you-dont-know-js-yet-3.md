@@ -298,11 +298,11 @@ assignment.call(otherHomework);
 ## 原型(Prototype)
 
 假設我們要獲取物件的某個屬性不存在會發什麼事呢?得到的就是`undefined`，而prototype我們可以把它想像是隱藏在物件定義中的一個屬性，
-每一個實例都能用獲取它，當物件找不到它要的屬性時，就會去找prototype中有沒有，當然這還會涉及到一個叫原型鍊(prototype chain)的東西。
+每一個實例都能用獲取它，當物件找不到它要的屬性時，就會去找prototype中有沒有，當然這還會涉及到一個叫原型鏈(prototype chain)的東西。
 
-「原型鍊是將一連串的物件透過prototype連結起來。」
+「原型鏈是將一連串的物件透過prototype連結起來。」
 
-原型鍊的目的是希望能透過prototype去委派其他物件獲取或執行本身沒有的屬性或者方法，來達到共同協作的功能。
+原型鏈的目的是希望能透過prototype去委派其他物件獲取或執行本身沒有的屬性或者方法，來達到共同協作的功能。
 
 ```javascript
 var homework = {
@@ -337,7 +337,7 @@ otherHomework.topic;
 `Object.create(..)`的參數允許輸入一個物件，該物件將會與新創建的物件鏈結，然後返回新創建(並鏈結)的物件。看看下面的關係圖就能清楚地看出它們之間的關聯性:
 ![YDKJSY-3-1](/static/images/you-dont-know-js-yet-3-1.png)
 
-原型鍊中的屬性只適合用於獲取，若你直接對屬性賦值，則它只會反映在該物件上，不會對其他原型鍊上的其他物件造成影響:
+原型鏈中的屬性只適合用於獲取，若你直接對屬性賦值，則它只會反映在該物件上，不會對其他原型鏈上的其他物件造成影響:
 
 ```javascript
 homework.topic;
@@ -359,7 +359,7 @@ homework.topic;
 
 ### 回頭來看`this`
 
-前面提到`this`是動態的，取決於函式如何執行，而上面物件透過原型鍊委派的方式執行方法，此時`this`也會跟著prototype改變。
+前面提到`this`是動態的，取決於函式如何執行，而上面物件透過原型鏈委派的方式執行方法，此時`this`也會跟著prototype改變。
 
 ```javascript
 var homework = {
