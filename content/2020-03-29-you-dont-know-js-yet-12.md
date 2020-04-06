@@ -894,4 +894,4 @@ foo.call( obj ); // 2
 - [You don't know JavaScript Yet:#8 變數神秘的生命週期](/archives/2020-03-06-you-dont-know-js-yet-8)
 - [You don't know JavaScript Yet:#9 限制範疇曝光](/archives/2020-03-12-you-dont-know-js-yet-9)
 - [You don't know JavaScript Yet:#10 閉包(Closures)](/archives/2020-03-16-you-dont-know-js-yet-10)
-- [You don't know JavaScript Yet:#11 模組模式(Module Pattern)](/archives/2020-03-29-you-dont-know-js-yet-11)
+- [You don't know JavaScript Yet:#11 模組模式(Module Pattern)](/archives/2020-03-21-you-dont-know-js-yet-11)
