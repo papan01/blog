@@ -773,3 +773,125 @@ p.foo(); // 4
 ```
 
 `p.foo = o.foo`進行賦值的動作，此時這個賦值表達式的結果值只是一個指向底層函式物件的reference，所以此時受影響的呼叫點是`foo()`，而非`p.foo`或者`o.foo`，所以在這瞬間是退化到預設綁定的情況。
+
+### 軟化綁定(Softening Binding)
+
+前面有看過強制綁定，透過建立一個額外的函式強制將物件與`this`綁定，避免函式在被呼叫時不經意的退化到預設綁定，但這也會導致靈活度降低，因為這會阻止我們手動使用預設綁定或顯性綁定覆蓋`this`。所以這裡將介紹一個能夠為預設綁定提供一個預設值又能讓我們彈性的使用顯性綁定或隱性綁定的方法:
+
+```javascript
+if (!Function.prototype.softBind) {
+    Function.prototype.softBind = function(obj) {
+        var fn = this,
+            curried = [].slice.call( arguments, 1 ),
+            bound = function bound() {
+            return fn.apply(
+                (!this ||
+                    (
+                        typeof window !== "undefined" && this === window) ||
+                        (typeof global !== "undefined" && this === global)
+                    ) ? obj : this,
+                    curried.concat.apply( curried, arguments )
+                );
+            };
+        bound.prototype = Object.create( fn.prototype );
+        return bound;
+    };
+}
+```
+
+這與`bind(..)`的原程式碼有點類似，我們透過檢查`this`，當它為`undefind`或者全域物件(`window`或`global`，根據JS環境)時，就讓`this`指向預設的物件，它也提供前面提過的柯里化:
+
+```javascript
+function foo() {
+   console.log("name: " + this.name);
+}
+
+var obj = { name: "obj" },
+    obj2 = { name: "obj2" },
+    obj3 = { name: "obj3" };
+
+var fooOBJ = foo.softBind( obj );
+
+fooOBJ(); // name: obj
+
+obj2.foo = foo.softBind(obj);
+obj2.foo(); // name: obj2   <---- look!!!
+
+fooOBJ.call( obj3 ); // name: obj3   <---- look!
+
+setTimeout( obj2.foo, 10 ); // name: obj   <---- falls back to soft-binding
+```
+
+## 當箭頭函式碰到`this`
+
+ES6的箭頭函式(arrow function)不適用於我們上述所講的四種規則，它裡頭的`this`會與涵蓋它的函式範疇或者全域範疇裡的`this`相同。
+
+看看下面的範例:
+
+```javascript
+function foo() {
+    // return an arrow function
+    return (a) => {
+        // `this` here is lexically adopted from `foo()`
+        console.log( this.a );
+    };
+}
+
+var obj1 = {
+    a: 2
+};
+
+var obj2 = {
+    a: 3
+};
+
+var bar = foo.call( obj1 );
+bar.call( obj2 ); // 2, not 3!
+```
+
+`foo()`返回一個箭頭函式`bar`，接著將`obj2`進行顯性綁定，但結果依然為`2`，因為`foo()`範疇中的`this`已經與`obj1`綁定，而這如同閉包(closure)般使得返回的箭頭函式也受其影響，此時無論透過哪種方式都無法覆蓋箭頭函式中的`this`，即使透過`new`也一樣。
+
+在ES6之前，就有類似的做法能夠達到一樣的效果:
+
+```javascript
+function foo() {
+    var self = this; // lexical capture of `this`
+    setTimeout( function(){
+        console.log( self.a );
+    }, 100 );
+}
+
+var obj = {
+    a: 2
+};
+
+foo.call( obj ); // 2
+```
+
+這似乎看起來是不錯的解決`this`的方式，不過從別的角度看也算是在躲避理解`this`，不過只要程式碼風格一致，不要交錯著混用，讓閱讀程式碼的人不會太過混淆都還是能接受的。
+
+## 總結
+
+`this`是一門大學問，我相信要徹頭徹尾的了解它必然得去仔細閱讀ECMAScript的規範。不過至少在這篇文章中，透過四個規則能讓我們清楚判斷`this`在此時此刻會是與誰綁定:
+
+1. 函式是透過`new`被呼叫的嗎(`new`綁定)?如果是，就會將函式做為建構子，建立一個新的物件並將`this`指向它。  
+2. 函式是透過`call(..)`或`apply(..)`，甚至是透過`bind(..)`強制綁定後被呼叫的嗎(顯性綁定)?如果是，那麼`this`將指向指定的物件。  
+3. 函式是透過一個物件被呼叫的嗎(隱性綁定)?如果是，那麼`this`將指向該物件。  
+4. 若非上述情況，則為預設綁定。如果再嚴格模式下，`this`會是`undefined`，否則就是全域物件(根據JS環境而定)。
+
+若在使用`apply(..)`、`call(..)`或者`bind(..)`時，若沒有需要綁定的對象，可以建立一個空的物件傳遞，能避免無預警的例外。
+
+## Reference
+
+- [You don't know JavaScript Yet](https://github.com/getify/You-Dont-Know-JS)
+- [You don't know JavaScript Yet:#1 什麼是JavaScript](/archives/2020-01-01-you-dont-know-js-yet-1)
+- [You don't know JavaScript Yet:#2 概觀JS](/archives/2020-01-04-you-dont-know-js-yet-2)
+- [You don't know JavaScript Yet:#3 深入JS的核心](/archives/2020-01-07-you-dont-know-js-yet-3)
+- [You don't know JavaScript Yet:#4 範疇](/archives/2020-01-31-you-dont-know-js-yet-4)
+- [You don't know JavaScript Yet:#5 說明語彙範疇](/archives/2020-02-23-you-dont-know-js-yet-5)
+- [You don't know JavaScript Yet:#6 範疇鏈](/archives/2020-02-27-you-dont-know-js-yet-6)
+- [You don't know JavaScript Yet:#7 全域範疇](/archives/2020-03-03-you-dont-know-js-yet-7)
+- [You don't know JavaScript Yet:#8 變數神秘的生命週期](/archives/2020-03-06-you-dont-know-js-yet-8)
+- [You don't know JavaScript Yet:#9 限制範疇曝光](/archives/2020-03-12-you-dont-know-js-yet-9)
+- [You don't know JavaScript Yet:#10 閉包(Closures)](/archives/2020-03-16-you-dont-know-js-yet-10)
+- [You don't know JavaScript Yet:#11 模組模式(Module Pattern)](/archives/2020-03-29-you-dont-know-js-yet-11)
