@@ -236,14 +236,14 @@ for (let [idx,btn] of buttons.entries()) {
 ## 關鍵字`this`
 
 在我看到這部分之前，我對`this`的觀念跟書上說的一樣，將其他語言的`this`與JS中的`this`混為一談，
-最常被誤解的一種就是:函式中的`this`指向其函式本身，另外一種誤解(我原本也那麼認為):方法中的`this`指向其所屬物件，但這兩個都不正確。
+最常被誤解的一種就是:函式中的`this`指向其函式本身，另外一種誤解(我原本也那麼認為):方法中的`this`指向其所屬實例，但這兩個都不正確。
 
-在定義函式時，它會將相關的變數通過閉包附加到它的範疇當中，而範疇是用來控制當前函式所有變數的reference。但函式除了範疇之外還有另外一個特徵會影響到它能存取的變數，我們稱其為"Execution Context"
+在定義函式時，它會將相關的變數通過閉包附加到它的範疇當中，而範疇是用來控制當前函式所有變數的reference。但函式除了範疇之外還有另外一個特徵會影響到它能存取的變數，我們稱其為"execution context"
 ，它會透過`this`關鍵字暴露給函式。
 
-範疇是靜態的，在我們定義函式的時候就決定要存取哪些變數，但Execution Context是動態的，完全取決於函式調用的方式。
+範疇是靜態的，在我們定義函式的時候就決定要存取哪些變數，但execution context是動態的，完全取決於函式呼叫的方式。
 
-你可以把Execution Context作為一個有形的物件，它的屬性能提供函式執行時使用。
+你可以把execution context作為一個有形的物件，它的屬性能提供函式執行時使用。
 
 看看下面的例子:
 
@@ -260,15 +260,15 @@ var assignment = classroom("Kyle");
 ```
 
 外部函式`classroom(..)`返回一個`study()`的實例，除此之外沒別的了。但內部函式`study()`除了將`teacher`變數透過閉包保存於它的範疇當中外，裡面還使用了`this`關鍵字，
-這意味著`study()`已與Execution Context聯繫。接著我們使用`classroom(..)`將其內部函式配置給`assignment`變數，此時我們執行`assignment`(如同執行`study()`)會發生什麼事呢?
+這意味著`study()`已與execution context聯繫。接著我們使用`classroom(..)`將其內部函式配置給`assignment`變數，此時我們執行`assignment`(如同執行`study()`)會發生什麼事呢?
 
 ```javascript
 assignment();
 // Kyle wants you to study undefined  -- Oops :(
 ```
 
-可以預料到`this.topic`為`undefined`，因為我們未提供任何Execution Context。由於在執行`assignment`時，找不到當前函式的Execution Context中有`topic`這個屬性，所以它就會向外去找
-Global Execution Context，但依舊沒找到`topic`這個屬性，所以就回傳`undefined`。
+可以預料到`this.topic`為`undefined`，因為我們未提供任何execution context。由於在執行`assignment`時，找不到當前函式的execution context中有`topic`這個屬性，所以它就會向外去找
+global execution context，但依舊沒找到`topic`這個屬性，所以就回傳`undefined`。
 
 ```javascript
 var homework = {
@@ -291,18 +291,18 @@ assignment.call(otherHomework);
 // Kyle wants you to study Math
 ```
 
-最後一個例子我們透過調用`call(..)`將一個物件(這裡為otherHomework)傳遞給`this`的reference，使其能獲取到`topic`屬性。
+最後一個例子我們透過呼叫`call(..)`將一個物件(這裡為otherHomework)傳遞給`this`的reference，使其能獲取到`topic`屬性。
 
 從上面這些例子來看，`this`會根據執行時的行為來動態獲取屬性，也因此提供了更好的靈活性使用來自不同物件的數據與功能。
 
 ## 原型(Prototype)
 
 假設我們要獲取物件的某個屬性不存在會發什麼事呢?得到的就是`undefined`，而prototype我們可以把它想像是隱藏在物件定義中的一個屬性，
-每一個實例都能用獲取它，當物件找不到它要的屬性時，就會去找prototype中有沒有，當然這還會涉及到一個叫原型鍊(prototype chain)的東西。
+每一個實例都能用獲取它，當物件找不到它要的屬性時，就會去找prototype中有沒有，當然這還會涉及到一個叫原型鏈(prototype chain)的東西。
 
-「原型鍊是將一連串的物件透過prototype連結起來。」
+「原型鏈是將一連串的物件透過prototype連結起來。」
 
-原型鍊的目的是希望能透過prototype去委派其他物件獲取或執行本身沒有的屬性或者方法，來達到共同協作的功能。
+原型鏈的目的是希望能透過prototype去委派其他物件獲取或執行本身沒有的屬性或者方法，來達到共同協作的功能。
 
 ```javascript
 var homework = {
@@ -337,7 +337,7 @@ otherHomework.topic;
 `Object.create(..)`的參數允許輸入一個物件，該物件將會與新創建的物件鏈結，然後返回新創建(並鏈結)的物件。看看下面的關係圖就能清楚地看出它們之間的關聯性:
 ![YDKJSY-3-1](/static/images/you-dont-know-js-yet-3-1.png)
 
-原型鍊中的屬性只適合用於獲取，若你直接對屬性賦值，則它只會反映在該物件上，不會對其他原型鍊上的其他物件造成影響:
+原型鏈中的屬性只適合用於獲取，若你直接對屬性賦值，則它只會反映在該物件上，不會對其他原型鏈上的其他物件造成影響:
 
 ```javascript
 homework.topic;
@@ -359,7 +359,7 @@ homework.topic;
 
 ### 回頭來看`this`
 
-前面提到`this`是動態的，取決於函式如何執行，而上面物件透過原型鍊委派的方式執行方法，此時`this`也會跟著prototype改變。
+前面提到`this`是動態的，取決於函式如何執行，而上面物件透過原型鏈委派的方式執行方法，此時`this`也會跟著prototype改變。
 
 ```javascript
 var homework = {
