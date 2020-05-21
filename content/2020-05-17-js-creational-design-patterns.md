@@ -7,20 +7,11 @@ tags:
   - JavaScript
 ---
 
-設計模式(Design Pattern)是程式設計中一些常見問題的解決方案，相信大家都有聽過[Design Patterns: Elements of Reusable Object-Oriented Software](https://en.wikipedia.org/wiki/Design_Patterns)這本由Gang of Four(GoF)所編寫的經典書籍，裡面整理了經典的23個設計模式，主要可以將它們分成以下幾個種類: creational、structural與behavioral。在本章中我將介紹creational中的幾個設計模式是如何運於javascript中。
+設計模式(design pattern)是程式設計中一些常見問題的解決方案，相信大家都有聽過[Design Patterns: Elements of Reusable Object-Oriented Software](https://en.wikipedia.org/wiki/Design_Patterns)這本由Gang of Four(GoF)所編寫的經典書籍，裡面整理了經典的23個設計模式，主要可以將它們分成以下幾個種類: creational、structural與behavioral。在本章中我將介紹creational中的幾個設計模式是如何運於javascript中。
 
 ## 目的
 
 創建型設計模式(creational design patterns)著重於處理物件創建的機制，以適合的方式針對當前情況創建物件。若以正常的方式創建物件，隨著程式逐漸茁壯可能會導致整個專案增加複雜性，而這些模式的宗旨在於通過**控制創建過程**來解決此問題。
-
-屬於此類別的模式有：
-
-- Constructor(此設計模式不在GoF所提到的23設計模式中)
-- Factory
-- Abstract Factory
-- Prototype
-- Singleton
-- Builder
 
 ## Constructor Pattern
 
@@ -86,3 +77,32 @@ Object.defineProperties( myObject, {
 ```
 
 ## 基本的建構子範例
+
+```javascript
+function Student( name, year, grade) {
+  this.name = name;
+  this.year = year;
+  this.grade = grade;
+}
+
+Student.prototype.toString = function () {
+  return `Name:${this.name} Year:${this.year} Grade:${this.grade}`;
+};
+```
+
+上面可以看到我們是透過`prototype`替`Student`添加它的方法，而不是寫在`Student`這個函式中，若寫在裡面的話代表每次建構一個`Student`物件都會建立一個新的`toString()`方法，這樣比較浪費記憶體空間，所以比較好的做法是透過`prototype`添加。
+
+或許你曾經在某些教科書上看過這種寫法，因為這十分的常見，不過在實務上比較多的寫法是等等要介紹的module pattern。
+
+## Module Pattern
+
+將程式進行模組化(modularization)通常有助於保持程式碼單元的清晰分離和組織，所以在現代的javascript中，已經有好幾種方便我們實踐模組化的選項可以使用了:
+
+- 傳統的modules
+- AMD modules
+- CommonJS modules
+- ES6 modules
+
+這裡就不一一介紹，因為基本上它們的概念是差不多的，只是在語法上有些差異。
+
+以下我將介紹我比較熟悉的傳統modules與ES6 modules
