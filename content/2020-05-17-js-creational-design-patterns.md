@@ -7,7 +7,7 @@ tags:
   - JavaScript
 ---
 
-設計模式(design pattern)是程式設計中一些常見問題的解決方案，相信大家都有聽過[Design Patterns: Elements of Reusable Object-Oriented Software](https://en.wikipedia.org/wiki/Design_Patterns)這本由Gang of Four(GoF)所編寫的經典書籍，裡面整理了經典的23個設計模式，主要可以將它們分成以下幾個種類: creational、structural與behavioral。在本章中我將介紹creational中的幾個設計模式是如何運於javascript中。
+設計模式(design pattern)是程式設計中一些常見問題的解決方案，相信大家都有聽過[Design Patterns: Elements of Reusable Object-Oriented Software](https://en.wikipedia.org/wiki/Design_Patterns)這本由Gang of Four(所以這本書又常被稱為GoF design pattern)所編寫的經典書籍，裡面整理了經典的23個設計模式，主要可以將它們分成以下幾個種類: creational、structural與behavioral。在本章中我將介紹creational中的幾個設計模式是如何運於javascript中。
 
 ## 目的
 
@@ -98,11 +98,72 @@ Student.prototype.toString = function () {
 
 將程式進行模組化(modularization)通常有助於保持程式碼單元的清晰分離和組織，所以在現代的javascript中，已經有好幾種方便我們實踐模組化的選項可以使用了:
 
-- 傳統的modules
+- 傳統的module pattern
 - AMD modules
 - CommonJS modules
 - ES6 modules
 
-這裡就不一一介紹，因為基本上它們的概念是差不多的，只是在語法上有些差異。
+在我的另外一篇文章當中[「You don't know JavaScript Yet:#11 模組模式(Module Pattern)」](/archives/2020-03-21-you-dont-know-js-yet-11)裡面有較詳細說明module pattern，這裡就不再重複說明。
 
-以下我將介紹我比較熟悉的傳統modules與ES6 modules
+## Singleton Pattern
+
+在傳統物件導向語言中，當你想要控制某個類別在整個專案中只保持一個實例，可以將建構函式設定為私有的，避免外部使用`new`關鍵字創建實例，並且透過宣告一靜態方法提供另外一個創建實例的接口，這個方法將會為該類別創建實例(若未曾創建過)，如果實例已經存在，則返回該實例。
+
+以下為C++中簡單的宣告方式:
+
+```cpp
+class Singleton {
+  public:
+      static Singleton* Instance();
+  protected:
+      Singleton();
+  private:
+      static Singleton* _instance;
+};
+```
+
+Singleton與靜態(static)物件有所差異，靜態物件通常在程式進行編譯時就已經存在，但singleton可以讓我們自己控制何時進行創建。不過在javascript當中沒有類別的概念，所以它返回的並非一個類別的實例，但也不是一個物件，正確來說應該是透過[「閉包(Clouse)」](/archives/2020-03-16-you-dont-know-js-yet-10)後的結果。
+
+在GoF design patterns中提到關於singleton有以下兩點描述:
+
+- There must be exactly one instance of a class, and it must be accessible to clients from a well-known access point.
+- When the sole instance should be extensible by subclassing, and clients should be able to use an extended instance without modifying their code.
+
+第一點就如同前面所描述的，在javascript當中若使用ES6 modules則因為其本身特性就是singleton，但若是傳統的module pattern則通常我們會透過[IIFE](/archives/2020-03-12-you-dont-know-js-yet-9#immediately-invoked-functions-expressionsiife)先進行一個類似namespace的宣告:
+
+```javascript
+const Singleton = (function () {
+
+  let instance;
+ 
+  function initialization() {
+    const privateRandomNumber = Math.random();
+
+    function privateMethod(){
+        console.log( "Hello, I'm the Singletion" );
+    }
+
+    return {
+      publicMethod: function () {
+        privateMethod();
+      },
+      publicProperty: {
+        'p1' : 0,
+        'p2' : 1
+      },
+      getRandomNumber: function() {
+        return privateRandomNumber;    }
+    };
+  };
+
+  return {
+    getInstance: function () {
+      return !instance ? instance = initialization() : instance;
+    }
+  };
+})();
+
+const singletone = Singleton.getInstance();
+singletone.publicMethod(); // Hello, I'm the Singletion
+```
+
