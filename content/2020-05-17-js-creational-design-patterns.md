@@ -15,7 +15,7 @@ tags:
 
 ## Constructor Pattern
 
-在傳統的物件導向程式語言(OOP)中，建構子(constructor)是一個特別的函式用於初始化一個新的物件並且對其進行記憶體的配置。而在javascript當中，因為不像其他傳統class-based的程式語言，JS的建構子就只是一個單純的函式，與類別無關，也因此如此，這個設計模式比較常看到是在說明與Javascript有關。我們通常會編寫建構子函數以完成物件類型的定義，其中包含該物件的類型名稱、屬性與方法，以及當我們在創建該物件時所需要帶入的參數等等。
+在傳統的物件導向程式語言(OOP)中，建構子(constructor)是一個特別的函式用於初始化一個新的物件並且對其進行記憶體的配置。而在javascript當中，因為不像其他傳統class-based的程式語言，javascript的建構子就只是一個單純的函式，與類別無關，也因此如此，這個設計模式比較常看到是在說明與javascript有關。我們通常會編寫建構子函數以完成物件類型的定義，其中包含該物件的類型名稱、屬性與方法，以及當我們在創建該物件時所需要帶入的參數等等。
 
 ### 建立物件
 
@@ -122,20 +122,21 @@ class Singleton {
 };
 ```
 
-Singleton與靜態(static)物件有所差異，靜態物件通常在程式進行編譯時就已經存在，但singleton可以讓我們自己控制何時進行創建。不過在javascript當中沒有類別的概念，所以它返回的並非一個類別的實例，但也不是一個物件，正確來說應該是透過[「閉包(Clouse)」](/archives/2020-03-16-you-dont-know-js-yet-10)後的結果。
+Singleton與靜態(static)物件有所差異，靜態物件通常在程式進行編譯時就已經存在，但singleton可以讓我們自己控制何時進行創建。
 
 在GoF design patterns中提到關於singleton有以下兩點描述:
 
-- There must be exactly one instance of a class, and it must be accessible to clients from a well-known access point.
-- When the sole instance should be extensible by subclassing, and clients should be able to use an extended instance without modifying their code.
+1. There must be exactly one instance of a class, and it must be accessible to clients from a well-known access point.
+2. When the sole instance should be extensible by subclassing, and clients should be able to use an extended instance without modifying their code.
 
-第一點就如同前面所描述的，在javascript當中若使用ES6 modules則因為其本身特性就是singleton，但若是傳統的module pattern則通常我們會透過[IIFE](/archives/2020-03-12-you-dont-know-js-yet-9#immediately-invoked-functions-expressionsiife)先進行一個類似namespace的宣告:
+第一點就如同前面所描述的，在javascript當中若使用ES6 modules則其本身特性就是singleton，但若是傳統的module pattern，通常我們會透過[IIFE](/archives/2020-03-12-you-dont-know-js-yet-9#immediately-invoked-functions-expressionsiife)先進行一個類似namespace的宣告。
+不過在javascript當中沒有類別的概念，所以最終透過singleton創建函式所返回的並非一個類別的實例，但也不是一個物件，正確來說應該是透過[「閉包(Clouse)」](/archives/2020-03-16-you-dont-know-js-yet-10)後的結果:
 
 ```javascript
 const Singleton = (function () {
 
   let instance;
- 
+
   function initialization() {
     const privateRandomNumber = Math.random();
 
@@ -166,4 +167,26 @@ const Singleton = (function () {
 const singletone = Singleton.getInstance();
 singletone.publicMethod(); // Hello, I'm the Singletion
 ```
+
+而第二點則是替clients端提供多個singleton的擴展類別，程式碼會看起來如下:
+
+```javascript
+return {
+  getInstance : function(option) {
+    if ( instance === null ) {
+      if ( option === 'Foo' ) {
+         instance = new FooSingleton();
+      } else {
+         instance = new BasicSingleton();
+      }
+    }
+    return this._instance;
+  }
+}
+```
+
+## Factory Pattern
+
+通常factory pattern用於提供client選擇其想創建的物件，有點類似上面singleton第二點那樣，在創建時通常不會透過`new`關鍵字進行創建，而是直接向factory function要求需要的物件，
+例如我有一個物流公司，在最初運送的交通工具只有`貨車`這個選項，但之後我的公司日漸茁壯，成長到有海外業務，所以我需要`郵輪`與`飛機`，但我的程式碼一開始可能只有`貨車`這個類別的相關的程式碼，若在其中加入`郵輪`與`飛機`的邏輯則可能需要大幅度修改程式碼，為了以後會出現更多的運輸工具可能性，使用factory pattern解決有類似行為的類別是個好方法。
 
