@@ -187,6 +187,24 @@ return {
 
 ## Factory Pattern
 
-通常factory pattern用於提供client選擇其想創建的物件，有點類似上面singleton第二點那樣，在創建時通常不會透過`new`關鍵字進行創建，而是直接向factory function要求需要的物件，
-例如我有一個物流公司，在最初運送的交通工具只有`貨車`這個選項，但之後我的公司日漸茁壯，成長到有海外業務，所以我需要`郵輪`與`飛機`，但我的程式碼一開始可能只有`貨車`這個類別的相關的程式碼，若在其中加入`郵輪`與`飛機`的邏輯則可能需要大幅度修改程式碼，為了以後會出現更多的運輸工具可能性，使用factory pattern解決有類似行為的類別是個好方法。
+假設我有一個物流公司，在最初運送的交通工具只有`貨車`這個選項，但之後我的公司日漸茁壯，成長到有海外業務，所以我需要`郵輪`與`飛機`，但我的程式碼一開始可能只有`貨車`這個類別相關的程式碼，若在其中加入`郵輪`與`飛機`的邏輯則可能需要大幅度修改程式碼，為了以後會出現更多的運輸工具可能性，使用factory pattern解決有類似行為的類別是個好方法。
 
+通常factory pattern用於提供client選擇其想創建的物件，有點類似上面singleton第二點那樣，在創建時通常不會透過`new`關鍵字進行創建，而是直接向factory function要求需要的物件。這些物件通常都會有一些共通性(方法或者屬性)，例如以上面的例子來看，它們可以有乘載噸數、每公里成本或速度等等屬性，有遞送、裝載或卸貨等等方法。
+
+若在一些可以創建`interface`的物件導向語言中，通常會建立一個`interface`，並且宣告這些通共通的方法與屬性，下面以C#為例:
+
+```cs
+interface ITransport {
+  decimal Speed {get; set;}
+  decimal Cost {get; set;}
+  decimal Tonnes {get; set;}
+
+  void deliver();
+}
+```
+
+但在javascript並沒有`interface`可以使用，或許你可能想到typescript，但在本篇還是希望以pure javascript為主。那麼要如何達到像其他語言一樣限制類別去實作這些方法呢?在javascript中實際上不在乎這些，
+因為javascript使用稱為[Duck typing](https://en.wikipedia.org/wiki/Duck_typing)用於描述物件的方式，它在乎的是物件有沒有該屬性與方法，而不在乎物件本身是屬於什麼型別，其他語言像是Golang也是使用Duck typing，不過golang有`interface`使用，這裡不多做描述。看看下面例子:
+
+```javascript
+```
