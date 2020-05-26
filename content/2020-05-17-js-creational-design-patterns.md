@@ -191,7 +191,7 @@ return {
 
 通常factory pattern用於提供client選擇其想創建的物件，有點類似上面singleton第二點那樣，在創建時通常不會透過`new`關鍵字進行創建，而是直接向factory function要求需要的物件。這些物件通常都會有一些共通性(方法或者屬性)，例如以上面的例子來看，它們可以有乘載噸數、每公里成本或速度等等屬性，有遞送、裝載或卸貨等等方法。
 
-若在一些可以創建`interface`的物件導向語言中，通常會建立一個`interface`，並且宣告這些通共通的方法與屬性，下面以C#為例:
+若在一些可以創建`interface`的物件導向程式語言中，通常會建立一個`interface`，並且宣告這些通共通的方法與屬性，下面以C#為例:
 
 ```cs
 interface ITransport {
@@ -203,8 +203,61 @@ interface ITransport {
 }
 ```
 
-但在javascript並沒有`interface`可以使用，或許你可能想到typescript，但在本篇還是希望以pure javascript為主。那麼要如何達到像其他語言一樣限制類別去實作這些方法呢?在javascript中實際上不在乎這些，
-因為javascript使用稱為[Duck typing](https://en.wikipedia.org/wiki/Duck_typing)用於描述物件的方式，它在乎的是物件有沒有該屬性與方法，而不在乎物件本身是屬於什麼型別，其他語言像是Golang也是使用Duck typing，不過golang有`interface`使用，這裡不多做描述。看看下面例子:
+但在javascript並沒有`interface`可以使用，或許你可能想到typescript，不過在本篇還是希望以pure javascript為主。那麼要如何達到像其他語言一樣限制類別，使其必須實作這些方法呢?在javascript中實際上不在乎這些，
+因為javascript使用稱為[Duck typing](https://en.wikipedia.org/wiki/Duck_typing)用於描述物件的方式，它在乎的是物件有沒有該屬性與方法，而不在乎物件本身是屬於什麼型別，其他語言像是Golang也是使用Duck typing，不過golang有`interface`使用，這裡就不多做描述。
+
+看看下面例子:
 
 ```javascript
+function Truck() {
+  this.speed = 10;
+  this.cost = 2;
+  this.tonnes = 2;
+}
+
+Truck.prototype.deliver = function () {
+  console.log('Go~~~Truck!!');
+}
+
+function Ship(){
+  this.speed = 15;
+  this.cost = 20;
+  this.tonnes = 30;
+}
+
+Ship.prototype.deliver = function () {
+  console.log('Go~~~Ship!!');
+}
+
+function TransportFactory() {}
+TransportFactory.prototype.transportClass = Truck;
+TransportFactory.prototype.createTransport= function ( transportType ) {
+
+  switch(transportType){
+    case "truck":
+      this.transportClass = truck;
+      break;
+    case "ship":
+      this.transportClass = Ship;
+      break;
+  }
+  return new this.transportClass();
+};
+
+const transportFactory = new TransportFactory();
+const transport = transportFactory.createTransport("truck");
+  
+console.log( transport instanceof Truck ); // true
 ```
+
+### 使用的時機
+
+使用factory pattern的時機:
+
+- 無法預期一個物件將被創建的型別。
+- 它們擁有許多相同屬性或者方法時(不一定要完全一樣)。
+- 將這些物件組合進factory時，它們必須滿足共同的API，由於[Duck typing](https://en.wikipedia.org/wiki/Duck_typing)的緣故，若某個物件未實作某個方法時，也會在執行時拋出`TypeError`。
+
+### 不該使用的時機
+
+若你需要大量執行這些物件不共通的方法時，這將會帶來額外的型別判斷，透過工廠生成的物件後續的行為邏輯理當說是要一致的，若在其中穿插各個物件自己特有的行為，勢必需要處理各個型別對應的動作。
