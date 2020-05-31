@@ -532,3 +532,109 @@ Object.keys(mock2).map(key => {
 
 ## Builder Pattern
 
+當你有一個複雜的模組在被創建時需要根據需求產生不同形式的物件時，builder pattern會是個好選擇。
+
+例如我們去速食店點餐，我們有時候想要A+B餐的組合，有時想要B+C餐的組合，根據不同的客戶提供不同的選擇。
+
+其中Builder Pattern會包含四個部分:
+
+- Product:代表正在被組裝的物件。
+- Builder: 此為ConcreteBuilder的interface，在javascript中就沒有用到。
+- ConcreteBuilder:負責實作Builder，實作各個部件的製造接口，同時也會有提供client獲取Product的地方。
+- Director: 負責提供一些特定訂單或者配置的生產流程，嚴格來說，這個部分是可選擇的，可以直接越過它透過Builder建立產品就好。
+
+```javascript
+function Product() {
+  this.parts = [];
+}
+
+Product.prototype.printParts = function printParts() {
+  console.log(`Product parts: ${this.parts}`);
+};
+
+function ConcreteBuilder() {
+  let product = new Product();
+
+  const reset = () => {
+    product = new Product();
+  };
+
+  const producePartA = () => {
+    product.parts.push('PartA');
+  };
+
+  const producePartB = () => {
+    product.parts.push('PartB');
+  };
+
+  const producePartC = () => {
+    product.parts.push('PartC');
+  };
+
+  const getProduct = () => {
+    const result = product;
+    reset();
+    return result;
+  };
+
+  return {
+    producePartA,
+    producePartB,
+    producePartC,
+    getProduct,
+  };
+}
+
+function Director() {
+  let currentBuilder;
+
+  const setBuilder = builder => {
+    currentBuilder = builder;
+  };
+
+  const buildProductAplusB = () => {
+    currentBuilder.producePartA();
+    currentBuilder.producePartB();
+  };
+
+  const buildProductBplusC = () => {
+    currentBuilder.producePartB();
+    currentBuilder.producePartC();
+  };
+
+  return {
+    setBuilder,
+    buildProductAplusB,
+    buildProductBplusC,
+  };
+}
+
+const builder = ConcreteBuilder();
+const director = Director();
+director.setBuilder(builder);
+
+director.buildProductAplusB();
+builder.getProduct().printParts(); // Product parts: PartA,PartB
+
+director.buildProductBplusC();
+builder.getProduct().printParts(); // Product parts: PartB,PartC
+
+console.log('Custom product:');
+builder.producePartA();
+builder.producePartB();
+builder.producePartC();
+builder.getProduct().printParts(); // Product parts: PartA,PartB,PartC
+```
+
+在我們的專案中可能不會只有一個`ConcreteBuilder`，可以產品需求來增加。
+
+## 結語
+
+由於javascript本身就與其他傳統物件導向程式語言有所不同，而GoF design pattern中很多著重於upper casting描述物件彼此間繼承以及所屬關係，上面提到的[Factory Pattern](#factory-pattern)、[Abstract Factory Pattern](#abstract-factory-pattern)與[Builder Pattern](#builder-pattern)在使用javascript時就會少了抽象類或者interface這層約束，若少了這層關係這樣還符不符合design pattern的設計理念呢?我個人認為就見仁見智，畢竟程式是活的，只要能夠根據其方針設計程式並且達到該有的目的這樣就夠了。
+
+## Reference
+
+- [dofactory - JavaScript Design Patterns](https://www.dofactory.com/javascript/design-patterns)
+- [tutorialspoint - Design Patterns in Java Tutorial](https://www.tutorialspoint.com/design_pattern/index.htm)
+- [Refactoring.Guru - Design Patterns](https://refactoring.guru/design-patterns)
+- [Design Patterns: Elements of Reusable Object-Oriented Software](https://en.wikipedia.org/wiki/Design_Patterns)
