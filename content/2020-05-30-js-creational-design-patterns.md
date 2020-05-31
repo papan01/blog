@@ -25,7 +25,7 @@ tags:
 
 ## Constructor Pattern
 
-在傳統的物件導向程式語言(OOP)中，建構子(constructor)是一個特別的函式用於初始化一個新的物件並且對其進行記憶體的配置。而在javascript當中，因為不像其他傳統class-based的程式語言，javascript的建構子就只是一個單純的函式，與類別無關，也因此如此，這個設計模式比較常看到是在說明與javascript有關。我們通常會編寫建構子函數以完成物件類型的定義，其中包含該物件的類型名稱、屬性與方法，以及當我們在創建該物件時所需要帶入的參數等等。
+在傳統的物件導向程式語言(OOP)中，建構子(constructor)是一個特別的函式用於初始化一個新的物件並且對其進行記憶體的配置。而在javascript當中，因為不像其他傳統class-based的程式語言，javascript的建構子就只是一個單純的函式，與類別無關，也因此如此，這個設計模式比較常看到是在說明與javascript有關。我們通常會編寫建構子函數以完成物件類型的定義，其中包含該物件的類型名稱、屬性與方法，以及當我們在創建該物件時所需要帶入的參數等等。
 
 ### 建立物件
 
@@ -278,7 +278,7 @@ console.log( transport instanceof Truck ); // true
 
 Abstract factory pattern有點像是在factory pattern上多一層wrapper，將許多factory進行整合，而這些factory都有一些共同的行為(方法)。
 
-假設我們需要開發一個關於汽車產品的程式，根據不同品牌有不同的生產方式，例如我們有`BMW`、`Toyota`與`Ford`這幾個品牌，而它們都有`Sedan`、`Hatchback`與`Coupe`等種類的車子:
+假設我們需要開發一個關於汽車產品的程式，根據不同品牌有不同的生產方式，例如我們有`BMW`、`Toyota`與`Ford`這幾個品牌，而它們都有`Sedan`、`Hatchback`與`Coupe`等種類的車子:
 
 ```javascript
 // BMW
@@ -472,9 +472,9 @@ carFactory.createSedan().start(); // BMW-Sedan
 
 ## Prototype Pattern
 
-這裡的prototype pattern不是在說明javascript的繼承與prototype chain，而是指GoF design pattern中提到的prototype pattern。
+這裡的prototype pattern不是在說明javascript的繼承與prototype chain，而是指GoF design pattern中提到的prototype pattern。
 
-Prototype pattern的用途在於複製一個物件，但又不透過其型別本身的方法來達到此目的。
+Prototype pattern的用途在於複製一個物件，但又不透過其型別本身的方法來達到此目的。
 
 在javascript要達到此目的相對於傳統的物件導向程式語言來說算是比較簡單的:
 
