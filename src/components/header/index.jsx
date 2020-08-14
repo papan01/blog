@@ -12,8 +12,14 @@ import config from '../../../config/siteConfig';
 import './style.scss';
 
 const NavList = ({ navStyle, closeMenu }) => {
+  const overflowHidden = navStyle.includes('open');
   return (
     <nav className={navStyle}>
+      {overflowHidden ? (
+        <Helmet>
+          <style>{'body { overflow : hidden; }'}</style>
+        </Helmet>
+      ) : null}
       <ul className="nav-list">
         {config.navbarLinks.map(item => (
           <li key={item.label}>
