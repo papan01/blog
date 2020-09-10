@@ -8,7 +8,7 @@ tags:
   - CSS
 ---
 
-因為公司與其他brand合作的方式是將我們的網頁透過iframe嵌入其中，但這導致在行動裝置上產生了一系列的問題，所以在此希望能記錄下這些研究的過程，給其他遇到類似問題的人一點幫助。
+因為公司與其他brand合作的方式是將我們的網頁透過iframe嵌入其中，但這導致在行動裝置上產生了一系列的問題，所以在此記錄下這些研究的過程，希望能給其他遇到類似問題的人一點幫助。
 
 ## 情境
 
@@ -27,4 +27,28 @@ tags:
 ![mobile-iframe-1](/static/images/mobile-iframe-1.png)
 
 ## 問題1: iOS 12 iframe responsive
+
+此問題的解法比較簡單，若我們能夠控制iframe裡面內容物的CSS，只要在內容`html`加入下面這段CSS既可:
+
+```css
+    width: 1px;
+    min-width: 100%;
+```
+
+但若我們無法控制內容物的CSS，只能透過改變iframe的style來解決:
+
+```css
+iframe {
+    width: 1px;
+    min-width: 100%;
+}
+```
+
+但只加上面的這樣還不夠，還必須加上`scrolling="no"`才行
+
+```html
+<iframe height="500" scrolling="no" src="content.html"></iframe>
+```
+
+## 問題2: 撐滿iframe高度於一個頁面
 
