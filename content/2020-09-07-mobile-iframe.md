@@ -26,6 +26,135 @@ tags:
 
 ![mobile-iframe-1](/static/images/mobile-iframe-1.png)
 
+底下的程式碼為最終解決這些問題的結果，下面將一一解釋使用的目的:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,shrink-to-fit=no"
+    />
+    <title>Ifram Testing</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <nav class="navbar">Brand Header</nav>
+    <main class="content">
+      <iframe
+        id="myIframe"
+        src="https://app.ft.com"
+        allowtransparency="true"
+        frameborder="0"
+      ></iframe>
+    </main>
+    <script type="text/javascript" src="iframeModule.js"></script>
+    <script type="text/javascript">
+      const iframeModule = new IframeModule(50, "myIframe");
+      iframeModule.init();
+    </script>
+  </body>
+</html>
+```
+
+`style.css`:
+
+```css
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  transition: 0.2s ease-in-out;
+  width: 100%;
+  z-index: 999;
+  background-color: #060606;
+  height: 50px; /* brand header height */
+}
+
+.content {
+  position: fixed;
+  margin-top: 50px; /* brand header height */
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.content iframe {
+  height: 100%;
+  width: 100%;
+}
+
+.content iframe.ios {
+  min-width: 100%;
+  width: 1px;
+}
+```
+
+`iframeModule.js`:
+
+```js
+function IframeModule(headerHeight, iframeID) {
+  const iframe = document.getElementById(iframeID);
+  const isiOS = navigator.userAgent.match(/(iPod|iPhone|iPad)/);
+
+  function getIFrameHeight() {
+    return window.innerHeight - headerHeight + "px";
+  }
+
+  function setIFrameHeight() {
+    iframe.style.height = getIFrameHeight();
+  }
+
+  function registerOrientationChange(callback) {
+    window.addEventListener("orientationchange", function () {
+      const afterOrientationChange = function () {
+        callback();
+        window.removeEventListener("resize", afterOrientationChange);
+      };
+      window.addEventListener("resize", afterOrientationChange);
+    });
+  }
+
+  function init() {
+    window.addEventListener("DOMContentLoaded", setIFrameHeight);
+    if (isiOS) {
+      iframe.setAttribute("scrolling", "no");
+      iframe.classList.add("ios");
+      registerOrientationChange(function () {
+        if (window.matchMedia("(orientation: portrait)").matches) {
+          document.getElementsByTagName("html")[0].style.height = "100vh";
+          setTimeout(function () {
+            document.getElementsByTagName("html")[0].style.height = "100%";
+          }, 300);
+        }
+        setIFrameHeight();
+      });
+    } else {
+      registerOrientationChange(function () {
+        setIFrameHeight();
+      });
+    }
+  }
+
+  return {
+    init,
+  };
+}
+```
+
 ## 問題1: iOS 12 iframe responsive
 
 此問題的解法比較簡單，若我們能夠控制iframe裡面內容物的CSS，只要在內容`html`加入下面這段CSS既可:
@@ -38,7 +167,7 @@ tags:
 但若我們無法控制內容物的CSS，只能透過改變iframe的style來解決:
 
 ```css
-iframe {
+iframe.ios {
     width: 1px;
     min-width: 100%;
 }
@@ -47,8 +176,79 @@ iframe {
 但只加上面的這樣還不夠，還必須加上`scrolling="no"`才行
 
 ```html
-<iframe height="500" scrolling="no" src="content.html"></iframe>
+<iframe src="http://example.com" allowtransparency="true" frameborder="0" scrolling="no"></iframe>
+```
+
+最後我們只要偵測是iOS裝置使用者再加上上述這些屬性即可:
+
+```js
+...
+const iframe = document.getElementById(iframeID);
+const isiOS = navigator.userAgent.match(/(iPod|iPhone|iPad)/);
+if (isiOS) {
+      iframe.setAttribute("scrolling", "no");
+      iframe.classList.add("ios");
+}
+...
 ```
 
 ## 問題2: 撐滿iframe高度於一個頁面
 
+起初我嘗試透過動態計算`window.innerHeight - {brand header height}`設置iframe的高度，當我嘗試在實體手機上測試來回的從portrait轉到landscape再轉回portrait時，
+發現有時候高度計算會錯誤，導致我的iframe只有landscape時的高度，所以我就上網找了一下解決方案，剛好stackoverflow有一篇在討論這個問題:[Mobile viewport height after orientation change](https://stackoverflow.com/questions/12452349/mobile-viewport-height-after-orientation-change)，其中我篩選掉了使用`setTimeout`的解決方式，因為那時間你很難明確地掌握，如果可以避免使用我都會盡量避免使用，
+所以我嘗試了裡面幾個vote比較高的解法，但依舊會旋轉過後計算錯誤的時候，儘管它不是很常發生。
+
+```javascript
+...
+window.addEventListener("orientationchange", function () {
+  const afterOrientationChange = function () {
+    iframe.style.height = window.innerHeight - headerHeight + "px";
+    window.removeEventListener("resize", afterOrientationChange);
+  };
+  window.addEventListener("resize", afterOrientationChange);
+});
+...
+```
+
+接著我朝CSS的方向尋求答案，看看上述`main`元素的部分:
+
+```html
+...
+<main class="content">
+  <iframe
+    id="myIframe"
+    src="https://app.ft.com"
+    allowtransparency="true"
+    frameborder="0"
+  ></iframe>
+</main>
+...
+```
+
+我嘗試將`.content` selector設置如下:
+
+```css
+.content {
+  position: fixed;
+  margin-top: 50px; /* brand header height */
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+```
+
+當我只靠配置CSS撐滿畫面高度時，發現了兩個問題:
+
+1. 當有多個tab、landscape的狀態下，預設會出現top address bar，由於多出這段高度，使得iframe中的bottom navigation會被擠出畫面外。
+2. 在有些Android設備上的UC Browser底下會多一塊空間，在iframe與bottom action bar中間。
+
+最後我將上述兩種方式合併，就解決了這些問題，或許還有其他方式可以解決這類問題，不過目前我只試出這種方法已達到我們的需求。
+
+## 問題3: 當只有一個tab時，旋轉導致不必要的空白
+
+如下圖所示:
+
+![mobile-iframe-2](/static/images/mobile-iframe-2.jpeg)
