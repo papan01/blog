@@ -20,7 +20,7 @@ tags:
 
 1. iOS 12 iframe無法responsive，導致整個網頁跑版。
 2. 如何撐滿iframe的高度保持於一個頁面。
-3. 當user只有開一個tab時，將網頁從portrait轉到landscape再轉回portrait底下會預留一塊bottom action bar的空位(此問題可在[https://app.ft.com](https://app.ft.com)中reproduce)。
+3. 當user只有開一個tab時，將網頁從portrait轉到landscape再轉回portrait底下會預留一塊bottom action bar的空位(此問題可在[https://app.ft.com](https://app.ft.com)中reproduce，所以這不單只出現在iframe中)。
 
 我們主要測試的browser有Safari、Chrome、UC Browser，所以以下所提到的解法只有在上述的browser測試過。
 
@@ -252,3 +252,25 @@ window.addEventListener("orientationchange", function () {
 如下圖所示:
 
 ![mobile-iframe-2](/static/images/mobile-iframe-2.jpeg)
+
+在最底下會保留一塊空白的部分，那段空白屬於bottom action bar所殘留下來的。起初我想透過觸發scroll的方式來達到彈出bottom action bar已解決那段空白的問題，但最終還是宣告失敗。
+後來想透過設定高度的方式將我的iframe達到撐滿整個畫面的效果，但我沒有找到任何一種方式可以獲取瀏覽器top address bar與bottom action bar高度的方法。
+
+最終公司的前輩找到了一個方式解決這個問題:
+
+```js
+if (window.matchMedia("(orientation: portrait)").matches) {
+    document.getElementsByTagName("html")[0].style.height = "100vh";
+    setTimeout(function () {
+        document.getElementsByTagName("html")[0].style.height = "100%";
+    }, 300);
+}
+```
+
+如前面所提，我個人會盡量避免使用`setTimout`，但由於沒有任何一種event可以讓我監聽bottom action bar是否有出現，所以造就了這種奇怪的解法，但它至少可以解決這問題。
+
+## Reference
+
+- [FT](https://app.ft.com)
+- [Mobile viewport height after orientation change](https://stackoverflow.com/questions/12452349/mobile-viewport-height-after-orientation-change)
+- [How to get an IFrame to be responsive in iOS Safari?](https://stackoverflow.com/questions/23083462/how-to-get-an-iframe-to-be-responsive-in-ios-safari)
