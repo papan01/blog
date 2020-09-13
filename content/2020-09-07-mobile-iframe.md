@@ -22,7 +22,7 @@ tags:
 2. 如何撐滿iframe的高度保持於一個頁面。
 3. 當user只有開一個tab時，將網頁從portrait轉到landscape再轉回portrait底下會預留一塊bottom action bar的空位(此問題可在[https://app.ft.com](https://app.ft.com)中reproduce，所以這不單只出現在iframe中)。
 
-我們主要測試的browser有Safari、Chrome、UC Browser，所以以下所提到的解法只有在上述的browser測試過。
+我們主要測試的browser有Safari、Chrome、UC Browser，所以以下所提到的解法只有在上述的browser測試過。
 
 ![mobile-iframe-1](/static/images/mobile-iframe-1.png)
 
@@ -194,7 +194,7 @@ if (isiOS) {
 
 ## 問題2: 撐滿iframe高度於一個頁面
 
-起初我嘗試透過動態計算`window.innerHeight - {brand header height}`設置iframe的高度，當我嘗試在實體手機上測試來回的從portrait轉到landscape再轉回portrait時，
+起初我嘗試透過動態計算`window.innerHeight - {brand header height}`設置iframe的高度，當我嘗試在實體手機上測試來回的從portrait轉到landscape再轉回portrait時，
 發現有時候高度計算會錯誤，導致我的iframe只有landscape時的高度，所以我就上網找了一下解決方案，剛好stackoverflow有一篇在討論這個問題:[Mobile viewport height after orientation change](https://stackoverflow.com/questions/12452349/mobile-viewport-height-after-orientation-change)，其中我篩選掉了使用`setTimeout`的解決方式，因為那時間你很難明確地掌握，如果可以避免使用我都會盡量避免使用，
 所以我嘗試了裡面幾個vote比較高的解法，但依舊會旋轉過後計算錯誤的時候，儘管它不是很常發生。
 
@@ -210,7 +210,7 @@ window.addEventListener("orientationchange", function () {
 ...
 ```
 
-接著我朝CSS的方向尋求答案，看看上述`main`元素的部分:
+接著我朝CSS的方向尋求答案，看看上述`main`元素的部分:
 
 ```html
 ...
