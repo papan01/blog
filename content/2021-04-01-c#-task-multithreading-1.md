@@ -70,7 +70,7 @@ tags:
 
 **Component Object Model(COM)**是一種定義二進位互動性的標準，以建立在執行期間可互動的軟體程式庫，此標準並不局限於 Windows 上，只是 Microsoft 的許多產品與技術都建立在 COM 之上，實作 COM 的語言沒有侷限，代表我們可以在例如 C++或者.NEW Framework 中實現它，但為什麼會在這提到這個呢，這跟後面要講的 apartment 與 thread 有關，詳細的介紹可以參考官網[COM](https://docs.microsoft.com/en-gb/windows/win32/com/the-component-object-model)的介紹。
 
-**Apartment**是 COM objects 的容器，每個 COM object 只會存留在一個 apartment 當中，一個 apartment 可能不只包含一個 COM object，它有兩種類型:
+**Apartment**是 COM objects 的容器，每一種 COM object 只會存留在一個 apartment 當中，一個 apartment 可能不只包含一個 COM object，它有兩種類型:
 
 - **Single-Threaded Apartment(STA)**: 此 apartment 只有會有一個 thread，其中的 COM objects 只能被此單一 thread 訪問。
 - **Multi-Threaded Apartment(MTA)**: 此 apartment 可以有多個 thread，其中的 COM objects 能被所有屬於此 apartment 的 thread 訪問。
@@ -78,7 +78,7 @@ tags:
 整理一下上面的關係:
 
 1. 每個 Process 可以有多個 threads, 可以是 foreground thread 或 background thread。
-2. 每個 apartment 都有屬於它的 thread(s)，可以是一個(STA)或多個(MTA)。
+2. 每個 apartment 都有屬於它的 thread(s)，可以是 STA 或 MTA。
 3. 每個 Process 可以多個 STA 但只能有一個 MTA。
 4. COM objects 被建立於 apartments 當中，每一個 COM object 只會存在於一個 apartment，apartment 之間不能互相分享。
 
