@@ -581,19 +581,6 @@ Console.WriteLine(t.Result);
 `ContinueWhenAny`可以讓我們同時間執行多個非同步工作，當有任一個非同步工作完成，就會馬上執行，與`WhenAll`類似，它會 return 一個`Task`類別的物件:
 
 ```csharp
-int a = 2, b = 3;
-Task<int> taskA = Task.Factory.StartNew<int>(() => a * a);
-Task<int> taskB = Task.Factory.StartNew<int>(() => b * b);
-Task<int> taskC = Task.Factory.StartNew<int>(() => 2 * a * b);
-var t = Task.Factory.ContinueWhenAll<int>(new Task[]
-{ taskA, taskB, taskC }, (tasks)
-=> tasks.Sum(t => (t as Task<int>).Result));
-Console.WriteLine(t.Result);
-
-//25
-```
-
-```csharp
 int number = 13;
 Task<bool> taskA = Task.Factory.StartNew<bool>(() =>
 number / 2 != 0);
