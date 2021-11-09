@@ -357,6 +357,43 @@ Finish!!!
 - 在.NET Framework 中使用 Async 結尾與 Begin 開頭的方法
 - PLINQ
 
+使用`ThreadPool`有一個特點，我的電腦 thread 數(Logical processors)為 8，則前 8 個 threads 會被立刻建立且執行，之後的 thread 會以一定的間隔時間建立後執行，且無法使用`ThreadPool.SetMaxThreads`設低於 8 個(以我的電腦為例)， 我們可以寫個簡單的程式驗證此件事:
+
+```csharp
+static void ThreadPoolTest()
+{
+    for (int i = 0; i < 500; i++)
+    {
+        var count = i;
+        ThreadPool.QueueUserWorkItem((s) =>
+        {
+            Console.WriteLine("Count: {0}, Thread Id: {1}", count, Thread.CurrentThread.ManagedThreadId);
+            Thread.Sleep(3000000);
+        });
+    }
+}
+
+static void Main(string[] args)
+{
+    ThreadPool.SetMaxThreads(4, 4);
+    ThreadPoolTest();
+    Console.ReadLine();
+}
+
+//Count: 0, Thread Id: 4
+//Count: 1, Thread Id: 5
+//Count: 2, Thread Id: 6
+//Count: 3, Thread Id: 7
+//Count: 4, Thread Id: 8
+//Count: 7, Thread Id: 9
+//Count: 5, Thread Id: 10
+//Count: 6, Thread Id: 11
+//Count: 8, Thread Id: 12
+//Count: 9, Thread Id: 13
+//Count: 10, Thread Id: 14
+//...
+```
+
 ### BackgroundWorker
 
 如上面提到的，`BackgroundWorker`也會使用到`ThreadPool`，它能提供給我們更多權限去管理`ThreadPool`，例如它提供`WorkerReportsProgress`、`ReportProgress`與`ProgressChanged`讓我們監控 thread 的狀況，`CancelAsync`用來取消此 thread。`BackgroundWorker`隸屬於`System.ComponentModel`，讓我們來看看程式碼:
