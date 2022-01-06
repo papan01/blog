@@ -14,7 +14,7 @@ const config = {
   disqusShortname: 'papan01-blog-netlify', // Disqus shortname.
   twitterUserName: '', // twitter creator for SEO
   datePublished: '2020-01-01', // for SEO
-  copyrightYear: '2021', // for SEO
+  copyrightYear: '2022', // for SEO
   postsPerPage: 4, // posts per page used in gatsby-node.js
   // Links to social profiles/projects you want to display in the author segment/navigation bar.
   rrssb: [
