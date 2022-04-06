@@ -1,6 +1,6 @@
 ---
 title: "C# Parallel Programming:#4 Using PLINQ"
-date: "2022-01-06"
+date: "2022-1-06"
 category: "BackEnd"
 cover: "/images/computer-pen.jpg"
 tags:
