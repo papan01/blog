@@ -137,6 +137,12 @@ module.exports = {
       },
     },
     {
+      resolve: 'gatsby-plugin-google-tagmanager',
+      options: {
+        trackingId: config.siteGTMID,
+      },
+    },
+    {
       resolve: 'gatsby-plugin-feed',
       options: {
         query: `
