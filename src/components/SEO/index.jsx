@@ -183,6 +183,17 @@ const SEO = ({ title, description, image, path, articleDate }) => {
       {!articleDate && <script type="application/ld+json">{JSON.stringify(schemaOrgWebPage)}</script>}
       {articleDate && <script type="application/ld+json">{JSON.stringify(schemaArticle)}</script>}
       <script type="application/ld+json">{JSON.stringify(breadcrumb)}</script>
+      {/* <!-- Google tag (gtag.js) --> */}
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-6QE21NSV08" />
+      <script>
+        {` 
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-6QE21NSV08');
+        `}
+      </script>
     </Helmet>
   );
 };
