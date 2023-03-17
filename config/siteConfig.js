@@ -12,6 +12,7 @@ const config = {
   siteFBAppID: '464217807633356', // FB Application ID for using app insights
   siteGATrackingID: 'UA-153303709-2', // Tracking code ID for google analytics.
   siteGTMID: 'G-6QE21NSV08',
+  siteGoogleAD: 'ca-pub-6572125049710322',
   disqusShortname: 'papan01-blog-netlify', // Disqus shortname.
   twitterUserName: '', // twitter creator for SEO
   datePublished: '2020-01-01', // for SEO

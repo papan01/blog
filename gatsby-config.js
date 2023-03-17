@@ -143,6 +143,12 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-plugin-google-adsense`,
+      options: {
+        publisherId: config.siteGoogleAD
+      },
+    },
+    {
       resolve: 'gatsby-plugin-feed',
       options: {
         query: `
