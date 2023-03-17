@@ -11,7 +11,7 @@ const config = {
   siteRss: '/rss.xml', // Path to the RSS file.
   siteFBAppID: '464217807633356', // FB Application ID for using app insights
   siteGATrackingID: 'UA-153303709-2', // Tracking code ID for google analytics.
-  siteGTMID: 'G-6QE21NSV08',
+  siteGTMID: 'GTM-T6LGWNH',
   siteGoogleAD: 'ca-pub-6572125049710322',
   disqusShortname: 'papan01-blog-netlify', // Disqus shortname.
   twitterUserName: '', // twitter creator for SEO
@@ -31,7 +31,7 @@ const config = {
       iconClassName: 'fa fa-envelope',
     },
     {
-      label: 'facebbok',
+      label: 'facebook',
       url: 'https://www.facebook.com/louis.peng.58?ref=bookmarks',
       iconClassName: 'fab fa-facebook',
     },
